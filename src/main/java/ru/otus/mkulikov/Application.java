@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import ru.otus.mkulikov.dao.BookDao;
-import ru.otus.mkulikov.domain.Book;
+import ru.otus.mkulikov.model.Book;
 
 
 /**
@@ -23,11 +23,12 @@ import ru.otus.mkulikov.domain.Book;
 public class Application {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext context = SpringApplication.run(Application.class);
-        BookDao dao = context.getBean(BookDao.class);
-
-        Book book = dao.getBookById(1);
-
-        Console.main(args);
+        SpringApplication.run(Application.class);
+        //ApplicationContext context = SpringApplication.run(Application.class);
+        //BookDao dao = context.getBean(BookDao.class);
+        //
+        //Book book = dao.getById(1);
+        //
+        //Console.main(args);
     }
 }

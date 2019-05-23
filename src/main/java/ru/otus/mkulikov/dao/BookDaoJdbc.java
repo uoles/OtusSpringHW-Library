@@ -3,7 +3,7 @@ package ru.otus.mkulikov.dao;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.otus.mkulikov.domain.Book;
+import ru.otus.mkulikov.model.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,13 +28,28 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public Book getBookById(Integer id) {
+    public Book getById(int id) {
         return jdbcOperations.queryForObject("select * from Book where id = ? ", new Object[]{id}, new BookMapper());
     }
 
     @Override
     public List<Book> getAllBooks() {
         return jdbcOperations.query("select * from Book", new BookMapper());
+    }
+
+    @Override
+    public int addObject(Book book) {
+        return 0;
+    }
+
+    @Override
+    public void deleteObject(Book book) {
+
+    }
+
+    @Override
+    public int updateObject(Book book) {
+        return 0;
     }
 
     public static class BookMapper implements RowMapper<Book> {

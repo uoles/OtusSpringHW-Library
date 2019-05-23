@@ -1,4 +1,4 @@
-package ru.otus.mkulikov.domain;
+package ru.otus.mkulikov.model;
 
 import lombok.Data;
 
@@ -28,5 +28,17 @@ public class Book {
         this.author_id = author_id;
         this.genre_id = genre_id;
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+               "id=" + id +
+               ", add_record_date=" + add_record_date +
+               ", caption='" + caption + '\'' +
+               ", author_id=" + author_id +
+               ", genre_id=" + genre_id +
+               ", comment='" + comment + '\'' +
+               '}';
     }
 }
