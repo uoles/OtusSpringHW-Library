@@ -23,4 +23,14 @@ public class Author {
         this.first_name = first_name;
         this.second_name = second_name;
     }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+               "id=" + id +
+               ", surname='" + surname + '\'' +
+               ", first_name='" + first_name + '\'' +
+               ", second_name='" + second_name + '\'' +
+               "}\n";
+    }
 }

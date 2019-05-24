@@ -39,6 +39,6 @@ public class Book {
                ", author_id=" + author_id +
                ", genre_id=" + genre_id +
                ", comment='" + comment + '\'' +
-               '}';
+               "}\n";
     }
 }

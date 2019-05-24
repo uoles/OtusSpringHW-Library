@@ -10,6 +10,8 @@ import ru.otus.mkulikov.dao.BookDao;
 import ru.otus.mkulikov.dao.GenreDao;
 import ru.otus.mkulikov.model.Book;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov
@@ -35,6 +37,8 @@ public class Commands {
     }
 
     public String write(String text) {
+        System.out.println("qweqwewqe");
+
         return this.reader.readLine("\n" + text + " > ");
     }
 
@@ -42,6 +46,12 @@ public class Commands {
     public String getBookById(@ShellOption String id) {
         Book book = bookDao.getById(Integer.parseInt(id));
         return book.toString();
+    }
+
+    @ShellMethod(key = { "getBooks" }, value = "Select book by id.")
+    public String getBooks() {
+        List<Book> allBooks = bookDao.getAllBooks();
+        return allBooks.toString();
     }
 
     @ShellMethod(key = { "setService", "select" }, value = "Choose a Speech to Text Service")
@@ -52,6 +62,7 @@ public class Commands {
 
             // Get Input
             String input = this.write(question);
+
             if ("1".equals(input)) {
                 this.write("OK");
             } else {
