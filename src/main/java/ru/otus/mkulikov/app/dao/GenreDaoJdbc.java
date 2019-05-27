@@ -36,17 +36,17 @@ public class GenreDaoJdbc implements GenreDao<Genre> {
 
     @Override
     public int addObject(Genre genre) {
-        return 0;
+        return jdbcOperations.update("insert into Genre (name) values (?)", new Object[]{genre.getName()});
     }
 
     @Override
     public int deleteObject(int id) {
-       return jdbcOperations.update("delete from Genre where id = ? ", new Object[]{id});
+        return jdbcOperations.update("delete from Genre where id = ? ", new Object[]{id});
     }
 
     @Override
     public int updateObject(Genre genre) {
-        return 0;
+        return jdbcOperations.update("update Genre set name = ? where id = ? ", new Object[]{genre.getName(), genre.getId()});
     }
 
     public static class GenreMapper implements RowMapper<Genre> {

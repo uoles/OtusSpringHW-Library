@@ -22,6 +22,11 @@ public class Genre {
         this.name = name;
     }
 
+    public Genre(String name) {
+        this.id = 0;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Genre{" +

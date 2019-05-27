@@ -27,5 +27,9 @@ public interface BooksManageSevice {
 
     List<Genre>  getGenres();
 
+    int addGenre(String name);
+
+    int updateGenre(int id, String name);
+
     int deleteGenre(int id);
 }

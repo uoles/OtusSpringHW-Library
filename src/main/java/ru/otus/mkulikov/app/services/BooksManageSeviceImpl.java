@@ -50,6 +50,14 @@ public class BooksManageSeviceImpl implements BooksManageSevice {
         return genreDao.getAllObjects();
     }
 
+    public int addGenre(String name) {
+        return genreDao.addObject(new Genre(name));
+    }
+
+    public int updateGenre(int id, String name) {
+        return genreDao.updateObject(new Genre(id, name));
+    }
+
     public int deleteGenre(int id) {
         return genreDao.deleteObject(id);
     }
