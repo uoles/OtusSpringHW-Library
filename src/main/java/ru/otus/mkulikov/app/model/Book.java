@@ -9,6 +9,8 @@ import java.util.Date;
  * Developer: Maksim Kulikov
  * Date: 23.05.2019
  * Time: 13:28
+ *
+ * Сущность таблицы книг
  */
 
 @Data

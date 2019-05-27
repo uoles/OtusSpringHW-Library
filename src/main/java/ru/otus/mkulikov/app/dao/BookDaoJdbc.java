@@ -21,7 +21,7 @@ import java.util.List;
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
 @RequiredArgsConstructor
-public class BookDaoJdbc implements BookDao {
+public class BookDaoJdbc implements BookDao<Book> {
 
     private final JdbcOperations jdbcOperations;
 

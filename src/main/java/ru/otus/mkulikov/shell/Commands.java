@@ -4,9 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.mkulikov.app.dao.AuthorDao;
-import ru.otus.mkulikov.app.dao.BookDao;
-import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
@@ -61,5 +58,11 @@ public class Commands {
     public String getGenres() {
         List<Genre> allObjects = booksManageSevice.getGenres();
         return allObjects.toString();
+    }
+
+    @ShellMethod(key = { "deleteGenre" }, value = "Delete genre by id.")
+    public String deleteGenre(@ShellOption int id) {
+        int count = booksManageSevice.deleteGenre(id);
+        return "Deleted " + count + " row(s)";
     }
 }

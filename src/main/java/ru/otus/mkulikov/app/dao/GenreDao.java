@@ -1,8 +1,5 @@
 package ru.otus.mkulikov.app.dao;
 
-import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.model.Genre;
-
 import java.util.List;
 
 /**
@@ -12,15 +9,15 @@ import java.util.List;
  * Time: 17:07
  */
 
-public interface GenreDao {
+public interface GenreDao<T> {
 
-    Genre getById(int id);
+    T getById(int id);
 
-    List<Genre> getAllObjects();
+    List<T> getAllObjects();
 
-    int addObject(Book book);
+    int addObject(T t);
 
-    void deleteObject(Book book);
+    int deleteObject(int id);
 
-    int updateObject(Book book);
+    int updateObject(T t);
 }

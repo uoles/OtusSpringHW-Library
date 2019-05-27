@@ -7,6 +7,8 @@ import lombok.Data;
  * Developer: Maksim Kulikov
  * Date: 23.05.2019
  * Time: 17:04
+ *
+ * Сущность таблицы жанров
  */
 
 @Data

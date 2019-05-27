@@ -1,8 +1,6 @@
 package ru.otus.mkulikov.app.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
@@ -24,9 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BooksManageSeviceImpl implements BooksManageSevice {
 
-    private final AuthorDao authorDao;
-    private final BookDao bookDao;
-    private final GenreDao genreDao;
+    private final AuthorDao<Author> authorDao;
+    private final BookDao<Book> bookDao;
+    private final GenreDao<Genre> genreDao;
 
     public Book getBookById(int id) {
         return bookDao.getById(id);
@@ -50,5 +48,9 @@ public class BooksManageSeviceImpl implements BooksManageSevice {
 
     public List<Genre> getGenres() {
         return genreDao.getAllObjects();
+    }
+
+    public int deleteGenre(int id) {
+        return genreDao.deleteObject(id);
     }
 }

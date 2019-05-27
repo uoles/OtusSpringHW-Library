@@ -26,4 +26,6 @@ public interface BooksManageSevice {
     Genre getGenreById(int id);
 
     List<Genre>  getGenres();
+
+    int deleteGenre(int id);
 }

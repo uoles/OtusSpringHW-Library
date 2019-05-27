@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.sql.ResultSet;
@@ -21,7 +20,7 @@ import java.util.List;
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
 @RequiredArgsConstructor
-public class GenreDaoJdbc implements GenreDao {
+public class GenreDaoJdbc implements GenreDao<Genre> {
 
     private final JdbcOperations jdbcOperations;
 
@@ -36,17 +35,17 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public int addObject(Book book) {
+    public int addObject(Genre genre) {
         return 0;
     }
 
     @Override
-    public void deleteObject(Book book) {
-
+    public int deleteObject(int id) {
+       return jdbcOperations.update("delete from Genre where id = ? ", new Object[]{id});
     }
 
     @Override
-    public int updateObject(Book book) {
+    public int updateObject(Genre genre) {
         return 0;
     }
 

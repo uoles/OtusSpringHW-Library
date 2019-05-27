@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Author;
-import ru.otus.mkulikov.app.model.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ import java.util.List;
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
 @RequiredArgsConstructor
-public class AuthorDaoJdbc implements AuthorDao {
+public class AuthorDaoJdbc implements AuthorDao<Author> {
 
     private final JdbcOperations jdbcOperations;
 
@@ -36,17 +35,17 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public int addObject(Book book) {
+    public int addObject(Author book) {
         return 0;
     }
 
     @Override
-    public void deleteObject(Book book) {
+    public void deleteObject(Author book) {
 
     }
 
     @Override
-    public int updateObject(Book book) {
+    public int updateObject(Author book) {
         return 0;
     }
 
