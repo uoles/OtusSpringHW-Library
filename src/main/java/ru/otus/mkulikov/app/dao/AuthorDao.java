@@ -1,6 +1,9 @@
-package ru.otus.mkulikov.dao;
+package ru.otus.mkulikov.app.dao;
 
-import ru.otus.mkulikov.model.Book;
+import ru.otus.mkulikov.app.model.Author;
+import ru.otus.mkulikov.app.model.Book;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,10 +14,13 @@ import ru.otus.mkulikov.model.Book;
 
 public interface AuthorDao {
 
+    Author getById(int id);
+
+    List<Author> getAllObjects();
+
     int addObject(Book book);
 
     void deleteObject(Book book);
 
     int updateObject(Book book);
-
 }

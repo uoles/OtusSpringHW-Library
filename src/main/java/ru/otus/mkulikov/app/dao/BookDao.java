@@ -1,6 +1,6 @@
-package ru.otus.mkulikov.dao;
+package ru.otus.mkulikov.app.dao;
 
-import ru.otus.mkulikov.model.Book;
+import ru.otus.mkulikov.app.model.Book;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface BookDao {
 
     Book getById(int id);
 
-    List<Book> getAllBooks();
+    List<Book> getAllObjects();
 
     int addObject(Book book);
 

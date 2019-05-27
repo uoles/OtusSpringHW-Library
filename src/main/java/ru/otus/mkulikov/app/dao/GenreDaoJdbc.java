@@ -1,13 +1,15 @@
-package ru.otus.mkulikov.dao;
+package ru.otus.mkulikov.app.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.otus.mkulikov.model.Book;
-import ru.otus.mkulikov.model.Genre;
+import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,17 +20,19 @@ import java.sql.SQLException;
 
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
+@RequiredArgsConstructor
 public class GenreDaoJdbc implements GenreDao {
 
     private final JdbcOperations jdbcOperations;
 
-    public GenreDaoJdbc(JdbcOperations jdbcOperations) {
-        this.jdbcOperations = jdbcOperations;
-    }
-
     @Override
     public Genre getById(int id) {
         return jdbcOperations.queryForObject("select * from Genre where id = ? ", new Object[]{id}, new GenreMapper());
+    }
+
+    @Override
+    public List<Genre> getAllObjects() {
+        return jdbcOperations.query("select * from Genre", new GenreMapper());
     }
 
     @Override

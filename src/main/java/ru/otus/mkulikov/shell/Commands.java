@@ -1,14 +1,16 @@
 package ru.otus.mkulikov.shell;
 
-import org.jline.reader.LineReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.mkulikov.dao.AuthorDao;
-import ru.otus.mkulikov.dao.BookDao;
-import ru.otus.mkulikov.dao.GenreDao;
-import ru.otus.mkulikov.model.Book;
+import ru.otus.mkulikov.app.dao.AuthorDao;
+import ru.otus.mkulikov.app.dao.BookDao;
+import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.model.Author;
+import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
+import ru.otus.mkulikov.app.services.BooksManageSevice;
 
 import java.util.List;
 
@@ -20,61 +22,44 @@ import java.util.List;
  */
 
 @ShellComponent
+@RequiredArgsConstructor
 public class Commands {
 
-    private final AuthorDao authorDao;
-    private final BookDao bookDao;
-    private final GenreDao genreDao;
-
-    @Autowired
-    private LineReader reader;
-
-    @Autowired
-    public Commands(AuthorDao authorDao, BookDao bookDao, GenreDao genreDao) {
-        this.authorDao = authorDao;
-        this.bookDao = bookDao;
-        this.genreDao = genreDao;
-    }
-
-    public String write(String text) {
-        System.out.println("qweqwewqe");
-
-        return this.reader.readLine("\n" + text + " > ");
-    }
+    private final BooksManageSevice booksManageSevice;
 
     @ShellMethod(key = { "getBookById" }, value = "Select book by id.")
-    public String getBookById(@ShellOption String id) {
-        Book book = bookDao.getById(Integer.parseInt(id));
+    public String getBookById(@ShellOption int id) {
+        Book book = booksManageSevice.getBookById(id);
         return book.toString();
     }
 
-    @ShellMethod(key = { "getBooks" }, value = "Select book by id.")
+    @ShellMethod(key = { "getBooks" }, value = "Select all books.")
     public String getBooks() {
-        List<Book> allBooks = bookDao.getAllBooks();
-        return allBooks.toString();
+        List<Book> allObjects = booksManageSevice.getBooks();
+        return allObjects.toString();
     }
 
-    @ShellMethod(key = { "setService", "select" }, value = "Choose a Speech to Text Service")
-    public void setService() {
-        boolean success = false;
-        do {
-            String question = "Please select a service.";
+    @ShellMethod(key = { "getAuthorById" }, value = "Select author by id.")
+    public String getAuthorById(@ShellOption int id) {
+        Author author = booksManageSevice.getAuthorById(id);
+        return author.toString();
+    }
 
-            // Get Input
-            String input = this.write(question);
+    @ShellMethod(key = { "getAuthors" }, value = "Select all authors.")
+    public String getAuthors() {
+        List<Author> allObjects = booksManageSevice.getAuthors();
+        return allObjects.toString();
+    }
 
-            if ("1".equals(input)) {
-                this.write("OK");
-            } else {
-                this.write("NO");
-            }
+    @ShellMethod(key = { "getGenreById" }, value = "Select genre by id.")
+    public String getGenreById(@ShellOption int id) {
+        Genre genre = booksManageSevice.getGenreById(id);
+        return genre.toString();
+    }
 
-            // Input handling
-            /*
-             * do something with input variable
-             */
-            success = true;
-
-        } while (!success);
+    @ShellMethod(key = { "getGenres" }, value = "Select all genres.")
+    public String getGenres() {
+        List<Genre> allObjects = booksManageSevice.getGenres();
+        return allObjects.toString();
     }
 }

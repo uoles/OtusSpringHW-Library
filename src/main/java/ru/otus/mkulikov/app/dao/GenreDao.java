@@ -1,7 +1,9 @@
-package ru.otus.mkulikov.dao;
+package ru.otus.mkulikov.app.dao;
 
-import ru.otus.mkulikov.model.Book;
-import ru.otus.mkulikov.model.Genre;
+import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,10 +16,11 @@ public interface GenreDao {
 
     Genre getById(int id);
 
+    List<Genre> getAllObjects();
+
     int addObject(Book book);
 
     void deleteObject(Book book);
 
     int updateObject(Book book);
-
 }

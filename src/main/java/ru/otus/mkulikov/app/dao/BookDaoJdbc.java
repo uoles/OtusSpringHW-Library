@@ -1,9 +1,10 @@
-package ru.otus.mkulikov.dao;
+package ru.otus.mkulikov.app.dao;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import ru.otus.mkulikov.model.Book;
+import ru.otus.mkulikov.app.model.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,13 +20,10 @@ import java.util.List;
 
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
+@RequiredArgsConstructor
 public class BookDaoJdbc implements BookDao {
 
     private final JdbcOperations jdbcOperations;
-
-    public BookDaoJdbc(JdbcOperations jdbcOperations) {
-        this.jdbcOperations = jdbcOperations;
-    }
 
     @Override
     public Book getById(int id) {
@@ -33,7 +31,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAllObjects() {
         return jdbcOperations.query("select * from Book", new BookMapper());
     }
 
@@ -52,7 +50,7 @@ public class BookDaoJdbc implements BookDao {
         return 0;
     }
 
-    public static class BookMapper implements RowMapper<Book> {
+    private static class BookMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
