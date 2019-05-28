@@ -32,7 +32,7 @@ public class BookDaoJdbc implements BookDao<Book> {
 
     @Override
     public List<Book> getAllObjects() {
-        return jdbcOperations.query("select * from Book", new BookMapper());
+        return jdbcOperations.query("select * from Book order by id", new BookMapper());
     }
 
     @Override

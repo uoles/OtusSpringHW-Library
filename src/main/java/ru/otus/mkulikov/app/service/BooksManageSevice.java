@@ -1,4 +1,4 @@
-package ru.otus.mkulikov.app.services;
+package ru.otus.mkulikov.app.service;
 
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;

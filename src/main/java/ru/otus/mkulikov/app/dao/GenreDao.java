@@ -1,5 +1,7 @@
 package ru.otus.mkulikov.app.dao;
 
+import ru.otus.mkulikov.app.model.Genre;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  * Time: 17:07
  */
 
-public interface GenreDao<T> {
+public interface GenreDao<T extends Genre> {
 
     T getById(int id);
 

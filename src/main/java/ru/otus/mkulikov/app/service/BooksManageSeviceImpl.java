@@ -1,4 +1,4 @@
-package ru.otus.mkulikov.app.services;
+package ru.otus.mkulikov.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BooksManageSeviceImpl implements BooksManageSevice {
 
-    private final AuthorDao<Author> authorDao;
-    private final BookDao<Book> bookDao;
-    private final GenreDao<Genre> genreDao;
+    private final AuthorDao authorDao;
+    private final BookDao bookDao;
+    private final GenreDao genreDao;
 
     public Book getBookById(int id) {
         return bookDao.getById(id);

@@ -26,6 +26,13 @@ public class Author {
         this.second_name = second_name;
     }
 
+    public Author(String surname, String first_name, String second_name) {
+        this.id = 0;
+        this.surname = surname;
+        this.first_name = first_name;
+        this.second_name = second_name;
+    }
+
     @Override
     public String toString() {
         return "Author{" +

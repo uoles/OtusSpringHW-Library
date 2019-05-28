@@ -32,6 +32,15 @@ public class Book {
         this.comment = comment;
     }
 
+    public Book(Date add_record_date, String caption, int author_id, int genre_id, String comment) {
+        this.id = 0;
+        this.add_record_date = add_record_date;
+        this.caption = caption;
+        this.author_id = author_id;
+        this.genre_id = genre_id;
+        this.comment = comment;
+    }
+
     @Override
     public String toString() {
         return "Book{" +

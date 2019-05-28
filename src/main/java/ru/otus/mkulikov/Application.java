@@ -16,7 +16,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 
 @SpringBootApplication
-@PropertySource("classpath:application.yml")
+//@PropertySource("classpath:application.yml")
 @EnableConfigurationProperties
 public class Application {
 

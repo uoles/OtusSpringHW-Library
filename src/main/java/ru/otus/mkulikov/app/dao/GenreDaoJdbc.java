@@ -1,11 +1,15 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Genre;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,7 +35,7 @@ public class GenreDaoJdbc implements GenreDao<Genre> {
 
     @Override
     public List<Genre> getAllObjects() {
-        return jdbcOperations.query("select * from Genre", new GenreMapper());
+        return jdbcOperations.query("select * from Genre order by id", new GenreMapper());
     }
 
     @Override

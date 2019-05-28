@@ -7,7 +7,7 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
-import ru.otus.mkulikov.app.services.BooksManageSevice;
+import ru.otus.mkulikov.app.service.BooksManageSevice;
 
 import java.util.List;
 
