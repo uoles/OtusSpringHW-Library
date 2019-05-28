@@ -19,7 +19,7 @@ public interface AuthorDao<T extends Author> {
 
     int addObject(T t);
 
-    void deleteObject(T t);
+    int deleteObject(int id);
 
     int updateObject(T t);
 }

@@ -16,21 +16,21 @@ public class Author {
 
     private final int id;
     private final String surname;
-    private final String first_name;
-    private final String second_name;
+    private final String firstName;
+    private final String secondName;
 
-    public Author(int id, String surname, String first_name, String second_name) {
+    public Author(int id, String surname, String firstName, String secondName) {
         this.id = id;
         this.surname = surname;
-        this.first_name = first_name;
-        this.second_name = second_name;
+        this.firstName = firstName;
+        this.secondName = secondName;
     }
 
-    public Author(String surname, String first_name, String second_name) {
+    public Author(String surname, String firstName, String secondName) {
         this.id = 0;
         this.surname = surname;
-        this.first_name = first_name;
-        this.second_name = second_name;
+        this.firstName = firstName;
+        this.secondName = secondName;
     }
 
     @Override
@@ -38,8 +38,8 @@ public class Author {
         return "Author{" +
                "id=" + id +
                ", surname='" + surname + '\'' +
-               ", first_name='" + first_name + '\'' +
-               ", second_name='" + second_name + '\'' +
+               ", firstName='" + firstName + '\'' +
+               ", secondName='" + secondName + '\'' +
                "}\n";
     }
 }

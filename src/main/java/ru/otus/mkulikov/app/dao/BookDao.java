@@ -19,7 +19,7 @@ public interface BookDao<T extends Book> {
 
     int addObject(T t);
 
-    void deleteObject(T t);
+    int deleteObject(int id);
 
     int updateObject(T t);
 }

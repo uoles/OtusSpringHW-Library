@@ -69,12 +69,13 @@ class GenreDaoJdbcTest {
 
     @Test
     void addObject() {
-        genreDaoJdbc.addObject(new Genre("Test4"));
+        int count = genreDaoJdbc.addObject(new Genre("Test4"));
 
         Genre genre = genreDaoJdbc.getById(4);
 
         assertAll("genre",
                   () -> assertNotNull(genre),
+                  () -> assertEquals(1, count),
                   () -> assertEquals(4, genre.getId()),
                   () -> assertEquals("Test4", genre.getName())
         );

@@ -40,8 +40,8 @@ public class AuthorDaoJdbc implements AuthorDao<Author> {
     }
 
     @Override
-    public void deleteObject(Author book) {
-
+    public int deleteObject(int id) {
+        return 0;
     }
 
     @Override
@@ -55,10 +55,10 @@ public class AuthorDaoJdbc implements AuthorDao<Author> {
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
             int id = resultSet.getInt("ID");
             String surname = resultSet.getString("SURNAME");
-            String first_name = resultSet.getString("FIRST_NAME");
-            String second_name = resultSet.getString("SECOND_NAME");
+            String firstName = resultSet.getString("FIRST_NAME");
+            String secondName = resultSet.getString("SECOND_NAME");
 
-            return new Author(id, surname, first_name, second_name);
+            return new Author(id, surname, firstName, secondName);
         }
     }
 }

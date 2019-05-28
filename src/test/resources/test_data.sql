@@ -16,12 +16,12 @@ insert into GENRE (NAME) values ('Genre3');
 --------------------------
 
 insert into BOOK (ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-    values (sysdate, 'book_1', 1, 1, 'comment');
+    values (to_date('2019-01-01','YYYY-MM-DD'), 'book_1', 1, 1, 'comment');
 
 insert into BOOK (ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-    values (sysdate, 'book_2', 1, 1, 'comment');
+    values (to_date('2019-01-01','YYYY-MM-DD'), 'book_2', 1, 1, 'comment');
 
 insert into BOOK (ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-    values (sysdate, 'book_3', 1, 1, 'comment');
+    values (to_date('2019-01-01','YYYY-MM-DD'), 'book_3', 1, 1, 'comment');
 
 --------------------------

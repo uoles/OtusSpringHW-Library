@@ -8,6 +8,7 @@ import ru.otus.mkulikov.app.model.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class BookDaoJdbc implements BookDao<Book> {
     }
 
     @Override
-    public void deleteObject(Book book) {
-
+    public int deleteObject(int id) {
+        return 0;
     }
 
     @Override
@@ -55,13 +56,13 @@ public class BookDaoJdbc implements BookDao<Book> {
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             int id = resultSet.getInt("ID");
-            Date add_record_date = resultSet.getDate("ADD_RECORD_DATE");
+            Date addRecordDate = resultSet.getDate("ADD_RECORD_DATE");
             String caption = resultSet.getString("CAPTION");
             int author_id = resultSet.getInt("AUTHOR_ID");
             int genre_id = resultSet.getInt("GENRE_ID");
             String comment = resultSet.getString("COMMENT");
 
-            return new Book(id, add_record_date, caption, author_id, genre_id, comment);
+            return new Book(id, addRecordDate, caption, author_id, genre_id, comment);
         }
     }
 }

@@ -2,6 +2,8 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,38 +19,43 @@ import java.util.Date;
 public class Book {
 
     private final int id;
-    private final Date add_record_date;
+    private final Date addRecordDate;
     private final String caption;
-    private final int author_id;
-    private final int genre_id;
+    private final int authorId;
+    private final int genreId;
     private final String comment;
 
-    public Book(int id, Date add_record_date, String caption, int author_id, int genre_id, String comment) {
+    public Book(int id, Date addRecordDate, String caption, int authorId, int genreId, String comment) {
         this.id = id;
-        this.add_record_date = add_record_date;
+        this.addRecordDate = addRecordDate;
         this.caption = caption;
-        this.author_id = author_id;
-        this.genre_id = genre_id;
+        this.authorId = authorId;
+        this.genreId = genreId;
         this.comment = comment;
     }
 
-    public Book(Date add_record_date, String caption, int author_id, int genre_id, String comment) {
+    public Book(Date addRecordDate, String caption, int authorId, int genreId, String comment) {
         this.id = 0;
-        this.add_record_date = add_record_date;
+        this.addRecordDate = addRecordDate;
         this.caption = caption;
-        this.author_id = author_id;
-        this.genre_id = genre_id;
+        this.authorId = authorId;
+        this.genreId = genreId;
         this.comment = comment;
+    }
+
+    public String getAddRecordDateString() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return addRecordDate != null ? dateFormat.format(addRecordDate) : null;
     }
 
     @Override
     public String toString() {
         return "Book{" +
                "id=" + id +
-               ", add_record_date=" + add_record_date +
+               ", addRecordDate=" + addRecordDate +
                ", caption='" + caption + '\'' +
-               ", author_id=" + author_id +
-               ", genre_id=" + genre_id +
+               ", authorId=" + authorId +
+               ", genreId=" + genreId +
                ", comment='" + comment + '\'' +
                "}\n";
     }
