@@ -75,7 +75,7 @@ class BookDaoJdbcTest {
     @Test
     void addObject() {
         int count = bookDaoJdbc.addObject(
-                new Book(new Date(),"Test_Book",2,3,"Test_Comment")
+                new Book("Test_Book",2,3,"Test_Comment")
         );
 
         Book book = bookDaoJdbc.getById(4);

@@ -18,12 +18,12 @@ import java.util.Date;
 @Data
 public class Book {
 
-    private final int id;
-    private final Date addRecordDate;
-    private final String caption;
-    private final int authorId;
-    private final int genreId;
-    private final String comment;
+    private int id;
+    private Date addRecordDate;
+    private String caption;
+    private int authorId;
+    private int genreId;
+    private String comment;
 
     public Book(int id, Date addRecordDate, String caption, int authorId, int genreId, String comment) {
         this.id = id;
@@ -34,9 +34,15 @@ public class Book {
         this.comment = comment;
     }
 
-    public Book(Date addRecordDate, String caption, int authorId, int genreId, String comment) {
-        this.id = 0;
-        this.addRecordDate = addRecordDate;
+    public Book(int id, String caption, int authorId, int genreId, String comment) {
+        this.id = id;
+        this.caption = caption;
+        this.authorId = authorId;
+        this.genreId = genreId;
+        this.comment = comment;
+    }
+
+    public Book(String caption, int authorId, int genreId, String comment) {
         this.caption = caption;
         this.authorId = authorId;
         this.genreId = genreId;
