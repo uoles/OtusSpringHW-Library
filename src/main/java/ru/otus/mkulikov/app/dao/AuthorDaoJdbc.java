@@ -35,18 +35,24 @@ public class AuthorDaoJdbc implements AuthorDao<Author> {
     }
 
     @Override
-    public int addObject(Author book) {
-        return 0;
+    public int addObject(Author author) {
+        return jdbcOperations.update(
+                "insert into Author (surname, first_name, second_name) values (?,?,?)",
+                new Object[]{author.getSurname(), author.getFirstName(), author.getSecondName()}
+        );
     }
 
     @Override
     public int deleteObject(int id) {
-        return 0;
+        return jdbcOperations.update("delete from Author where id = ? ", new Object[]{id});
     }
 
     @Override
-    public int updateObject(Author book) {
-        return 0;
+    public int updateObject(Author author) {
+        return jdbcOperations.update(
+                "update Author set surname = ?, first_name = ?, second_name = ? where id = ? ",
+                new Object[]{author.getSurname(), author.getFirstName(), author.getSecondName(), author.getId()}
+        );
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

@@ -85,9 +85,9 @@ class BookDaoJdbcTest {
                   () -> assertEquals(1, count),
                   () -> assertEquals(4, book.getId()),
                   () -> assertEquals("Test_Book", book.getCaption()),
-                  () -> assertEquals("2", book.getAuthorId()),
-                  () -> assertEquals("3", book.getGenreId()),
-                  () -> assertEquals("Test_Comment", book.getCaption())
+                  () -> assertEquals(2, book.getAuthorId()),
+                  () -> assertEquals(3, book.getGenreId()),
+                  () -> assertEquals("Test_Comment", book.getComment())
         );
     }
 

@@ -38,17 +38,23 @@ public class BookDaoJdbc implements BookDao<Book> {
 
     @Override
     public int addObject(Book book) {
-        return 0;
+        return jdbcOperations.update(
+            "insert into Book (add_record_date, caption, author_id, genre_id, comment) values (sysdate,?,?,?,?)",
+            new Object[]{book.getCaption(), book.getAuthorId(), book.getGenreId(), book.getComment()}
+        );
     }
 
     @Override
     public int deleteObject(int id) {
-        return 0;
+        return jdbcOperations.update("delete from Book where id = ? ", new Object[]{id});
     }
 
     @Override
     public int updateObject(Book book) {
-        return 0;
+        return jdbcOperations.update(
+             "update Book set add_record_date = sysdate, caption = ?, author_id = ?, genre_id = ?, comment = ? where id = ? ",
+             new Object[]{book.getCaption(), book.getAuthorId(), book.getGenreId(), book.getComment(), book.getId()}
+        );
     }
 
     private static class BookMapper implements RowMapper<Book> {
