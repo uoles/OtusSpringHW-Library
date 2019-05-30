@@ -5,14 +5,13 @@ import lombok.Data;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov
  * Date: 23.05.2019
  * Time: 13:28
- *
- * Сущность таблицы книг
  */
 
 @Data
@@ -23,6 +22,8 @@ public class Book {
     private String caption;
     private int authorId;
     private int genreId;
+    private Author author;
+    private Genre genre;
     private String comment;
 
     public Book(int id, Date addRecordDate, String caption, int authorId, int genreId, String comment) {
@@ -54,6 +55,18 @@ public class Book {
         return addRecordDate != null ? dateFormat.format(addRecordDate) : null;
     }
 
+    public String getAuthorString() {
+        return (author != null)
+                ? ", author='" + author.toFormatedString() + '\''
+                : "";
+    }
+
+    public String getGenreString() {
+        return (genre != null)
+                ? ", genre='" + genre.getName() + '\''
+                : "";
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -63,6 +76,8 @@ public class Book {
                ", authorId=" + authorId +
                ", genreId=" + genreId +
                ", comment='" + comment + '\'' +
+               getAuthorString() +
+               getGenreString() +
                "}\n";
     }
 }

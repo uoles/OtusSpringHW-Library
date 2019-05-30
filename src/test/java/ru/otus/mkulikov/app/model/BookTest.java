@@ -27,13 +27,16 @@ class BookTest {
 
     @Test
     void getAddRecordDateString() {
-        Date date = new Date();
-        Book book = new Book(1, date, "Test_Book", 2, 3, "Test_Comment");
+        Book book = getNewBook();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         assertAll("book",
                   () -> assertNotNull(book),
-                  () -> assertEquals(dateFormat.format(date), book.getAddRecordDateString())
+                  () -> assertEquals(dateFormat.format(new Date()), book.getAddRecordDateString())
         );
+    }
+
+    private Book getNewBook() {
+        return new Book(1, new Date(), "Test_Book", 2, 3, "Test_Comment");
     }
 }

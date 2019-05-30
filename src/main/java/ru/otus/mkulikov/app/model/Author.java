@@ -7,8 +7,6 @@ import lombok.Data;
  * Developer: Maksim Kulikov
  * Date: 23.05.2019
  * Time: 17:02
- *
- * Сущность таблицы авторов
  */
 
 @Data
@@ -31,6 +29,10 @@ public class Author {
         this.surname = surname;
         this.firstName = firstName;
         this.secondName = secondName;
+    }
+
+    public String toFormatedString() {
+        return getSurname() + " " + getFirstName() + " " + getSecondName();
     }
 
     @Override
