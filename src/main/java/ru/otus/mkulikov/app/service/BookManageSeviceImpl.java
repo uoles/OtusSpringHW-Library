@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
@@ -20,19 +22,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookManageSeviceImpl implements BookManageSevice {
 
-    private final AuthorDao authorDao;
     private final BookDao bookDao;
+    private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
     @Override
-    public Book getBookById(int id) {
+    public Book getBookById(long id) {
         return bookDao.getById(id);
     }
 
     @Override
-    public Book getFullBookById(int id) {
-        Book book = bookDao.getById(id);
-        return setBookInfo(book);
+    public Book getFullBookById(long id) {
+        return bookDao.getById(id);
     }
 
     @Override
@@ -42,31 +43,28 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public List<Book> getFullBooks() {
-        List<Book> books = bookDao.getAllObjects();
-        for (Book book : books) {
-            setBookInfo(book);
-        }
-        return books;
+        return bookDao.getAllObjects();
     }
 
-    private Book setBookInfo(Book book) {
-        book.setAuthor(authorDao.getById(book.getAuthorId()));
-        book.setGenre(genreDao.getById(book.getGenreId()));
-        return book;
-    }
 
     @Override
     public int addBook(String caption, int authorId, int genreId, String comment) {
-        return bookDao.addObject(new Book(caption, authorId, genreId, comment));
+        Author author = authorDao.getById(authorId);
+        Genre genre = genreDao.getById(genreId);
+
+        return bookDao.addObject(new Book(caption, author, genre, comment));
     }
 
     @Override
-    public int updateBook(int id, String caption, int authorId, int genreId, String comment) {
-        return bookDao.updateObject(new Book(id, caption, authorId, genreId, comment));
+    public int updateBook(long id, String caption, int authorId, int genreId, String comment) {
+        Author author = authorDao.getById(authorId);
+        Genre genre = genreDao.getById(genreId);
+
+        return bookDao.updateObject(new Book(id, caption, author, genre, comment));
     }
 
     @Override
-    public int deleteBook(int id) {
+    public int deleteBook(long id) {
         return bookDao.deleteObject(id);
     }
 }

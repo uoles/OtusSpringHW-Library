@@ -21,7 +21,7 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     private final AuthorDao authorDao;
 
     @Override
-    public Author getAuthorById(int id) {
+    public Author getAuthorById(long id) {
         return authorDao.getById(id);
     }
 
@@ -36,12 +36,12 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     }
 
     @Override
-    public int updateAuthor(int id, String surname, String firstName, String secondName) {
+    public int updateAuthor(long id, String surname, String firstName, String secondName) {
         return authorDao.updateObject(new Author(id, surname, firstName, secondName));
     }
 
     @Override
-    public int deleteAuthor(int id) {
+    public int deleteAuthor(long id) {
         return authorDao.deleteObject(id);
     }
 }

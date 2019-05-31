@@ -21,7 +21,7 @@ public class GenreManageServiceImpl implements GenreManageService {
     private final GenreDao genreDao;
 
     @Override
-    public Genre getGenreById(int id) {
+    public Genre getGenreById(long id) {
         return genreDao.getById(id);
     }
 
@@ -36,12 +36,12 @@ public class GenreManageServiceImpl implements GenreManageService {
     }
 
     @Override
-    public int updateGenre(int id, String name) {
+    public int updateGenre(long id, String name) {
         return genreDao.updateObject(new Genre(id, name));
     }
 
     @Override
-    public int deleteGenre(int id) {
+    public int deleteGenre(long id) {
         return genreDao.deleteObject(id);
     }
 }

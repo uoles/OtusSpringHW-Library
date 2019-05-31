@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface BookManageSevice<T extends Book> {
 
-    T getBookById(int id);
+    T getBookById(long id);
 
-    T getFullBookById(int id);
+    T getFullBookById(long id);
 
     List<T> getBooks();
 
@@ -23,7 +23,7 @@ public interface BookManageSevice<T extends Book> {
 
     int addBook(String caption, int authorId, int genreId, String comment);
 
-    int updateBook(int id, String caption, int authorId, int genreId, String comment);
+    int updateBook(long id, String caption, int authorId, int genreId, String comment);
 
-    int deleteBook(int id);
+    int deleteBook(long id);
 }

@@ -4,20 +4,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.AppTestConfig;
+import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,31 +40,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = AppTestConfig.class)
 class BookDaoJdbcTest {
 
+    @Autowired
     private BookDaoJdbc bookDaoJdbc;
-
-    @BeforeEach
-    public void setup() {
-        EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("test_schema.sql")
-                .addScript("test_data.sql")
-                .build();
-
-        bookDaoJdbc = new BookDaoJdbc(new JdbcTemplate(db));
-    }
 
     @Test
     void getById() {
-        Book book = bookDaoJdbc.getById(1);
+        Book book = bookDaoJdbc.getById(1L);
 
-        assertAll("book",
-                  () -> assertNotNull(book),
-                  () -> assertEquals(1, book.getId()),
-                  () -> assertEquals("2019-01-01", book.getAddRecordDateString()),
-                  () -> assertEquals("book_1", book.getCaption()),
-                  () -> assertEquals(1, book.getAuthorId()),
-                  () -> assertEquals(1, book.getGenreId()),
-                  () -> assertEquals("comment", book.getComment())
+        assertAll(
+                "book",
+                () -> assertNotNull(book),
+                () -> assertEquals(1L, book.getId()),
+                () -> assertEquals("2019-01-01", book.getAddRecordDateString()),
+                () -> assertEquals("book_1", book.getCaption()),
+                () -> assertEquals(1, book.getAuthor().getId()),
+                () -> assertEquals(1, book.getGenre().getId()),
+                () -> assertEquals("comment", book.getComment())
         );
     }
 
@@ -63,58 +63,63 @@ class BookDaoJdbcTest {
     void getAllObjects() {
         List<Book> books = bookDaoJdbc.getAllObjects();
 
-        assertAll("books",
-                  () -> assertNotNull(books),
-                  () -> assertEquals(3, books.size()),
-                  () -> assertEquals("book_1", books.get(0).getCaption()),
-                  () -> assertEquals("book_2", books.get(1).getCaption()),
-                  () -> assertEquals("book_3", books.get(2).getCaption())
+        assertAll(
+                "books",
+                () -> assertNotNull(books),
+                () -> assertEquals(3, books.size()),
+                () -> assertEquals("book_1", books.get(0).getCaption()),
+                () -> assertEquals("book_2", books.get(1).getCaption()),
+                () -> assertEquals("book_3", books.get(2).getCaption())
         );
     }
 
     @Test
     void addObject() {
-        int count = bookDaoJdbc.addObject(
-                new Book("Test_Book",2,3,"Test_Comment")
-        );
+        int count = bookDaoJdbc.addObject(getNewBook());
+        Book book = bookDaoJdbc.getById(4L);
 
-        Book book = bookDaoJdbc.getById(4);
-
-        assertAll("book",
-                  () -> assertNotNull(book),
-                  () -> assertEquals(1, count),
-                  () -> assertEquals(4, book.getId()),
-                  () -> assertEquals("Test_Book", book.getCaption()),
-                  () -> assertEquals(2, book.getAuthorId()),
-                  () -> assertEquals(3, book.getGenreId()),
-                  () -> assertEquals("Test_Comment", book.getComment())
+        assertAll(
+                "book",
+                () -> assertNotNull(book),
+                () -> assertEquals(1, count),
+                () -> assertEquals(4L, book.getId()),
+                () -> assertEquals("Test_Book", book.getCaption()),
+                () -> assertEquals(1, book.getAuthor().getId()),
+                () -> assertEquals(1, book.getGenre().getId()),
+                () -> assertEquals("Test_Comment", book.getComment())
         );
     }
 
     @Test
     void deleteObject() {
-        int count = bookDaoJdbc.deleteObject(1);
+        int count = bookDaoJdbc.deleteObject(1L);
 
-        assertAll("book",
-                  () -> assertEquals(1, count),
-                  () -> assertThrows(EmptyResultDataAccessException.class, () -> { bookDaoJdbc.getById(1); })
+        assertAll(
+                "book",
+                () -> assertEquals(1, count),
+                () -> assertThrows(EmptyResultDataAccessException.class, () -> { bookDaoJdbc.getById(1L); })
         );
     }
 
     @Test
     void updateObject() {
-        Book book1 = bookDaoJdbc.getById(1);
-        int count = bookDaoJdbc.updateObject(
-                new Book(1, new Date(),"Test_Book",2,3,"Test_Comment")
-        );
-        Book book2 = bookDaoJdbc.getById(1);
+        Book book1 = bookDaoJdbc.getById(1L);
+        int count = bookDaoJdbc.updateObject(getNewBook());
+        Book book2 = bookDaoJdbc.getById(1L);
 
-        assertAll("book",
-                  () -> assertEquals(1, count),
-                  () -> assertEquals("book_1", book1.getCaption()),
-                  () -> assertEquals("comment", book1.getComment()),
-                  () -> assertEquals("Test_Book", book2.getCaption()),
-                  () -> assertEquals("Test_Comment", book2.getComment())
+        assertAll(
+                "book",
+                () -> assertEquals(1, count),
+                () -> assertEquals("book_1", book1.getCaption()),
+                () -> assertEquals("comment", book1.getComment()),
+                () -> assertEquals("Test_Book", book2.getCaption()),
+                () -> assertEquals("Test_Comment", book2.getComment())
         );
+    }
+
+    private Book getNewBook() {
+        Author author = new Author(1L, "TestSurname", "TestFirstName", "TestSecondName");
+        Genre genre = new Genre(1L, "Test4");
+        return new Book(1L, new Date(), "Test_Book", author, genre, "Test_Comment");
     }
 }

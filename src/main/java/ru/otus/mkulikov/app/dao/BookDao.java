@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface BookDao<T extends Book> {
 
-    T getById(int id);
+    T getById(long id);
 
     List<T> getAllObjects();
 
     int addObject(T t);
 
-    int deleteObject(int id);
+    int deleteObject(long id);
 
     int updateObject(T t);
 }

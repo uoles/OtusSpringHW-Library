@@ -23,7 +23,7 @@ public class GenreCommands {
     private final GenreManageService genreManageService;
 
     @ShellMethod(key = { "getGenreById" }, value = "Select genre by id.")
-    public String getGenreById(@ShellOption int id) {
+    public String getGenreById(@ShellOption long id) {
         Genre genre = genreManageService.getGenreById(id);
         return genre.toString();
     }
@@ -41,13 +41,13 @@ public class GenreCommands {
     }
 
     @ShellMethod(key = { "updateGenre" }, value = "Update genre by id.")
-    public String updateGenre(@ShellOption int id, @ShellOption String name) {
+    public String updateGenre(@ShellOption long id, @ShellOption String name) {
         int count = genreManageService.updateGenre(id, name);
         return "Updated " + count + " row(s)";
     }
 
     @ShellMethod(key = { "deleteGenre" }, value = "Delete genre by id.")
-    public String deleteGenre(@ShellOption int id) {
+    public String deleteGenre(@ShellOption long id) {
         int count = genreManageService.deleteGenre(id);
         return "Deleted " + count + " row(s)";
     }

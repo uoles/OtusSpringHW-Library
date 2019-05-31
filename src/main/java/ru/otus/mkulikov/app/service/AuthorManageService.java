@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface AuthorManageService<T extends Author> {
 
-    T getAuthorById(int id);
+    T getAuthorById(long id);
 
     List<T> getAuthors();
 
     int addAuthor(String surname, String firstName, String secondName);
 
-    int updateAuthor(int id, String surname, String firstName, String secondName);
+    int updateAuthor(long id, String surname, String firstName, String secondName);
 
-    int deleteAuthor(int id);
+    int deleteAuthor(long id);
 }

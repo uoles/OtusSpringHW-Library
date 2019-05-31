@@ -4,8 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -34,30 +35,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest(classes = AppTestConfig.class)
 class AuthorManageSeviceImplTest {
 
+
+
+    @Autowired
     private AuthorManageService authorManageService;
-
-    @BeforeEach
-    public void setup() {
-        EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("test_schema.sql")
-                .addScript("test_data.sql")
-                .build();
-
-        AuthorDaoJdbc authorDaoJdbc = new AuthorDaoJdbc(new JdbcTemplate(db));
-        authorManageService = new AuthorManageServiceImpl(authorDaoJdbc);
-    }
 
     @Test
     void getAuthorById() {
-        Author author = authorManageService.getAuthorById(1);
+        Author author = authorManageService.getAuthorById(1L);
 
-        assertAll("author",
-                  () -> assertNotNull(author),
-                  () -> assertEquals(1, author.getId()),
-                  () -> assertEquals("Surname1", author.getSurname()),
-                  () -> assertEquals("FirstName1", author.getFirstName()),
-                  () -> assertEquals("SecondName1", author.getSecondName())
+        assertAll(
+                "author",
+                () -> assertNotNull(author),
+                () -> assertEquals(1L, author.getId()),
+                () -> assertEquals("Surname1", author.getSurname()),
+                () -> assertEquals("FirstName1", author.getFirstName()),
+                () -> assertEquals("SecondName1", author.getSecondName())
         );
     }
 
@@ -65,54 +58,52 @@ class AuthorManageSeviceImplTest {
     void getAuthors() {
         List<Author> authors = authorManageService.getAuthors();
 
-        assertAll("authors",
-                  () -> assertNotNull(authors),
-                  () -> assertEquals(3, authors.size()),
-                  () -> assertEquals("Surname1", authors.get(0).getSurname()),
-                  () -> assertEquals("Surname2", authors.get(1).getSurname()),
-                  () -> assertEquals("Surname3", authors.get(2).getSurname())
+        assertAll(
+                "authors",
+                () -> assertNotNull(authors),
+                () -> assertEquals(3, authors.size()),
+                () -> assertEquals("Surname1", authors.get(0).getSurname()),
+                () -> assertEquals("Surname2", authors.get(1).getSurname()),
+                () -> assertEquals("Surname3", authors.get(2).getSurname())
         );
     }
 
     @Test
     void addAuthor() {
         int count = authorManageService.addAuthor("TestSurname", "TestFirstName", "TestSecondName");
-        Author author_selected = authorManageService.getAuthorById(4);
+        Author author_selected = authorManageService.getAuthorById(4L);
 
-        assertAll("author",
-                  () -> assertNotNull(author_selected),
-                  () -> assertEquals(1, count),
-                  () -> assertEquals(4, author_selected.getId()),
-                  () -> assertEquals("TestSurname", author_selected.getSurname()),
-                  () -> assertEquals("TestFirstName", author_selected.getFirstName()),
-                  () -> assertEquals("TestSecondName", author_selected.getSecondName())
+        assertAll(
+                "author",
+                () -> assertNotNull(author_selected),
+                () -> assertEquals(1, count),
+                () -> assertEquals(4L, author_selected.getId()),
+                () -> assertEquals("TestSurname", author_selected.getSurname()),
+                () -> assertEquals("TestFirstName", author_selected.getFirstName()),
+                () -> assertEquals("TestSecondName", author_selected.getSecondName())
         );
     }
 
     @Test
     void updateAuthor() {
-        Author author1 = authorManageService.getAuthorById(1);
-        int count = authorManageService.updateAuthor(1,"TestSurname", "TestFirstName", "TestSecondName");
-        Author author2 = authorManageService.getAuthorById(1);
+        Author author1 = authorManageService.getAuthorById(1L);
+        int count = authorManageService.updateAuthor(1L, "TestSurname", "TestFirstName", "TestSecondName");
+        Author author2 = authorManageService.getAuthorById(1L);
 
-        assertAll("author",
-                  () -> assertEquals(1, count),
-                  () -> assertEquals("Surname1", author1.getSurname()),
-                  () -> assertEquals("FirstName1", author1.getFirstName()),
-                  () -> assertEquals("SecondName1", author1.getSecondName()),
-                  () -> assertEquals("TestSurname", author2.getSurname()),
-                  () -> assertEquals("TestFirstName", author2.getFirstName()),
-                  () -> assertEquals("TestSecondName", author2.getSecondName())
+        assertAll(
+                "author",
+                () -> assertEquals(1, count),
+                () -> assertEquals("Surname1", author1.getSurname()),
+                () -> assertEquals("FirstName1", author1.getFirstName()),
+                () -> assertEquals("SecondName1", author1.getSecondName()),
+                () -> assertEquals("TestSurname", author2.getSurname()),
+                () -> assertEquals("TestFirstName", author2.getFirstName()),
+                () -> assertEquals("TestSecondName", author2.getSecondName())
         );
     }
 
     @Test
     void deleteAuthor() {
-        int count = authorManageService.deleteAuthor(1);
-
-        assertAll("author",
-                  () -> assertEquals(1, count),
-                  () -> assertThrows(EmptyResultDataAccessException.class, () -> { authorManageService.getAuthorById(1); })
-        );
+        assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(1L); });
     }
 }

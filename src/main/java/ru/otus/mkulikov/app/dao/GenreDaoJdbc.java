@@ -1,18 +1,17 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Genre;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,31 +25,41 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreDaoJdbc implements GenreDao<Genre> {
 
-    private final JdbcOperations jdbcOperations;
+    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     @Override
-    public Genre getById(int id) {
-        return jdbcOperations.queryForObject("select * from Genre where id = ? ", new Object[]{id}, new GenreMapper());
+    public Genre getById(long id) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", id);
+
+        return namedParameterJdbcOperations.queryForObject("select * from Genre where id = :id ", paramMap, new GenreMapper());
     }
 
     @Override
     public List<Genre> getAllObjects() {
-        return jdbcOperations.query("select * from Genre order by id", new GenreMapper());
+        return namedParameterJdbcOperations.query("select * from Genre order by id", new GenreMapper());
     }
 
     @Override
     public int addObject(Genre genre) {
-        return jdbcOperations.update("insert into Genre (name) values (?)", new Object[]{genre.getName()});
+        return namedParameterJdbcOperations.update(
+                "insert into Genre (name) values (:name)",
+                new BeanPropertySqlParameterSource(genre));
     }
 
     @Override
-    public int deleteObject(int id) {
-        return jdbcOperations.update("delete from Genre where id = ? ", new Object[]{id});
+    public int deleteObject(long id) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", id);
+
+        return namedParameterJdbcOperations.update("delete from Genre where id = :id ", paramMap);
     }
 
     @Override
     public int updateObject(Genre genre) {
-        return jdbcOperations.update("update Genre set name = ? where id = ? ", new Object[]{genre.getName(), genre.getId()});
+        return namedParameterJdbcOperations.update(
+                "update Genre set name = :name where id = :id ",
+                new BeanPropertySqlParameterSource(genre));
     }
 
     public static class GenreMapper implements RowMapper<Genre> {

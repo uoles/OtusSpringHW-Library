@@ -23,7 +23,7 @@ public class AuthorCommands {
     private final AuthorManageService authorManageService;
 
     @ShellMethod(key = { "getAuthorById" }, value = "Select author by id.")
-    public String getAuthorById(@ShellOption int id) {
+    public String getAuthorById(@ShellOption long id) {
         Author author = authorManageService.getAuthorById(id);
         return author.toString();
     }
@@ -41,13 +41,13 @@ public class AuthorCommands {
     }
 
     @ShellMethod(key = { "updateAuthor" }, value = "Update author by id.")
-    public String updateAuthor(@ShellOption int id, @ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
+    public String updateAuthor(@ShellOption long id, @ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
         int count = authorManageService.updateAuthor(id, surname, firstName, secondName);
         return "Updated " + count + " row(s)";
     }
 
     @ShellMethod(key = { "deleteAuthor" }, value = "Delete author by id.")
-    public String deleteAuthor(@ShellOption int id) {
+    public String deleteAuthor(@ShellOption long id) {
         int count = authorManageService.deleteAuthor(id);
         return "Deleted " + count + " row(s)";
     }

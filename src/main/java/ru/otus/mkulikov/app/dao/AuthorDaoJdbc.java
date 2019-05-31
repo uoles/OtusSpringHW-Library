@@ -1,14 +1,17 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,40 +25,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorDaoJdbc implements AuthorDao<Author> {
 
-    private final JdbcOperations jdbcOperations;
+    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
     @Override
-    public Author getById(int id) {
-        return jdbcOperations.queryForObject("select * from Author where id = ? ", new Object[]{id}, new AuthorMapper());
+    public Author getById(long id) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", id);
+
+        return namedParameterJdbcOperations.queryForObject("select * from Author where id = :id ", paramMap, new AuthorMapper());
     }
 
     @Override
     public List<Author> getAllObjects() {
-        return jdbcOperations.query("select * from Author order by id", new AuthorMapper());
+        return namedParameterJdbcOperations.query("select * from Author order by id", new AuthorMapper());
     }
 
     @Override
     public int addObject(Author author) {
-        return jdbcOperations.update(
-                "insert into Author (surname, first_name, second_name) values (?,?,?)",
-                new Object[]{author.getSurname(), author.getFirstName(), author.getSecondName()}
+        return namedParameterJdbcOperations.update(
+                "insert into Author (surname, first_name, second_name) values (:surname, :firstName, :secondName)",
+                new BeanPropertySqlParameterSource(author)
         );
     }
 
     @Override
-    public int deleteObject(int id) {
-        return jdbcOperations.update("delete from Author where id = ? ", new Object[]{id});
+    public int deleteObject(long id) {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("id", id);
+
+        return namedParameterJdbcOperations.update("delete from Author where id = :id ", paramMap);
     }
 
     @Override
     public int updateObject(Author author) {
-        return jdbcOperations.update(
-                "update Author set surname = ?, first_name = ?, second_name = ? where id = ? ",
-                new Object[]{author.getSurname(), author.getFirstName(), author.getSecondName(), author.getId()}
+        return namedParameterJdbcOperations.update(
+                "update Author set surname = :surname, first_name = :firstName, second_name = :secondName where id = :id ",
+                new BeanPropertySqlParameterSource(author)
         );
     }
 
-    private static class AuthorMapper implements RowMapper<Author> {
+    public static class AuthorMapper implements RowMapper<Author> {
 
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {

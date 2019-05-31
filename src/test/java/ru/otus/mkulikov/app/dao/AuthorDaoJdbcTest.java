@@ -4,9 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -16,7 +20,10 @@ import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,29 +37,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = AppTestConfig.class)
 class AuthorDaoJdbcTest {
 
+    @Autowired
     private AuthorDaoJdbc authorDaoJdbc;
-
-    @BeforeEach
-    public void setup() {
-        EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("test_schema.sql")
-                .addScript("test_data.sql")
-                .build();
-
-        authorDaoJdbc = new AuthorDaoJdbc(new JdbcTemplate(db));
-    }
 
     @Test
     void getById() {
-        Author author = authorDaoJdbc.getById(1);
+        Author author = authorDaoJdbc.getById(1L);
 
-        assertAll("author",
-                  () -> assertNotNull(author),
-                  () -> assertEquals(1, author.getId()),
-                  () -> assertEquals("Surname1", author.getSurname()),
-                  () -> assertEquals("FirstName1", author.getFirstName()),
-                  () -> assertEquals("SecondName1", author.getSecondName())
+        assertAll(
+                "author",
+                () -> assertNotNull(author),
+                () -> assertEquals(1L, author.getId()),
+                () -> assertEquals("Surname1", author.getSurname()),
+                () -> assertEquals("FirstName1", author.getFirstName()),
+                () -> assertEquals("SecondName1", author.getSecondName())
         );
     }
 
@@ -60,12 +58,13 @@ class AuthorDaoJdbcTest {
     void getAllObjects() {
         List<Author> authors = authorDaoJdbc.getAllObjects();
 
-        assertAll("authors",
-                  () -> assertNotNull(authors),
-                  () -> assertEquals(3, authors.size()),
-                  () -> assertEquals("Surname1", authors.get(0).getSurname()),
-                  () -> assertEquals("Surname2", authors.get(1).getSurname()),
-                  () -> assertEquals("Surname3", authors.get(2).getSurname())
+        assertAll(
+                "authors",
+                () -> assertNotNull(authors),
+                () -> assertEquals(3, authors.size()),
+                () -> assertEquals("Surname1", authors.get(0).getSurname()),
+                () -> assertEquals("Surname2", authors.get(1).getSurname()),
+                () -> assertEquals("Surname3", authors.get(2).getSurname())
         );
     }
 
@@ -73,44 +72,41 @@ class AuthorDaoJdbcTest {
     void addObject() {
         Author author = new Author("TestSurname", "TestFirstName", "TestSecondName");
         int count = authorDaoJdbc.addObject(author);
-        Author author_selected = authorDaoJdbc.getById(4);
+        Author author_selected = authorDaoJdbc.getById(4L);
 
-        assertAll("author",
-                  () -> assertNotNull(author_selected),
-                  () -> assertEquals(1, count),
-                  () -> assertEquals(4, author_selected.getId()),
-                  () -> assertEquals(author.getSurname(), author_selected.getSurname()),
-                  () -> assertEquals(author.getFirstName(), author_selected.getFirstName()),
-                  () -> assertEquals(author.getSecondName(), author_selected.getSecondName())
+        assertAll(
+                "author",
+                () -> assertNotNull(author_selected),
+                () -> assertEquals(1, count),
+                () -> assertEquals(4, author_selected.getId()),
+                () -> assertEquals(author.getSurname(), author_selected.getSurname()),
+                () -> assertEquals(author.getFirstName(), author_selected.getFirstName()),
+                () -> assertEquals(author.getSecondName(), author_selected.getSecondName())
         );
     }
 
     @Test
     void deleteObject() {
-        int count = authorDaoJdbc.deleteObject(1);
-
-        assertAll("author",
-                  () -> assertEquals(1, count),
-                  () -> assertThrows(EmptyResultDataAccessException.class, () -> { authorDaoJdbc.getById(1); })
-        );
+        assertThrows(DataIntegrityViolationException.class, () -> { authorDaoJdbc.deleteObject(1L); });
     }
 
     @Test
     void updateObject() {
-        Author author1 = authorDaoJdbc.getById(1);
+        Author author1 = authorDaoJdbc.getById(1L);
         int count = authorDaoJdbc.updateObject(
-                new Author(1,"TestSurname", "TestFirstName", "TestSecondName")
+                new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
         );
-        Author author2 = authorDaoJdbc.getById(1);
+        Author author2 = authorDaoJdbc.getById(1L);
 
-        assertAll("author",
-                  () -> assertEquals(1, count),
-                  () -> assertEquals("Surname1", author1.getSurname()),
-                  () -> assertEquals("FirstName1", author1.getFirstName()),
-                  () -> assertEquals("SecondName1", author1.getSecondName()),
-                  () -> assertEquals("TestSurname", author2.getSurname()),
-                  () -> assertEquals("TestFirstName", author2.getFirstName()),
-                  () -> assertEquals("TestSecondName", author2.getSecondName())
+        assertAll(
+                "author",
+                () -> assertEquals(1, count),
+                () -> assertEquals("Surname1", author1.getSurname()),
+                () -> assertEquals("FirstName1", author1.getFirstName()),
+                () -> assertEquals("SecondName1", author1.getSecondName()),
+                () -> assertEquals("TestSurname", author2.getSurname()),
+                () -> assertEquals("TestFirstName", author2.getFirstName()),
+                () -> assertEquals("TestSecondName", author2.getSecondName())
         );
     }
 }

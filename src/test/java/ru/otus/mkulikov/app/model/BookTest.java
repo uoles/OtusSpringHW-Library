@@ -11,7 +11,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,13 +32,16 @@ class BookTest {
         Book book = getNewBook();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        assertAll("book",
-                  () -> assertNotNull(book),
-                  () -> assertEquals(dateFormat.format(new Date()), book.getAddRecordDateString())
+        assertAll(
+                "book",
+                () -> assertNotNull(book),
+                () -> assertEquals(dateFormat.format(new Date()), book.getAddRecordDateString())
         );
     }
 
     private Book getNewBook() {
-        return new Book(1, new Date(), "Test_Book", 2, 3, "Test_Comment");
+        Author author = new Author(1L, "TestSurname", "TestFirstName", "TestSecondName");
+        Genre genre = new Genre("Test4");
+        return new Book(1L, new Date(), "Test_Book", author, genre, "Test_Comment");
     }
 }

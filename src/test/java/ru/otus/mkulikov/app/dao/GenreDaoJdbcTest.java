@@ -4,8 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -16,7 +17,10 @@ import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,27 +34,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = AppTestConfig.class)
 class GenreDaoJdbcTest {
 
+    @Autowired
     private GenreDaoJdbc genreDaoJdbc;
-
-    @BeforeEach
-    public void setup() {
-        EmbeddedDatabase db = new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("test_schema.sql")
-                .addScript("test_data.sql")
-                .build();
-
-        genreDaoJdbc = new GenreDaoJdbc(new JdbcTemplate(db));
-    }
 
     @Test
     void getById() {
-        Genre genre = genreDaoJdbc.getById(1);
+        Genre genre = genreDaoJdbc.getById(1L);
 
-        assertAll("genre",
-                  () -> assertNotNull(genre),
-                  () -> assertEquals(1, genre.getId()),
-                  () -> assertEquals("Genre1", genre.getName())
+        assertAll(
+                "genre",
+                () -> assertNotNull(genre),
+                () -> assertEquals(1L, genre.getId()),
+                () -> assertEquals("Genre1", genre.getName())
         );
     }
 
@@ -58,12 +53,13 @@ class GenreDaoJdbcTest {
     void getAllObjects() {
         List<Genre> genres = genreDaoJdbc.getAllObjects();
 
-        assertAll("genres",
-                  () -> assertNotNull(genres),
-                  () -> assertEquals(3, genres.size()),
-                  () -> assertEquals("Genre1", genres.get(0).getName()),
-                  () -> assertEquals("Genre2", genres.get(1).getName()),
-                  () -> assertEquals("Genre3", genres.get(2).getName())
+        assertAll(
+                "genres",
+                () -> assertNotNull(genres),
+                () -> assertEquals(3, genres.size()),
+                () -> assertEquals("Genre1", genres.get(0).getName()),
+                () -> assertEquals("Genre2", genres.get(1).getName()),
+                () -> assertEquals("Genre3", genres.get(2).getName())
         );
     }
 
@@ -71,36 +67,33 @@ class GenreDaoJdbcTest {
     void addObject() {
         int count = genreDaoJdbc.addObject(new Genre("Test4"));
 
-        Genre genre = genreDaoJdbc.getById(4);
+        Genre genre = genreDaoJdbc.getById(4L);
 
-        assertAll("genre",
-                  () -> assertNotNull(genre),
-                  () -> assertEquals(1, count),
-                  () -> assertEquals(4, genre.getId()),
-                  () -> assertEquals("Test4", genre.getName())
+        assertAll(
+                "genre",
+                () -> assertNotNull(genre),
+                () -> assertEquals(1, count),
+                () -> assertEquals(4L, genre.getId()),
+                () -> assertEquals("Test4", genre.getName())
         );
     }
 
     @Test
     void deleteObject() {
-        int count = genreDaoJdbc.deleteObject(1);
-
-        assertAll("genre",
-                  () -> assertEquals(1, count),
-                  () -> assertThrows(EmptyResultDataAccessException.class, () -> { genreDaoJdbc.getById(1); })
-        );
+        assertThrows(DataIntegrityViolationException.class, () -> { genreDaoJdbc.deleteObject(1L); });
     }
 
     @Test
     void updateObject() {
-        Genre genre1 = genreDaoJdbc.getById(1);
-        int count = genreDaoJdbc.updateObject(new Genre(1, "UpdatedName"));
-        Genre genre2 = genreDaoJdbc.getById(1);
+        Genre genre1 = genreDaoJdbc.getById(1L);
+        int count = genreDaoJdbc.updateObject(new Genre(1L, "UpdatedName"));
+        Genre genre2 = genreDaoJdbc.getById(1L);
 
-        assertAll("genre",
-                  () -> assertEquals(1, count),
-                  () -> assertEquals("Genre1", genre1.getName()),
-                  () -> assertEquals("UpdatedName", genre2.getName())
+        assertAll(
+                "genre",
+                () -> assertEquals(1, count),
+                () -> assertEquals("Genre1", genre1.getName()),
+                () -> assertEquals("UpdatedName", genre2.getName())
         );
     }
 }

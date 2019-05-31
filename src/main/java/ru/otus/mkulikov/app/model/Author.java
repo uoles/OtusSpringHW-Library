@@ -12,12 +12,12 @@ import lombok.Data;
 @Data
 public class Author {
 
-    private final int id;
+    private final long id;
     private final String surname;
     private final String firstName;
     private final String secondName;
 
-    public Author(int id, String surname, String firstName, String secondName) {
+    public Author(long id, String surname, String firstName, String secondName) {
         this.id = id;
         this.surname = surname;
         this.firstName = firstName;
@@ -25,7 +25,7 @@ public class Author {
     }
 
     public Author(String surname, String firstName, String secondName) {
-        this.id = 0;
+        this.id = 0L;
         this.surname = surname;
         this.firstName = firstName;
         this.secondName = secondName;

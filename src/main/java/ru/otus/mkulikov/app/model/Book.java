@@ -5,7 +5,6 @@ import lombok.Data;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,36 +16,34 @@ import java.util.List;
 @Data
 public class Book {
 
-    private int id;
+    private long id;
     private Date addRecordDate;
     private String caption;
-    private int authorId;
-    private int genreId;
     private Author author;
     private Genre genre;
     private String comment;
 
-    public Book(int id, Date addRecordDate, String caption, int authorId, int genreId, String comment) {
+    public Book(long id, Date addRecordDate, String caption, Author author, Genre genre, String comment) {
         this.id = id;
         this.addRecordDate = addRecordDate;
+        this.author = author;
+        this.genre = genre;
         this.caption = caption;
-        this.authorId = authorId;
-        this.genreId = genreId;
         this.comment = comment;
     }
 
-    public Book(int id, String caption, int authorId, int genreId, String comment) {
+    public Book(long id, String caption, Author author, Genre genre, String comment) {
         this.id = id;
         this.caption = caption;
-        this.authorId = authorId;
-        this.genreId = genreId;
+        this.author = author;
+        this.genre = genre;
         this.comment = comment;
     }
 
-    public Book(String caption, int authorId, int genreId, String comment) {
+    public Book(String caption, Author author, Genre genre, String comment) {
         this.caption = caption;
-        this.authorId = authorId;
-        this.genreId = genreId;
+        this.author = author;
+        this.genre = genre;
         this.comment = comment;
     }
 
@@ -73,8 +70,6 @@ public class Book {
                "id=" + id +
                ", addRecordDate=" + addRecordDate +
                ", caption='" + caption + '\'' +
-               ", authorId=" + authorId +
-               ", genreId=" + genreId +
                ", comment='" + comment + '\'' +
                getAuthorString() +
                getGenreString() +

@@ -23,13 +23,13 @@ public class BookCommands {
     private final BookManageSevice bookManageSevice;
 
     @ShellMethod(key = { "getBookById" }, value = "Select book by id.")
-    public String getBookById(@ShellOption int id) {
+    public String getBookById(@ShellOption long id) {
         Book book = bookManageSevice.getBookById(id);
         return book.toString();
     }
 
     @ShellMethod(key = { "getFullBookById" }, value = "Select book by id.")
-    public String getFullBookById(@ShellOption int id) {
+    public String getFullBookById(@ShellOption long id) {
         Book book = bookManageSevice.getFullBookById(id);
         return book.toString();
     }
@@ -53,13 +53,13 @@ public class BookCommands {
     }
 
     @ShellMethod(key = { "updateBook" }, value = "Update book by id.")
-    public String updateBook(@ShellOption int id, @ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String comment) {
+    public String updateBook(@ShellOption long id, @ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String comment) {
         int count = bookManageSevice.updateBook(id, caption, authorId, genreId, comment);
         return "Updated " + count + " row(s)";
     }
 
     @ShellMethod(key = { "deleteBook" }, value = "Delete book by id.")
-    public String deleteBook(@ShellOption int id) {
+    public String deleteBook(@ShellOption long id) {
         int count = bookManageSevice.deleteBook(id);
         return "Deleted " + count + " row(s)";
     }
