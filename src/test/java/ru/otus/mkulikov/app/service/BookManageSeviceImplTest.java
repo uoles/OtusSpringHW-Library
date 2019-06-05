@@ -1,29 +1,20 @@
 package ru.otus.mkulikov.app.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.mkulikov.AppTestConfig;
-import ru.otus.mkulikov.app.dao.AuthorDaoJdbc;
-import ru.otus.mkulikov.app.dao.BookDaoJdbc;
-import ru.otus.mkulikov.app.dao.GenreDaoJdbc;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -35,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс BookManageSevice")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppTestConfig.class)
+@JdbcTest
+@ComponentScan("ru.otus.mkulikov.app")
 class BookManageSeviceImplTest {
 
     @Autowired
@@ -48,10 +40,10 @@ class BookManageSeviceImplTest {
         assertAll(
                 "book",
                 () -> assertNotNull(book),
-                () -> assertNull(book.getAuthor()),
-                () -> assertNull(book.getGenre()),
+                () -> assertNotNull(book.getAuthor()),
+                () -> assertNotNull(book.getGenre()),
                 () -> assertEquals(1L, book.getId()),
-                () -> assertEquals("2019-01-01", book.getAddRecordDateString()),
+                () -> assertEquals("2019-01-01", DateUtil.dateToString(book.getAddRecordDate())),
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
@@ -69,7 +61,7 @@ class BookManageSeviceImplTest {
                 () -> assertNotNull(book.getAuthor()),
                 () -> assertNotNull(book.getGenre()),
                 () -> assertEquals(1L, book.getId()),
-                () -> assertEquals("2019-01-01", book.getAddRecordDateString()),
+                () -> assertEquals("2019-01-01", DateUtil.dateToString(book.getAddRecordDate())),
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
@@ -131,7 +123,7 @@ class BookManageSeviceImplTest {
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
-                () -> assertThrows(EmptyResultDataAccessException.class, () -> { booksManageSevice.getBookById(1L); })
+                () -> assertThrows(IndexOutOfBoundsException.class, () -> { booksManageSevice.getBookById(1L); })
         );
     }
 

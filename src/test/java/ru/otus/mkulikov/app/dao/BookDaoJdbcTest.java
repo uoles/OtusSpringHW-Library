@@ -1,24 +1,16 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.mkulikov.AppTestConfig;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
+import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -37,11 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс BookDaoJdbc")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppTestConfig.class)
+@JdbcTest
+@Import(BookDaoJdbc.class)
 class BookDaoJdbcTest {
 
     @Autowired
-    private BookDaoJdbc bookDaoJdbc;
+    private BookDao bookDaoJdbc;
 
     @Test
     void getById() {
@@ -51,7 +44,7 @@ class BookDaoJdbcTest {
                 "book",
                 () -> assertNotNull(book),
                 () -> assertEquals(1L, book.getId()),
-                () -> assertEquals("2019-01-01", book.getAddRecordDateString()),
+                () -> assertEquals("2019-01-01", DateUtil.dateToString(book.getAddRecordDate())),
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
@@ -97,7 +90,7 @@ class BookDaoJdbcTest {
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
-                () -> assertThrows(EmptyResultDataAccessException.class, () -> { bookDaoJdbc.getById(1L); })
+                () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJdbc.getById(1L); })
         );
     }
 

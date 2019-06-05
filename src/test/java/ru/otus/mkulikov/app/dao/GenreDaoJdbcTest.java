@@ -1,18 +1,13 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.mkulikov.AppTestConfig;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
@@ -31,11 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс GenreDaoJdbc")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppTestConfig.class)
+@JdbcTest
+@Import(GenreDaoJdbc.class)
 class GenreDaoJdbcTest {
 
     @Autowired
-    private GenreDaoJdbc genreDaoJdbc;
+    private GenreDao genreDaoJdbc;
 
     @Test
     void getById() {

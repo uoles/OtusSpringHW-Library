@@ -1,21 +1,13 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.mkulikov.AppTestConfig;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
@@ -34,11 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс AuthorDaoJdbc")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppTestConfig.class)
+@JdbcTest
+@Import(AuthorDaoJdbc.class)
 class AuthorDaoJdbcTest {
 
     @Autowired
-    private AuthorDaoJdbc authorDaoJdbc;
+    private AuthorDao authorDaoJdbc;
 
     @Test
     void getById() {

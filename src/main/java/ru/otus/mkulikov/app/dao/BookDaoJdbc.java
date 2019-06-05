@@ -1,7 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -35,7 +34,7 @@ public class BookDaoJdbc implements BookDao<Book> {
             + "from Book b "
             + "inner join Author a on a.id = b.author_id "
             + "inner join Genre g on g.id = b.genre_id "
-            + "where id = :id ";
+            + "where b.id = :id ";
 
     private final String BOOK_SELECT_ALL =
             "select b.*, a.surname, a.first_name, a.second_name, g.name "

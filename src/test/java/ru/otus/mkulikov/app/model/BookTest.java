@@ -3,9 +3,8 @@ package ru.otus.mkulikov.app.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.otus.mkulikov.AppTestConfig;
+import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("Класс Book")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = AppTestConfig.class)
+//@SpringBootTest(classes = AppTestConfig.class)
 class BookTest {
 
     @Test
@@ -35,7 +34,7 @@ class BookTest {
         assertAll(
                 "book",
                 () -> assertNotNull(book),
-                () -> assertEquals(dateFormat.format(new Date()), book.getAddRecordDateString())
+                () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateToString(book.getAddRecordDate()))
         );
     }
 

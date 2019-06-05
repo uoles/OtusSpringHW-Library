@@ -47,23 +47,6 @@ public class Book {
         this.comment = comment;
     }
 
-    public String getAddRecordDateString() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return addRecordDate != null ? dateFormat.format(addRecordDate) : null;
-    }
-
-    public String getAuthorString() {
-        return (author != null)
-                ? ", author='" + author.toFormatedString() + '\''
-                : "";
-    }
-
-    public String getGenreString() {
-        return (genre != null)
-                ? ", genre='" + genre.getName() + '\''
-                : "";
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -71,8 +54,8 @@ public class Book {
                ", addRecordDate=" + addRecordDate +
                ", caption='" + caption + '\'' +
                ", comment='" + comment + '\'' +
-               getAuthorString() +
-               getGenreString() +
+               ", author=" + author +
+               ", genre=" + genre +
                "}\n";
     }
 }
