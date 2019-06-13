@@ -15,10 +15,7 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,15 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Класс BookDaoJdbc")
 @RunWith(SpringRunner.class)
 @JdbcTest
-@Import(BookDaoJdbc.class)
-class BookDaoJdbcTest {
+@Import(BookDaoJpa.class)
+class BookDaoJpaTest {
 
     @Autowired
-    private BookDao bookDaoJdbc;
+    private BookDao bookDaoJpa;
 
     @Test
     void getById() {
-        Book book = bookDaoJdbc.getById(1L);
+        Book book = bookDaoJpa.getById(1L);
 
         assertAll(
                 "book",
@@ -54,7 +51,7 @@ class BookDaoJdbcTest {
 
     @Test
     void getAllObjects() {
-        List<Book> books = bookDaoJdbc.getAllObjects();
+        List<Book> books = bookDaoJpa.getAllObjects();
 
         assertAll(
                 "books",
@@ -68,8 +65,8 @@ class BookDaoJdbcTest {
 
     @Test
     void addObject() {
-        int count = bookDaoJdbc.addObject(getNewBook());
-        Book book = bookDaoJdbc.getById(4L);
+        int count = bookDaoJpa.addObject(getNewBook());
+        Book book = bookDaoJpa.getById(4L);
 
         assertAll(
                 "book",
@@ -85,20 +82,20 @@ class BookDaoJdbcTest {
 
     @Test
     void deleteObject() {
-        int count = bookDaoJdbc.deleteObject(1L);
+        int count = bookDaoJpa.deleteObject(1L);
 
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
-                () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJdbc.getById(1L); })
+                () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJpa.getById(1L); })
         );
     }
 
     @Test
     void updateObject() {
-        Book book1 = bookDaoJdbc.getById(1L);
-        int count = bookDaoJdbc.updateObject(getNewBook());
-        Book book2 = bookDaoJdbc.getById(1L);
+        Book book1 = bookDaoJpa.getById(1L);
+        int count = bookDaoJpa.updateObject(getNewBook());
+        Book book2 = bookDaoJpa.getById(1L);
 
         assertAll(
                 "book",

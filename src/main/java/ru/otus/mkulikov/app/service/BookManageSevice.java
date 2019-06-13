@@ -19,8 +19,6 @@ public interface BookManageSevice<T extends Book> {
 
     List<T> getBooks();
 
-    List<T> getFullBooks();
-
     int addBook(String caption, int authorId, int genreId, String comment);
 
     int updateBook(long id, String caption, int authorId, int genreId, String comment);

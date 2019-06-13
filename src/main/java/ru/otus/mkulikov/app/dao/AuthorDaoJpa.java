@@ -58,11 +58,14 @@ public class AuthorDaoJpa implements AuthorDao<Author> {
 
     @Override
     public int updateObject(Author author) {
-        return em.createQuery("update Author a set a.surname = :surname, a.first_name = :firstName, a.second_name = :secondName where a.id = :id ")
+        int count = em.createQuery("update Author a set a.surname = :surname, a.firstName = :firstName, a.secondName = :secondName where a.id = :id ")
                 .setParameter("surname", author.getSurname())
                 .setParameter("firstName", author.getFirstName())
                 .setParameter("secondName", author.getSecondName())
                 .setParameter("id", author.getId())
                 .executeUpdate();
+
+        em.clear();
+        return count;
     }
 }

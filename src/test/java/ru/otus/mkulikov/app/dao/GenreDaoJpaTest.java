@@ -12,10 +12,7 @@ import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RunWith(SpringRunner.class)
 @JdbcTest
 @Import(GenreDaoJpa.class)
-class GenreDaoJdbcTest {
+class GenreDaoJpaTest {
 
     @Autowired
     private GenreDao genreDaoJpa;

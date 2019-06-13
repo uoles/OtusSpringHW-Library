@@ -57,9 +57,12 @@ public class GenreDaoJpa implements GenreDao<Genre> {
 
     @Override
     public int updateObject(Genre genre) {
-        return em.createQuery("update Genre g set g.name = :name where g.id = :id ")
+        int count = em.createQuery("update Genre g set g.name = :name where g.id = :id ")
                 .setParameter("name", genre.getName())
                 .setParameter("id", genre.getId())
                 .executeUpdate();
+
+        em.clear();
+        return count;
     }
 }

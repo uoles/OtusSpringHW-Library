@@ -6,16 +6,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @RunWith(SpringRunner.class)
 @Import(AuthorDaoJpa.class)
 @DataJpaTest
-class AuthorDaoJdbcTest {
+class AuthorDaoJpaTest {
 
     @Autowired
     private AuthorDao authorDaoJpa;
@@ -80,7 +77,7 @@ class AuthorDaoJdbcTest {
 
     @Test
     void deleteObject() {
-        assertThrows(DataIntegrityViolationException.class, () -> { authorDaoJpa.deleteObject(1L); });
+        assertThrows(PersistenceException.class, () -> { authorDaoJpa.deleteObject(1L); });
     }
 
     @Test

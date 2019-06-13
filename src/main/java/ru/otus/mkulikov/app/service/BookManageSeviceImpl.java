@@ -42,12 +42,6 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public List<Book> getFullBooks() {
-        return bookDao.getAllObjects();
-    }
-
-
-    @Override
     public int addBook(String caption, int authorId, int genreId, String comment) {
         Author author = authorDao.getById(authorId);
         Genre genre = genreDao.getById(genreId);
