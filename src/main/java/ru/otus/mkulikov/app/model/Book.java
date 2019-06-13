@@ -2,15 +2,11 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -40,14 +36,11 @@ public class Book {
     @Column(name = "COMMENT")
     private String comment;
 
-    @OneToOne//(mappedBy = "book")
-    //@JoinTable(name="AUTHOR", joinColumns=@JoinColumn(name="AUTHOR_ID"))
+    @OneToOne
     private Author author;
 
-    //@JoinTable(name="GENRE", joinColumns=@JoinColumn(name="GENRE_ID"))
-    @OneToOne//(mappedBy = "book")
+    @OneToOne
     private Genre genre;
-
 
     public Book() {
     }

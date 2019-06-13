@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 @Transactional
 @RequiredArgsConstructor
-public class AuthorDaoJdbc implements AuthorDao<Author> {
+public class AuthorDaoJpa implements AuthorDao<Author> {
 
     @PersistenceContext
     private EntityManager em;
@@ -32,6 +32,8 @@ public class AuthorDaoJdbc implements AuthorDao<Author> {
                 .setParameter("id", id)
                 .getResultList();
 
+        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
+        // не хочу ошибку, хочу null
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 

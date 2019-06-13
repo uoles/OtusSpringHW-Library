@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 @Transactional
 @RequiredArgsConstructor
-public class GenreDaoJdbc implements GenreDao<Genre> {
+public class GenreDaoJpa implements GenreDao<Genre> {
 
     @PersistenceContext
     private EntityManager em;
@@ -31,6 +31,8 @@ public class GenreDaoJdbc implements GenreDao<Genre> {
                 .setParameter("id", id)
                 .getResultList();
 
+        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
+        // не хочу ошибку, хочу null
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 

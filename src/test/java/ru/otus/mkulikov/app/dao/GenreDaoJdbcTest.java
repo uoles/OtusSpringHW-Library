@@ -27,15 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Класс GenreDaoJdbc")
 @RunWith(SpringRunner.class)
 @JdbcTest
-@Import(GenreDaoJdbc.class)
+@Import(GenreDaoJpa.class)
 class GenreDaoJdbcTest {
 
     @Autowired
-    private GenreDao genreDaoJdbc;
+    private GenreDao genreDaoJpa;
 
     @Test
     void getById() {
-        Genre genre = genreDaoJdbc.getById(1L);
+        Genre genre = genreDaoJpa.getById(1L);
 
         assertAll(
                 "genre",
@@ -47,7 +47,7 @@ class GenreDaoJdbcTest {
 
     @Test
     void getAllObjects() {
-        List<Genre> genres = genreDaoJdbc.getAllObjects();
+        List<Genre> genres = genreDaoJpa.getAllObjects();
 
         assertAll(
                 "genres",
@@ -61,9 +61,9 @@ class GenreDaoJdbcTest {
 
     @Test
     void addObject() {
-        int count = genreDaoJdbc.addObject(new Genre("Test4"));
+        int count = genreDaoJpa.addObject(new Genre("Test4"));
 
-        Genre genre = genreDaoJdbc.getById(4L);
+        Genre genre = genreDaoJpa.getById(4L);
 
         assertAll(
                 "genre",
@@ -76,14 +76,14 @@ class GenreDaoJdbcTest {
 
     @Test
     void deleteObject() {
-        assertThrows(DataIntegrityViolationException.class, () -> { genreDaoJdbc.deleteObject(1L); });
+        assertThrows(DataIntegrityViolationException.class, () -> { genreDaoJpa.deleteObject(1L); });
     }
 
     @Test
     void updateObject() {
-        Genre genre1 = genreDaoJdbc.getById(1L);
-        int count = genreDaoJdbc.updateObject(new Genre(1L, "UpdatedName"));
-        Genre genre2 = genreDaoJdbc.getById(1L);
+        Genre genre1 = genreDaoJpa.getById(1L);
+        int count = genreDaoJpa.updateObject(new Genre(1L, "UpdatedName"));
+        Genre genre2 = genreDaoJpa.getById(1L);
 
         assertAll(
                 "genre",

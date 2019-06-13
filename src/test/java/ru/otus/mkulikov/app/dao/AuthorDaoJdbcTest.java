@@ -4,17 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -31,19 +26,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс AuthorDaoJdbc")
 @RunWith(SpringRunner.class)
-@Import(AuthorDaoJdbc.class)
+@Import(AuthorDaoJpa.class)
 @DataJpaTest
 class AuthorDaoJdbcTest {
 
     @Autowired
-    private AuthorDao authorDaoJdbc;
-
-    //@PersistenceContext
-    //private EntityManager manager;
+    private AuthorDao authorDaoJpa;
 
     @Test
     void getById() {
-        Author author = authorDaoJdbc.getById(1L);
+        Author author = authorDaoJpa.getById(1L);
 
         assertAll(
                 "author",
@@ -57,7 +49,7 @@ class AuthorDaoJdbcTest {
 
     @Test
     void getAllObjects() {
-        List<Author> authors = authorDaoJdbc.getAllObjects();
+        List<Author> authors = authorDaoJpa.getAllObjects();
 
         assertAll(
                 "authors",
@@ -72,8 +64,8 @@ class AuthorDaoJdbcTest {
     @Test
     void addObject() {
         Author author = new Author("TestSurname", "TestFirstName", "TestSecondName");
-        int count = authorDaoJdbc.addObject(author);
-        Author author_selected = authorDaoJdbc.getById(4L);
+        int count = authorDaoJpa.addObject(author);
+        Author author_selected = authorDaoJpa.getById(4L);
 
         assertAll(
                 "author",
@@ -88,16 +80,16 @@ class AuthorDaoJdbcTest {
 
     @Test
     void deleteObject() {
-        assertThrows(DataIntegrityViolationException.class, () -> { authorDaoJdbc.deleteObject(1L); });
+        assertThrows(DataIntegrityViolationException.class, () -> { authorDaoJpa.deleteObject(1L); });
     }
 
     @Test
     void updateObject() {
-        Author author1 = authorDaoJdbc.getById(1L);
-        int count = authorDaoJdbc.updateObject(
+        Author author1 = authorDaoJpa.getById(1L);
+        int count = authorDaoJpa.updateObject(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
         );
-        Author author2 = authorDaoJdbc.getById(1L);
+        Author author2 = authorDaoJpa.getById(1L);
 
         assertAll(
                 "author",

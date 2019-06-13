@@ -7,12 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.math.BigInteger;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,10 +33,6 @@ public class Author {
     private String firstName;
     @Column(name = "SECOND_NAME")
     private String secondName;
-    //
-    //@OneToOne(mappedBy = "author")
-    //@JoinTable(name="BOOK", joinColumns=@JoinColumn(name="AUTHOR_ID"))
-    //private Book book;
 
     public Author() {
     }

@@ -7,9 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -33,10 +30,6 @@ public class Genre {
 
     @Column(name = "NAME")
     private String name;
-
-    //@OneToOne(mappedBy = "genre")
-    //private Book book;
-
 
     public Genre() {
     }
