@@ -2,8 +2,18 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -14,14 +24,33 @@ import java.util.Date;
  */
 
 @Data
+@Entity
+@Table(name = "BOOK")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_book")
+    @SequenceGenerator(name = "sq_book", sequenceName = "sq_book", allocationSize = 1)
+    @Column(name = "ID")
     private long id;
+    @Column(name = "ADD_RECORD_DATE")
     private Date addRecordDate;
+    @Column(name = "CAPTION")
     private String caption;
-    private Author author;
-    private Genre genre;
+    @Column(name = "COMMENT")
     private String comment;
+
+    @OneToOne//(mappedBy = "book")
+    //@JoinTable(name="AUTHOR", joinColumns=@JoinColumn(name="AUTHOR_ID"))
+    private Author author;
+
+    //@JoinTable(name="GENRE", joinColumns=@JoinColumn(name="GENRE_ID"))
+    @OneToOne//(mappedBy = "book")
+    private Genre genre;
+
+
+    public Book() {
+    }
 
     public Book(long id, Date addRecordDate, String caption, Author author, Genre genre, String comment) {
         this.id = id;

@@ -2,6 +2,17 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov
@@ -10,10 +21,25 @@ import lombok.Data;
  */
 
 @Data
+@Entity
+@Table(name = "GENRE")
 public class Genre {
 
-    private final long id;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_genre")
+    @SequenceGenerator(name = "sq_genre", sequenceName = "sq_genre", allocationSize = 1)
+    @Column(name = "ID")
+    private long id;
+
+    @Column(name = "NAME")
+    private String name;
+
+    //@OneToOne(mappedBy = "genre")
+    //private Book book;
+
+
+    public Genre() {
+    }
 
     public Genre(long id, String name) {
         this.id = id;

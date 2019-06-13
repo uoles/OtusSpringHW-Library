@@ -5,11 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,12 +31,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Класс AuthorDaoJdbc")
 @RunWith(SpringRunner.class)
-@JdbcTest
 @Import(AuthorDaoJdbc.class)
+@DataJpaTest
 class AuthorDaoJdbcTest {
 
     @Autowired
     private AuthorDao authorDaoJdbc;
+
+    //@PersistenceContext
+    //private EntityManager manager;
 
     @Test
     void getById() {

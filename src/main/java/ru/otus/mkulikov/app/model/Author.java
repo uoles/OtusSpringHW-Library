@@ -2,6 +2,18 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import java.math.BigInteger;
+
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov
@@ -10,12 +22,28 @@ import lombok.Data;
  */
 
 @Data
+@Entity
+@Table(name = "AUTHOR")
 public class Author {
 
-    private final long id;
-    private final String surname;
-    private final String firstName;
-    private final String secondName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_author")
+    @SequenceGenerator(name = "sq_author", sequenceName = "sq_author", allocationSize = 1)
+    @Column(name = "ID")
+    private long id;
+    @Column(name = "SURNAME")
+    private String surname;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
+    @Column(name = "SECOND_NAME")
+    private String secondName;
+    //
+    //@OneToOne(mappedBy = "author")
+    //@JoinTable(name="BOOK", joinColumns=@JoinColumn(name="AUTHOR_ID"))
+    //private Book book;
+
+    public Author() {
+    }
 
     public Author(long id, String surname, String firstName, String secondName) {
         this.id = id;

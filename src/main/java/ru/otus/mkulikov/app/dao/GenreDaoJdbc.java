@@ -1,17 +1,13 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,54 +18,46 @@ import java.util.Map;
 
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class GenreDaoJdbc implements GenreDao<Genre> {
 
-    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public Genre getById(long id) {
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("id", id);
+        List<Genre> list = em.createQuery("select g from Genre g where g.id = :id ", Genre.class)
+                .setParameter("id", id)
+                .getResultList();
 
-        return namedParameterJdbcOperations.queryForObject("select * from Genre where id = :id ", paramMap, new GenreMapper());
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
     @Override
     public List<Genre> getAllObjects() {
-        return namedParameterJdbcOperations.query("select * from Genre order by id", new GenreMapper());
+        return em.createQuery("select g from Genre g order by g.id", Genre.class)
+                .getResultList();
     }
 
     @Override
     public int addObject(Genre genre) {
-        return namedParameterJdbcOperations.update(
-                "insert into Genre (name) values (:name)",
-                new BeanPropertySqlParameterSource(genre));
+        em.persist(genre);
+        return 1;
     }
 
     @Override
     public int deleteObject(long id) {
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("id", id);
-
-        return namedParameterJdbcOperations.update("delete from Genre where id = :id ", paramMap);
+        return em.createQuery("delete from Genre g where g.id = :id ")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Override
     public int updateObject(Genre genre) {
-        return namedParameterJdbcOperations.update(
-                "update Genre set name = :name where id = :id ",
-                new BeanPropertySqlParameterSource(genre));
-    }
-
-    public static class GenreMapper implements RowMapper<Genre> {
-
-        @Override
-        public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("ID");
-            String name = resultSet.getString("NAME");
-
-            return new Genre(id, name);
-        }
+        return em.createQuery("update Genre g set g.name = :name where g.id = :id ")
+                .setParameter("name", genre.getName())
+                .setParameter("id", genre.getId())
+                .executeUpdate();
     }
 }
