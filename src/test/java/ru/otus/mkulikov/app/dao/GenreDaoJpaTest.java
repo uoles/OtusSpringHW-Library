@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,10 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * Time: 9:45
  */
 
-@DisplayName("Класс GenreDaoJdbc")
+@DisplayName("Класс GenreDaoJpa")
 @RunWith(SpringRunner.class)
-@JdbcTest
 @Import(GenreDaoJpa.class)
+@DataJpaTest
+@TestPropertySource(locations= "classpath:test_application.yml")
 class GenreDaoJpaTest {
 
     @Autowired
@@ -73,7 +77,7 @@ class GenreDaoJpaTest {
 
     @Test
     void deleteObject() {
-        assertThrows(DataIntegrityViolationException.class, () -> { genreDaoJpa.deleteObject(1L); });
+        assertThrows(PersistenceException.class, () -> { genreDaoJpa.deleteObject(1L); });
     }
 
     @Test

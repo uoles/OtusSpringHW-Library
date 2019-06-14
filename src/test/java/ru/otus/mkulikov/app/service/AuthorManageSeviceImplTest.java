@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс AuthorManageSevice")
 @RunWith(SpringRunner.class)
-@JdbcTest
 @ComponentScan("ru.otus.mkulikov.app")
+@DataJpaTest
+@TestPropertySource(locations= "classpath:test_application.yml")
 class AuthorManageSeviceImplTest {
 
     @Autowired
@@ -94,6 +98,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     void deleteAuthor() {
-        assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(1L); });
+        assertThrows(PersistenceException.class, () -> { authorManageService.deleteAuthor(1L); });
     }
 }

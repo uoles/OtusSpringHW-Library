@@ -37,13 +37,16 @@ public class BookDaoJpa implements BookDao<Book> {
 
     @Override
     public List<Book> getAllObjects() {
-        return em.createQuery("select b from Book b order by b.id ")
+        List<Book> books = em.createQuery("select b from Book b order by b.id ")
                 .getResultList();
+
+        return books;
     }
 
     @Override
     public int addObject(Book book) {
         em.persist(book);
+        em.clear();
         return 1;
     }
 
@@ -56,10 +59,10 @@ public class BookDaoJpa implements BookDao<Book> {
 
     @Override
     public int updateObject(Book book) {
-        int count = em.createQuery(
+        int count = em.createNativeQuery(
                 "update Book b "
-                        + "set b.add_record_date = :add_record_date, b.caption = :caption, b.author_id = :author_id, b.genre_id = :genre_id, b.comment = :comment "
-                        + "where b.id = :id ")
+                + "set b.add_record_date = :add_record_date, b.caption = :caption, b.author_id = :author_id, b.genre_id = :genre_id, b.comment = :comment "
+                + "where b.id = :id ")
                 .setParameter("add_record_date", new Date())
                 .setParameter("caption", book.getCaption())
                 .setParameter("author_id", book.getAuthor().getId())

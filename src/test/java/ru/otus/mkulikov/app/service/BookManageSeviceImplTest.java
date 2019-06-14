@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.utils.DateUtil;
@@ -23,8 +25,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс BookManageSevice")
 @RunWith(SpringRunner.class)
-@JdbcTest
 @ComponentScan("ru.otus.mkulikov.app")
+@DataJpaTest
+@TestPropertySource(locations= "classpath:test_application.yml")
 class BookManageSeviceImplTest {
 
     @Autowired

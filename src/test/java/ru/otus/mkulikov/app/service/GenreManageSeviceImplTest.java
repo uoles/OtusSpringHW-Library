@@ -5,11 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,8 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс GenreManageSevice")
 @RunWith(SpringRunner.class)
-@JdbcTest
 @ComponentScan("ru.otus.mkulikov.app")
+@DataJpaTest
+@TestPropertySource(locations= "classpath:test_application.yml")
 class GenreManageSeviceImplTest {
 
     @Autowired
@@ -86,6 +90,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     void deleteGenre() {
-        assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(1L); });
+        assertThrows(PersistenceException.class, () -> { genreManageService.deleteGenre(1L); });
     }
 }
