@@ -2,6 +2,10 @@ spring:
   banner:
     location: "classpath:banner.txt"
 
+  datasource:
+    initialization-mode: always
+    platform: test
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -10,3 +14,4 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
+

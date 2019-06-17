@@ -4,10 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
@@ -28,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
-@TestPropertySource(locations= "classpath:test_application.yml")
+@TestPropertySource(locations= "classpath:application.yml")
 class AuthorManageSeviceImplTest {
 
     @Autowired
@@ -42,9 +40,9 @@ class AuthorManageSeviceImplTest {
                 "author",
                 () -> assertNotNull(author),
                 () -> assertEquals(1L, author.getId()),
-                () -> assertEquals("Surname1", author.getSurname()),
-                () -> assertEquals("FirstName1", author.getFirstName()),
-                () -> assertEquals("SecondName1", author.getSecondName())
+                () -> assertEquals("Surname", author.getSurname()),
+                () -> assertEquals("FirstName", author.getFirstName()),
+                () -> assertEquals("SecondName", author.getSecondName())
         );
     }
 
@@ -56,7 +54,7 @@ class AuthorManageSeviceImplTest {
                 "authors",
                 () -> assertNotNull(authors),
                 () -> assertEquals(3, authors.size()),
-                () -> assertEquals("Surname1", authors.get(0).getSurname()),
+                () -> assertEquals("Surname", authors.get(0).getSurname()),
                 () -> assertEquals("Surname2", authors.get(1).getSurname()),
                 () -> assertEquals("Surname3", authors.get(2).getSurname())
         );
@@ -87,9 +85,9 @@ class AuthorManageSeviceImplTest {
         assertAll(
                 "author",
                 () -> assertEquals(1, count),
-                () -> assertEquals("Surname1", author1.getSurname()),
-                () -> assertEquals("FirstName1", author1.getFirstName()),
-                () -> assertEquals("SecondName1", author1.getSecondName()),
+                () -> assertEquals("Surname", author1.getSurname()),
+                () -> assertEquals("FirstName", author1.getFirstName()),
+                () -> assertEquals("SecondName", author1.getSecondName()),
                 () -> assertEquals("TestSurname", author2.getSurname()),
                 () -> assertEquals("TestFirstName", author2.getFirstName()),
                 () -> assertEquals("TestSecondName", author2.getSecondName())

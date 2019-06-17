@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @Import(AuthorDaoJpa.class)
 @DataJpaTest
-@TestPropertySource(locations= "classpath:test_application.yml")
+@TestPropertySource(locations= "classpath:application.yml")
 class AuthorDaoJpaTest {
 
     @Autowired
@@ -40,9 +40,9 @@ class AuthorDaoJpaTest {
                 "author",
                 () -> assertNotNull(author),
                 () -> assertEquals(1L, author.getId()),
-                () -> assertEquals("Surname1", author.getSurname()),
-                () -> assertEquals("FirstName1", author.getFirstName()),
-                () -> assertEquals("SecondName1", author.getSecondName())
+                () -> assertEquals("Surname", author.getSurname()),
+                () -> assertEquals("FirstName", author.getFirstName()),
+                () -> assertEquals("SecondName", author.getSecondName())
         );
     }
 
@@ -54,7 +54,7 @@ class AuthorDaoJpaTest {
                 "authors",
                 () -> assertNotNull(authors),
                 () -> assertEquals(3, authors.size()),
-                () -> assertEquals("Surname1", authors.get(0).getSurname()),
+                () -> assertEquals("Surname", authors.get(0).getSurname()),
                 () -> assertEquals("Surname2", authors.get(1).getSurname()),
                 () -> assertEquals("Surname3", authors.get(2).getSurname())
         );
@@ -93,9 +93,9 @@ class AuthorDaoJpaTest {
         assertAll(
                 "author",
                 () -> assertEquals(1, count),
-                () -> assertEquals("Surname1", author1.getSurname()),
-                () -> assertEquals("FirstName1", author1.getFirstName()),
-                () -> assertEquals("SecondName1", author1.getSecondName()),
+                () -> assertEquals("Surname", author1.getSurname()),
+                () -> assertEquals("FirstName", author1.getFirstName()),
+                () -> assertEquals("SecondName", author1.getSecondName()),
                 () -> assertEquals("TestSurname", author2.getSurname()),
                 () -> assertEquals("TestFirstName", author2.getFirstName()),
                 () -> assertEquals("TestSecondName", author2.getSecondName())

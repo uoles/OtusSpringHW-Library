@@ -13,7 +13,6 @@ import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @Import({BookDaoJpa.class, AuthorDaoJpa.class, GenreDaoJpa.class})
 @DataJpaTest
-@TestPropertySource(locations= "classpath:test_application.yml")
+@TestPropertySource(locations= "classpath:application.yml")
 class BookDaoJpaTest {
 
     @Autowired
