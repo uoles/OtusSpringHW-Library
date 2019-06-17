@@ -1,6 +1,6 @@
 spring:
   banner:
-    location: "classpath:banner.txt"
+    location: "classpath:banner-test.txt"
 
   datasource:
     initialization-mode: always
