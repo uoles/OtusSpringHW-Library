@@ -16,7 +16,7 @@ CREATE TABLE GENRE(
 
 CREATE TABLE BOOK(
     ID NUMBER(22,0) PRIMARY KEY not null,
-    ADD_RECORD_DATE DATE,
+    ADD_RECORD_DATE DATE default sysdate,
     CAPTION VARCHAR(255) not null,
     AUTHOR_ID NUMBER(22,0) not null,
     GENRE_ID NUMBER(22,0) not null,

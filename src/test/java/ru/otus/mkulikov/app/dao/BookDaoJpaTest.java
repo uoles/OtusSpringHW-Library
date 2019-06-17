@@ -27,13 +27,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс BookDaoJpa")
 @RunWith(SpringRunner.class)
-@Import(BookDaoJpa.class)
+@Import({BookDaoJpa.class, AuthorDaoJpa.class, GenreDaoJpa.class})
 @DataJpaTest
 @TestPropertySource(locations= "classpath:test_application.yml")
 class BookDaoJpaTest {
 
     @Autowired
     private BookDao bookDaoJpa;
+    @Autowired
+    private AuthorDao authorDao;
+    @Autowired
+    private GenreDao genreDao;
 
     @Test
     void getById() {
@@ -96,7 +100,7 @@ class BookDaoJpaTest {
     @Test
     void updateObject() {
         Book book1 = bookDaoJpa.getById(1L);
-        int count = bookDaoJpa.updateObject(getNewBook());
+        int count = bookDaoJpa.updateObject(getUpdatedBook());
         Book book2 = bookDaoJpa.getById(1L);
 
         assertAll(
@@ -110,8 +114,14 @@ class BookDaoJpaTest {
     }
 
     private Book getNewBook() {
-        Author author = new Author(1L, "TestSurname", "TestFirstName", "TestSecondName");
-        Genre genre = new Genre(1L, "Test4");
-        return new Book(1L, new Date(), "Test_Book", author, genre, "Test_Comment");
+        Author author = authorDao.getById(1);
+        Genre genre = genreDao.getById(1);
+        return new Book("Test_Book", author, genre, "Test_Comment");
+    }
+
+    private Book getUpdatedBook() {
+        Author author = authorDao.getById(1);
+        Genre genre = genreDao.getById(1);
+        return new Book(1L,"Test_Book", author, genre, "Test_Comment");
     }
 }

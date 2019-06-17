@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,7 +28,6 @@ public class Genre {
     @SequenceGenerator(name = "sq_genre", sequenceName = "sq_genre", allocationSize = 1)
     @Column(name = "ID")
     private long id;
-
     @Column(name = "NAME")
     private String name;
 

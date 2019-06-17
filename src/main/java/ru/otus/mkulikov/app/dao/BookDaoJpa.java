@@ -46,7 +46,6 @@ public class BookDaoJpa implements BookDao<Book> {
     @Override
     public int addObject(Book book) {
         em.persist(book);
-        em.clear();
         return 1;
     }
 
