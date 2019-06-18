@@ -33,6 +33,7 @@ class AuthorDaoJpaTest {
     private AuthorDao authorDaoJpa;
 
     @Test
+    @DisplayName("Получение автора по id")
     void getById() {
         Author author = authorDaoJpa.getById(1L);
 
@@ -47,6 +48,7 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Получение всех авторов")
     void getAllObjects() {
         List<Author> authors = authorDaoJpa.getAllObjects();
 
@@ -61,6 +63,7 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Добавление автора")
     void addObject() {
         Author author = new Author("TestSurname", "TestFirstName", "TestSecondName");
         int count = authorDaoJpa.addObject(author);
@@ -78,11 +81,13 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteObject() {
         assertThrows(PersistenceException.class, () -> { authorDaoJpa.deleteObject(1L); });
     }
 
     @Test
+    @DisplayName("Обновление автора")
     void updateObject() {
         Author author1 = authorDaoJpa.getById(1L);
         int count = authorDaoJpa.updateObject(

@@ -7,7 +7,6 @@ import ru.otus.mkulikov.app.model.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.List;
 
 /**

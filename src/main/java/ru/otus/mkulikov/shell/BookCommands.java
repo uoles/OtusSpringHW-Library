@@ -28,12 +28,6 @@ public class BookCommands {
         return book.toString();
     }
 
-    @ShellMethod(key = {"getFullBookById"}, value = "Select book by id.")
-    public String getFullBookById(@ShellOption long id) {
-        Book book = bookManageSevice.getFullBookById(id);
-        return book.toString();
-    }
-
     @ShellMethod(key = {"getBooks"}, value = "Select all books.")
     public String getBooks() {
         List<Book> allObjects = bookManageSevice.getBooks();

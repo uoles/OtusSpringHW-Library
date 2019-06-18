@@ -39,6 +39,7 @@ class BookDaoJpaTest {
     private GenreDao genreDao;
 
     @Test
+    @DisplayName("Получение книги по id")
     void getById() {
         Book book = bookDaoJpa.getById(1L);
 
@@ -55,6 +56,7 @@ class BookDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Получение всех книг")
     void getAllObjects() {
         List<Book> books = bookDaoJpa.getAllObjects();
 
@@ -69,6 +71,7 @@ class BookDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Добавление книги")
     void addObject() {
         int count = bookDaoJpa.addObject(getNewBook());
         Book book = bookDaoJpa.getById(4L);
@@ -86,6 +89,7 @@ class BookDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Удаление книги по id")
     void deleteObject() {
         int count = bookDaoJpa.deleteObject(1L);
 
@@ -97,6 +101,7 @@ class BookDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Обновление книги")
     void updateObject() {
         Book book1 = bookDaoJpa.getById(1L);
         int count = bookDaoJpa.updateObject(getUpdatedBook());

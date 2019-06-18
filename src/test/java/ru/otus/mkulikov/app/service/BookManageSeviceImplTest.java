@@ -33,6 +33,7 @@ class BookManageSeviceImplTest {
     private BookManageSevice booksManageSevice;
 
     @Test
+    @DisplayName("Получение книги по id")
     void getBookById() {
         Book book = booksManageSevice.getBookById(1L);
 
@@ -51,24 +52,7 @@ class BookManageSeviceImplTest {
     }
 
     @Test
-    void getFullBookById() {
-        Book book = booksManageSevice.getFullBookById(1);
-
-        assertAll(
-                "book",
-                () -> assertNotNull(book),
-                () -> assertNotNull(book.getAuthor()),
-                () -> assertNotNull(book.getGenre()),
-                () -> assertEquals(1L, book.getId()),
-                () -> assertEquals("2019-01-01", DateUtil.dateToString(book.getAddRecordDate())),
-                () -> assertEquals("book_1", book.getCaption()),
-                () -> assertEquals(1, book.getAuthor().getId()),
-                () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("comment", book.getComment())
-        );
-    }
-
-    @Test
+    @DisplayName("Получение всех книг")
     void getBooks() {
         List<Book> books = booksManageSevice.getBooks();
 
@@ -83,6 +67,7 @@ class BookManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Добавление книги")
     void addBook() {
         int count = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Comment");
         Book book = booksManageSevice.getBookById(4L);
@@ -100,6 +85,7 @@ class BookManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Обновление книги")
     void updateBook() {
         Book book1 = booksManageSevice.getBookById(1L);
         int count = booksManageSevice.updateBook(1L, "Test_Book", 2, 3, "Test_Comment");
@@ -116,6 +102,7 @@ class BookManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Удаление книги по id")
     void deleteBook() {
         int count = booksManageSevice.deleteBook(1L);
 
