@@ -6,6 +6,9 @@ import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,26 +25,35 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public Author getAuthorById(long id) {
-        return authorDao.getById(id);
+        Optional<Author> author = authorDao.findById(id);
+        return author.get();
     }
 
     @Override
     public List<Author> getAuthors() {
-        return authorDao.getAllObjects();
+        Iterable<Author> authors = authorDao.findAll();
+        List<Author> list = StreamSupport
+                .stream(authors.spliterator(), false)
+                .collect(Collectors.toList());
+
+        return list;
     }
 
     @Override
     public int addAuthor(String surname, String firstName, String secondName) {
-        return authorDao.addObject(new Author(surname, firstName, secondName));
+        authorDao.save(new Author(surname, firstName, secondName));
+        return 1;
     }
 
     @Override
     public int updateAuthor(long id, String surname, String firstName, String secondName) {
-        return authorDao.updateObject(new Author(id, surname, firstName, secondName));
+        authorDao.save(new Author(id, surname, firstName, secondName));
+        return 1;
     }
 
     @Override
     public int deleteAuthor(long id) {
-        return authorDao.deleteObject(id);
+        authorDao.deleteById(id);
+        return 1;
     }
 }

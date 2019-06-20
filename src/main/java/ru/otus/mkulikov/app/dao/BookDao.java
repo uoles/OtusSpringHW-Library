@@ -1,5 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.mkulikov.app.model.Book;
 
 import java.util.List;

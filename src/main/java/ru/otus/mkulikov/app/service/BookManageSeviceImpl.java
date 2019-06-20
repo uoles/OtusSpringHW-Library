@@ -43,18 +43,20 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public int addBook(String caption, int authorId, int genreId, String comment) {
-        Author author = authorDao.getById(authorId);
-        Genre genre = genreDao.getById(genreId);
-
-        return bookDao.addObject(new Book(caption, author, genre, comment));
+    //    Author author = authorDao.getById(authorId);
+    //    Genre genre = genreDao.getById(genreId);
+    //
+    //    return bookDao.addObject(new Book(caption, author, genre, comment));
+        return 1;
     }
 
     @Override
     public int updateBook(long id, String caption, int authorId, int genreId, String comment) {
-        Author author = authorDao.getById(authorId);
-        Genre genre = genreDao.getById(genreId);
-
-        return bookDao.updateObject(new Book(id, caption, author, genre, comment));
+    //    Author author = authorDao.getById(authorId);
+    //    Genre genre = genreDao.getById(genreId);
+    //
+    //    return bookDao.updateObject(new Book(id, caption, author, genre, comment));
+        return 1;
     }
 
     @Override

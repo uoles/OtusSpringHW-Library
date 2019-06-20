@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс GenreDaoJpa")
 @RunWith(SpringRunner.class)
-@Import(GenreDaoJpa.class)
+@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
 @TestPropertySource(locations= "classpath:application.yml")
 class GenreDaoJpaTest {
