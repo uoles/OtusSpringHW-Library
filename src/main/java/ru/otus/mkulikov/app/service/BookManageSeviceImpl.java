@@ -32,11 +32,6 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public Book getFullBookById(long id) {
-        return bookDao.getById(id);
-    }
-
-    @Override
     public List<Book> getBooks() {
         return bookDao.getAllObjects();
     }

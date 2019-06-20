@@ -33,6 +33,7 @@ class AuthorManageSeviceImplTest {
     private AuthorManageService authorManageService;
 
     @Test
+    @DisplayName("Получение автора по id")
     void getAuthorById() {
         Author author = authorManageService.getAuthorById(1L);
 
@@ -47,6 +48,7 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Получение всех авторов")
     void getAuthors() {
         List<Author> authors = authorManageService.getAuthors();
 
@@ -61,6 +63,7 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Добавление автора")
     void addAuthor() {
         int count = authorManageService.addAuthor("TestSurname", "TestFirstName", "TestSecondName");
         Author author_selected = authorManageService.getAuthorById(4L);
@@ -77,6 +80,7 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Обновление автора")
     void updateAuthor() {
         Author author1 = authorManageService.getAuthorById(1L);
         int count = authorManageService.updateAuthor(1L, "TestSurname", "TestFirstName", "TestSecondName");
@@ -95,6 +99,7 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
         assertThrows(PersistenceException.class, () -> { authorManageService.deleteAuthor(1L); });
     }

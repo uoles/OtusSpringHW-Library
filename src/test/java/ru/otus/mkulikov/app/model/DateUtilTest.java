@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * Time: 11:39
  */
 
-@DisplayName("Класс Book")
+@DisplayName("Класс DateUtil")
 @RunWith(SpringRunner.class)
-//@SpringBootTest(classes = AppTestConfig.class)
-class BookTest {
+class DateUtilTest {
 
     @Test
+    @DisplayName("Формат даты 'yyyy-MM-dd'")
     void getAddRecordDateString() {
         Book book = getNewBook();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

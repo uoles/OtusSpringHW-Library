@@ -1,21 +1,10 @@
 package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -42,17 +31,12 @@ public class Book {
     @Column(name = "COMMENT")
     private String comment;
 
-    @Column(name = "AUTHOR_ID", updatable = false, insertable = false)
-    private long author_id;
-    @Column(name = "GENRE_ID", updatable = false, insertable = false)
-    private long genre_id;
-
-    @OneToOne(optional=false)
-    //@JoinColumn(name="ID", referencedColumnName="AUTHOR_ID")
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Author author;
 
-    @OneToOne(optional=false)
-    //@JoinColumn(name="ID", referencedColumnName="GENRE_ID")
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Genre genre;
 
     public Book() {
@@ -65,8 +49,6 @@ public class Book {
         this.genre = genre;
         this.caption = caption;
         this.comment = comment;
-        this.author_id = author.getId();
-        this.genre_id = genre.getId();
     }
 
     public Book(long id, String caption, Author author, Genre genre, String comment) {
@@ -75,17 +57,14 @@ public class Book {
         this.author = author;
         this.genre = genre;
         this.comment = comment;
-        this.author_id = author.getId();
-        this.genre_id = genre.getId();
     }
 
     public Book(String caption, Author author, Genre genre, String comment) {
+        this.id = 0L;
         this.caption = caption;
         this.author = author;
         this.genre = genre;
         this.comment = comment;
-        this.author_id = author.getId();
-        this.genre_id = genre.getId();
     }
 
     @Override

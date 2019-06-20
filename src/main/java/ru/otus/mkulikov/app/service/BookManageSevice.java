@@ -15,8 +15,6 @@ public interface BookManageSevice<T extends Book> {
 
     T getBookById(long id);
 
-    T getFullBookById(long id);
-
     List<T> getBooks();
 
     int addBook(String caption, int authorId, int genreId, String comment);

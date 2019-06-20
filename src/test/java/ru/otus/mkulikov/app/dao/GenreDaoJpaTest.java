@@ -34,6 +34,7 @@ class GenreDaoJpaTest {
     private GenreDao genreDaoJpa;
 
     @Test
+    @DisplayName("Получение жанра по id")
     void getById() {
         Genre genre = genreDaoJpa.getById(1L);
 
@@ -46,6 +47,7 @@ class GenreDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Получение всех жанров")
     void getAllObjects() {
         List<Genre> genres = genreDaoJpa.getAllObjects();
 
@@ -60,6 +62,7 @@ class GenreDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Добавление жанра")
     void addObject() {
         int count = genreDaoJpa.addObject(new Genre("Test4"));
 
@@ -75,11 +78,13 @@ class GenreDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteObject() {
         assertThrows(PersistenceException.class, () -> { genreDaoJpa.deleteObject(1L); });
     }
 
     @Test
+    @DisplayName("Обновление жанра")
     void updateObject() {
         Genre genre1 = genreDaoJpa.getById(1L);
         int count = genreDaoJpa.updateObject(new Genre(1L, "UpdatedName"));
