@@ -1,6 +1,8 @@
 package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,10 +31,12 @@ public class Book {
     @Column(name = "COMMENT")
     private String comment;
 
-    @ManyToOne(optional=false)
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Author author;
 
-    @ManyToOne(optional=false)
+    @Fetch(FetchMode.JOIN)
+    @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Genre genre;
 
     public Book() {
