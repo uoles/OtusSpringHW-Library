@@ -6,6 +6,9 @@ import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,26 +25,35 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public Genre getGenreById(long id) {
-        return genreDao.getById(id);
+        Optional<Genre> genre = genreDao.findById(id);
+        return genre.get();
     }
 
     @Override
     public List<Genre> getGenres() {
-        return genreDao.getAllObjects();
+        Iterable<Genre> authors = genreDao.findAll();
+        List<Genre> list = StreamSupport
+                .stream(authors.spliterator(), false)
+                .collect(Collectors.toList());
+
+        return list;
     }
 
     @Override
     public int addGenre(String name) {
-        return genreDao.addObject(new Genre(name));
+        genreDao.save(new Genre(name));
+        return 1;
     }
 
     @Override
     public int updateGenre(long id, String name) {
-        return genreDao.updateObject(new Genre(id, name));
+        genreDao.save(new Genre(id, name));
+        return 1;
     }
 
     @Override
     public int deleteGenre(long id) {
-        return genreDao.deleteObject(id);
+        genreDao.deleteById(id);
+        return 1;
     }
 }

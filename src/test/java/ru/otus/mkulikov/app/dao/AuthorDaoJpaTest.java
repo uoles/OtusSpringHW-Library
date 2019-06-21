@@ -66,46 +66,43 @@ class AuthorDaoJpaTest {
                 () -> assertEquals("Surname3", list.get(2).getSurname())
         );
     }
-    //
-    //@Test
-    //void addObject() {
-    //    Author author = new Author("TestSurname", "TestFirstName", "TestSecondName");
-    //    int count = authorDao.save(author);
-    //    Author author_selected = authorDao.getById(4L);
-    //
-    //    assertAll(
-    //            "author",
-    //            () -> assertNotNull(author_selected),
-    //            () -> assertEquals(1, count),
-    //            () -> assertEquals(4, author_selected.getId()),
-    //            () -> assertEquals(author.getSurname(), author_selected.getSurname()),
-    //            () -> assertEquals(author.getFirstName(), author_selected.getFirstName()),
-    //            () -> assertEquals(author.getSecondName(), author_selected.getSecondName())
-    //    );
-    //}
-    //
-    //@Test
-    //void deleteObject() {
-    //    assertThrows(PersistenceException.class, () -> { authorDao.deleteObject(1L); });
-    //}
-    //
-    //@Test
-    //void updateObject() {
-    //    Author author1 = authorDao.getById(1L);
-    //    int count = authorDao.updateObject(
-    //            new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
-    //    );
-    //    Author author2 = authorDao.getById(1L);
-    //
-    //    assertAll(
-    //            "author",
-    //            () -> assertEquals(1, count),
-    //            () -> assertEquals("Surname", author1.getSurname()),
-    //            () -> assertEquals("FirstName", author1.getFirstName()),
-    //            () -> assertEquals("SecondName", author1.getSecondName()),
-    //            () -> assertEquals("TestSurname", author2.getSurname()),
-    //            () -> assertEquals("TestFirstName", author2.getFirstName()),
-    //            () -> assertEquals("TestSecondName", author2.getSecondName())
-    //    );
-    //}
+
+    @Test
+    void addObject() {
+        Author author = authorDao.save(new Author("TestSurname", "TestFirstName", "TestSecondName"));
+        Optional<Author> author_selected = authorDao.findById(4L);
+
+        assertAll(
+                "author",
+                () -> assertNotNull(author_selected),
+                () -> assertEquals(4, author_selected.get().getId()),
+                () -> assertEquals(author.getSurname(), author_selected.get().getSurname()),
+                () -> assertEquals(author.getFirstName(), author_selected.get().getFirstName()),
+                () -> assertEquals(author.getSecondName(), author_selected.get().getSecondName())
+        );
+    }
+
+    @Test
+    void deleteObject() {
+        authorDao.deleteById(1L);
+        Optional<Author> author = authorDao.findById(1L);
+
+        assertNotNull(author);
+    }
+
+    @Test
+    void updateObject() {
+        authorDao.save(
+                new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
+        );
+        Author author = authorDao.findById(1L).get();
+
+        assertAll(
+                "author",
+                () -> assertEquals(1L, author.getId()),
+                () -> assertEquals("TestSurname", author.getSurname()),
+                () -> assertEquals("TestFirstName", author.getFirstName()),
+                () -> assertEquals("TestSecondName", author.getSecondName())
+        );
+    }
 }

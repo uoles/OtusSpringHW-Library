@@ -1,9 +1,9 @@
 package ru.otus.mkulikov.app.dao;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
-
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,15 +12,8 @@ import java.util.List;
  * Time: 17:07
  */
 
-public interface GenreDao<T extends Genre> {
+@Repository
+@Transactional
+public interface GenreDao extends CrudRepository<Genre, Long> {
 
-    T getById(long id);
-
-    List<T> getAllObjects();
-
-    int addObject(T t);
-
-    int deleteObject(long id);
-
-    int updateObject(T t);
 }

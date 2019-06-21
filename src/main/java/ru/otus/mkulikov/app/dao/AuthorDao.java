@@ -1,6 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +15,6 @@ import ru.otus.mkulikov.app.model.Author;
 
 @Repository
 @Transactional
-public interface AuthorDao extends CrudRepository<Author, Long> {
+public interface AuthorDao extends JpaRepository<Author, Long> {
 
 }

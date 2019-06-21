@@ -13,6 +13,8 @@ import ru.otus.mkulikov.app.model.Genre;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,7 +38,7 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Получение жанра по id")
     void getById() {
-        Genre genre = genreDaoJpa.getById(1L);
+        Genre genre = genreDaoJpa.findById(1L).get();
 
         assertAll(
                 "genre",
@@ -49,7 +51,10 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Получение всех жанров")
     void getAllObjects() {
-        List<Genre> genres = genreDaoJpa.getAllObjects();
+        Iterable<Genre> iterable = genreDaoJpa.findAll();
+        List<Genre> genres = StreamSupport
+                .stream(iterable.spliterator(), false)
+                .collect(Collectors.toList());
 
         assertAll(
                 "genres",
@@ -64,14 +69,12 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Добавление жанра")
     void addObject() {
-        int count = genreDaoJpa.addObject(new Genre("Test4"));
-
-        Genre genre = genreDaoJpa.getById(4L);
+        genreDaoJpa.save(new Genre("Test4"));
+        Genre genre = genreDaoJpa.findById(4L).get();
 
         assertAll(
                 "genre",
                 () -> assertNotNull(genre),
-                () -> assertEquals(1, count),
                 () -> assertEquals(4L, genre.getId()),
                 () -> assertEquals("Test4", genre.getName())
         );
@@ -80,21 +83,22 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteObject() {
-        assertThrows(PersistenceException.class, () -> { genreDaoJpa.deleteObject(1L); });
+        genreDaoJpa.deleteById(1L);
+        Genre genre = genreDaoJpa.findById(1L).get();
+
+        assertNotNull(genre);
     }
 
     @Test
     @DisplayName("Обновление жанра")
     void updateObject() {
-        Genre genre1 = genreDaoJpa.getById(1L);
-        int count = genreDaoJpa.updateObject(new Genre(1L, "UpdatedName"));
-        Genre genre2 = genreDaoJpa.getById(1L);
+        genreDaoJpa.save(new Genre(1L, "UpdatedName"));
+        Genre genre = genreDaoJpa.findById(1L).get();
 
         assertAll(
                 "genre",
-                () -> assertEquals(1, count),
-                () -> assertEquals("Genre1", genre1.getName()),
-                () -> assertEquals("UpdatedName", genre2.getName())
+                () -> assertEquals(1L, genre.getId()),
+                () -> assertEquals("UpdatedName", genre.getName())
         );
     }
 }
