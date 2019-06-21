@@ -35,14 +35,14 @@ public class BookCommands {
     }
 
     @ShellMethod(key = {"addBook"}, value = "Add new book.")
-    public String addBook(@ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String comment) {
-        int count = bookManageSevice.addBook(caption, authorId, genreId, comment);
+    public String addBook(@ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String description) {
+        int count = bookManageSevice.addBook(caption, authorId, genreId, description);
         return "Add " + count + " row(s)";
     }
 
     @ShellMethod(key = {"updateBook"}, value = "Update book by id.")
-    public String updateBook(@ShellOption long id, @ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String comment) {
-        int count = bookManageSevice.updateBook(id, caption, authorId, genreId, comment);
+    public String updateBook(@ShellOption long id, @ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String description) {
+        int count = bookManageSevice.updateBook(id, caption, authorId, genreId, description);
         return "Updated " + count + " row(s)";
     }
 

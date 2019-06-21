@@ -28,8 +28,12 @@ public class Book {
     private Date addRecordDate;
     @Column(name = "CAPTION")
     private String caption;
-    @Column(name = "COMMENT")
-    private String comment;
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+//    @Fetch(FetchMode.JOIN)
+//    @ManyToOne(optional=false, fetch = FetchType.EAGER)
+//    private Comment comment;
 
     @Fetch(FetchMode.JOIN)
     @ManyToOne(optional=false, fetch = FetchType.EAGER)
@@ -42,29 +46,29 @@ public class Book {
     public Book() {
     }
 
-    public Book(long id, Date addRecordDate, String caption, Author author, Genre genre, String comment) {
+    public Book(long id, Date addRecordDate, String caption, Author author, Genre genre, String description) {
         this.id = id;
         this.addRecordDate = addRecordDate;
         this.author = author;
         this.genre = genre;
         this.caption = caption;
-        this.comment = comment;
+        this.description = description;
     }
 
-    public Book(long id, String caption, Author author, Genre genre, String comment) {
+    public Book(long id, String caption, Author author, Genre genre, String description) {
         this.id = id;
         this.caption = caption;
         this.author = author;
         this.genre = genre;
-        this.comment = comment;
+        this.description = description;
     }
 
-    public Book(String caption, Author author, Genre genre, String comment) {
+    public Book(String caption, Author author, Genre genre, String description) {
         this.id = 0L;
         this.caption = caption;
         this.author = author;
         this.genre = genre;
-        this.comment = comment;
+        this.description = description;
     }
 
     @Override
@@ -73,7 +77,7 @@ public class Book {
                 "id=" + id +
                 ", addRecordDate=" + addRecordDate +
                 ", caption='" + caption + '\'' +
-                ", comment='" + comment + '\'' +
+                ", description=" + description +
                 ", author=" + author +
                 ", genre=" + genre +
                 "}\n";

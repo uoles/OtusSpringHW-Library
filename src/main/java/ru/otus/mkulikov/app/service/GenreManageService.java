@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface GenreManageService<T extends Genre> {
 
-    Genre getGenreById(long id);
+    T getGenreById(long id);
 
-    List<Genre> getGenres();
+    List<T> getGenres();
 
     int addGenre(String name);
 

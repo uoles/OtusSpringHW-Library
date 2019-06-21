@@ -15,13 +15,25 @@ insert into GENRE (ID, NAME) values (sq_genre.nextval, 'Genre3');
 
 --------------------------
 
-insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_1', 1, 1, 'comment');
+insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, DESCRIPTION)
+values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_1', 1, 1, 'description');
 
-insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_2', 1, 1, 'comment');
+insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, DESCRIPTION)
+values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_2', 1, 1, 'description');
 
-insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, COMMENT)
-values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_3', 1, 1, 'comment');
+insert into BOOK (ID, ADD_RECORD_DATE, CAPTION, AUTHOR_ID, GENRE_ID, DESCRIPTION)
+values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_3', 1, 1, 'description');
 
 --------------------------
+
+insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
+values (sq_comment.nextval, 1, to_date('2019-01-01','YYYY-MM-DD'), 'user1', 'text1');
+
+insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
+values (sq_comment.nextval, 1, to_date('2019-01-01','YYYY-MM-DD'), 'user2', 'text2');
+
+insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
+values (sq_comment.nextval, 2, to_date('2019-01-01','YYYY-MM-DD'), 'user3', 'text3');
+
+insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
+values (sq_comment.nextval, 2, to_date('2019-01-01','YYYY-MM-DD'), 'user4', 'text4');

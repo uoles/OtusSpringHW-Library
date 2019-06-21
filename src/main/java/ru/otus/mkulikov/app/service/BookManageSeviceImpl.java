@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
+import ru.otus.mkulikov.app.dao.CommentDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Comment;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
@@ -37,19 +39,19 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public int addBook(String caption, int authorId, int genreId, String comment) {
+    public int addBook(String caption, int authorId, int genreId, String description) {
         Author author = authorDao.getById(authorId);
         Genre genre = genreDao.getById(genreId);
 
-        return bookDao.addObject(new Book(caption, author, genre, comment));
+        return bookDao.addObject(new Book(caption, author, genre, description));
     }
 
     @Override
-    public int updateBook(long id, String caption, int authorId, int genreId, String comment) {
+    public int updateBook(long id, String caption, int authorId, int genreId, String description) {
         Author author = authorDao.getById(authorId);
         Genre genre = genreDao.getById(genreId);
 
-        return bookDao.updateObject(new Book(id, caption, author, genre, comment));
+        return bookDao.updateObject(new Book(id, caption, author, genre, description));
     }
 
     @Override
