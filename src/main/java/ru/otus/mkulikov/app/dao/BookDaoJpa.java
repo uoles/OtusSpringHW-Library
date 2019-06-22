@@ -7,7 +7,6 @@ import ru.otus.mkulikov.app.model.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,32 +27,41 @@ public class BookDaoJpa implements BookDao<Book> {
 
     @Override
     public Book getById(long id) {
-        List<Book> books = em.createQuery("select b "
+        List<Book> books = em.createQuery("select distinct b "
                                           + "from Book b "
                                           + "inner join fetch b.author a "
                                           + "inner join fetch b.genre g "
-                                          + "where b.id = :id ")
+                                          + "left join b.comments c "
+                                          + "where b.id = :id ", Book.class)
                 .setParameter("id", id)
                 .getResultList();
 
+        em.clear();
         return (books != null) ? books.get(0) : null;
     }
 
     @Override
     public List<Book> getAllObjects() {
-        List<Book> books = em.createQuery("select b "
+        List<Book> books = em.createQuery("select distinct b "
                                           + "from Book b "
                                           + "inner join fetch b.author a "
                                           + "inner join fetch b.genre g "
-                                          + "order by b.id ")
+                                          + "left join b.comments c "
+                                          + "order by b.id ", Book.class)
                 .getResultList();
 
+        em.clear();
         return books;
     }
 
     @Override
-    public int addObject(Book book) {
-        em.persist(book);
+    public int save(Book book) {
+        if (book.getId() == 0) {
+            em.persist(book);
+        } else {
+            em.merge(book);
+        }
+        System.out.println("Book saved with id: " + book.getId());
         return 1;
     }
 
@@ -62,24 +70,6 @@ public class BookDaoJpa implements BookDao<Book> {
         return em.createQuery("delete from Book b where b.id = :id ")
                 .setParameter("id", id)
                 .executeUpdate();
-    }
-
-    @Override
-    public int updateObject(Book book) {
-        int count = em.createNativeQuery(
-                "update Book b "
-                + "set b.add_record_date = :add_record_date, b.caption = :caption, b.author_id = :author_id, b.genre_id = :genre_id, b.comment = :comment "
-                + "where b.id = :id ")
-                .setParameter("add_record_date", new Date())
-                .setParameter("caption", book.getCaption())
-                .setParameter("author_id", book.getAuthor().getId())
-                .setParameter("genre_id", book.getGenre().getId())
-                .setParameter("comment", book.getComment())
-                .setParameter("id", book.getId())
-                .executeUpdate();
-
-        em.clear();
-        return count;
     }
 }
 

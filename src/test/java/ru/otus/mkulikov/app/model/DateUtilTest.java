@@ -25,7 +25,7 @@ class DateUtilTest {
 
     @Test
     @DisplayName("Формат даты 'yyyy-MM-dd'")
-    void getAddRecordDateString() {
+    void dateToString() {
         Book book = getNewBook();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -33,6 +33,19 @@ class DateUtilTest {
                 "book",
                 () -> assertNotNull(book),
                 () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateToString(book.getAddRecordDate()))
+        );
+    }
+
+    @Test
+    @DisplayName("Формат даты 'yyyy-MM-dd HH:mm:ss'")
+    void dateTimeToString() {
+        Book book = getNewBook();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        assertAll(
+                "book",
+                () -> assertNotNull(book),
+                () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateTimeToString(book.getAddRecordDate()))
         );
     }
 

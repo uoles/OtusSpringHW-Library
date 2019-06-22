@@ -40,6 +40,7 @@ class BookDaoJpaTest {
     private GenreDao genreDao;
 
     @Test
+	@DisplayName("Получение книги по id")
     void getById() {
         Book book = bookDaoJpa.getById(1L);
 
@@ -51,11 +52,12 @@ class BookDaoJpaTest {
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("comment", book.getComment())
+                () -> assertEquals("description", book.getDescription())
         );
     }
 
     @Test
+	@DisplayName("Получение всех книг")
     void getAllObjects() {
         List<Book> books = bookDaoJpa.getAllObjects();
 
@@ -68,60 +70,63 @@ class BookDaoJpaTest {
                 () -> assertEquals("book_3", books.get(2).getCaption())
         );
     }
-    //
-    //@Test
-    //void addObject() {
-    //    int count = bookDaoJpa.addObject(getNewBook());
-    //    Book book = bookDaoJpa.getById(4L);
-    //
-    //    assertAll(
-    //            "book",
-    //            () -> assertNotNull(book),
-    //            () -> assertEquals(1, count),
-    //            () -> assertEquals(4L, book.getId()),
-    //            () -> assertEquals("Test_Book", book.getCaption()),
-    //            () -> assertEquals(1, book.getAuthor().getId()),
-    //            () -> assertEquals(1, book.getGenre().getId()),
-    //            () -> assertEquals("Test_Comment", book.getComment())
-    //    );
-    //}
-    //
-    //@Test
-    //void deleteObject() {
-    //    int count = bookDaoJpa.deleteObject(1L);
-    //
-    //    assertAll(
-    //            "book",
-    //            () -> assertEquals(1, count),
-    //            () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJpa.getById(1L); })
-    //    );
-    //}
-    //
-    //@Test
-    //void updateObject() {
-    //    Book book1 = bookDaoJpa.getById(1L);
-    //    int count = bookDaoJpa.updateObject(getUpdatedBook());
-    //    Book book2 = bookDaoJpa.getById(1L);
-    //
-    //    assertAll(
-    //            "book",
-    //            () -> assertEquals(1, count),
-    //            () -> assertEquals("book_1", book1.getCaption()),
-    //            () -> assertEquals("comment", book1.getComment()),
-    //            () -> assertEquals("Test_Book", book2.getCaption()),
-    //            () -> assertEquals("Test_Comment", book2.getComment())
-    //    );
-    //}
-    //
-    //private Book getNewBook() {
-    //    Author author = authorDao.getById(1);
-    //    Genre genre = genreDao.getById(1);
-    //    return new Book("Test_Book", author, genre, "Test_Comment");
-    //}
-    //
-    //private Book getUpdatedBook() {
-    //    Author author = authorDao.getById(1);
-    //    Genre genre = genreDao.getById(1);
-    //    return new Book(1L,"Test_Book", author, genre, "Test_Comment");
-    //}
+
+    @Test
+    @DisplayName("Добавление книги")
+    void addObject() {
+        int count = bookDaoJpa.save(getNewBook());
+        Book book = bookDaoJpa.getById(4L);
+
+        assertAll(
+                "book",
+                () -> assertNotNull(book),
+                () -> assertEquals(1, count),
+                () -> assertEquals(4L, book.getId()),
+                () -> assertEquals("Test_Book", book.getCaption()),
+                () -> assertEquals(1, book.getAuthor().getId()),
+                () -> assertEquals(1, book.getGenre().getId()),
+                () -> assertEquals("Test_Description", book.getDescription())
+        );
+    }
+
+    @Test
+    @DisplayName("Удаление книги по id")
+    void deleteObject() {
+        int count = bookDaoJpa.deleteObject(1L);
+
+        assertAll(
+                "book",
+                () -> assertEquals(1, count),
+                () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJpa.getById(1L); })
+        );
+    }
+
+    @Test
+    @DisplayName("Обновление книги")
+    void updateObject() {
+        Book book1 = bookDaoJpa.getById(1L);
+        int count = bookDaoJpa.save(getUpdatedBook());
+        Book book2 = bookDaoJpa.getById(1L);
+
+        assertAll(
+                "book",
+                () -> assertEquals(1, count),
+                () -> assertEquals("book_1", book1.getCaption()),
+                () -> assertEquals("description", book1.getDescription()),
+                () -> assertEquals("Test_Book", book2.getCaption()),
+                () -> assertEquals("Test_Description", book2.getDescription())
+        );
+    }
+
+    private Book getNewBook() {
+        Author author = authorDao.getById(1);
+        Genre genre = genreDao.getById(1);
+        return new Book("Test_Book", author, genre, "Test_Description");
+    }
+
+    private Book getUpdatedBook() {
+        Author author = authorDao.getById(1);
+        Genre genre = genreDao.getById(1);
+        return new Book(1L,"Test_Book", author, genre, "Test_Description");
+    }
 }

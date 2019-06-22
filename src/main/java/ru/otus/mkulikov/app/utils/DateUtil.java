@@ -15,8 +15,15 @@ public class DateUtil {
 
     private final static String DATE_FORMAT = "yyyy-MM-dd";
 
+    private final static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     public static String dateToString(Date date) {
         DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        return date != null ? dateFormat.format(date) : null;
+    }
+
+    public static String dateTimeToString(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
         return date != null ? dateFormat.format(date) : null;
     }
 }
