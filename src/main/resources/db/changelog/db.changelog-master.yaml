@@ -1,0 +1,5 @@
+databaseChangeLog:
+- include:
+    file: db/changelog/1.0/2019-06-22--0001-schema.yaml
+- include:
+    file: db/changelog/data/0001-chema-data.yaml

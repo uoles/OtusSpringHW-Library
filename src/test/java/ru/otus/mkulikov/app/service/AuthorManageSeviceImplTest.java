@@ -82,16 +82,12 @@ class AuthorManageSeviceImplTest {
     @Test
     @DisplayName("Обновление автора")
     void updateAuthor() {
-        Author author1 = authorManageService.getAuthorById(1L);
         int count = authorManageService.updateAuthor(1L, "TestSurname", "TestFirstName", "TestSecondName");
         Author author2 = authorManageService.getAuthorById(1L);
 
         assertAll(
                 "author",
                 () -> assertEquals(1, count),
-                () -> assertEquals("Surname", author1.getSurname()),
-                () -> assertEquals("FirstName", author1.getFirstName()),
-                () -> assertEquals("SecondName", author1.getSecondName()),
                 () -> assertEquals("TestSurname", author2.getSurname()),
                 () -> assertEquals("TestFirstName", author2.getFirstName()),
                 () -> assertEquals("TestSecondName", author2.getSecondName())
@@ -101,6 +97,10 @@ class AuthorManageSeviceImplTest {
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
-        assertThrows(PersistenceException.class, () -> { authorManageService.deleteAuthor(1L); });
+        authorManageService.deleteAuthor(1L);
+
+
+
+        assertThrows(PersistenceException.class, () -> {  });
     }
 }

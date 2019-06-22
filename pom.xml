@@ -109,6 +109,11 @@
             <version>1.4.199</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
         <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -151,6 +156,32 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                    <changeLogFile>classpath:/db/changelog/db.changelog-master.yaml</changeLogFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                        <version>1.23</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
 
         <resources>
@@ -162,6 +193,7 @@
                     <include>**/*.txt</include>
                     <include>**/*.yml</include>
                     <include>**/*.sql</include>
+                    <include>**/*.yaml</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>

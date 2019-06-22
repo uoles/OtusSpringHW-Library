@@ -37,6 +37,7 @@ class AuthorDaoJpaTest {
     private AuthorDao authorDao;
 
     @Test
+    @DisplayName("Получение автора по id")
     void getById() {
         Optional<Author> author = authorDao.findById(1L);
 
@@ -51,6 +52,7 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Получение всех авторов")
     void getAllObjects() {
         Iterable<Author> authors = authorDao.findAll();
         List<Author> list = StreamSupport
@@ -68,6 +70,7 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Добавление автора")
     void addObject() {
         Author author = authorDao.save(new Author("TestSurname", "TestFirstName", "TestSecondName"));
         Optional<Author> author_selected = authorDao.findById(4L);
@@ -83,14 +86,16 @@ class AuthorDaoJpaTest {
     }
 
     @Test
+    @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteObject() {
         authorDao.deleteById(1L);
-        Optional<Author> author = authorDao.findById(1L);
+        Author author = authorDao.findById(1L).get();
 
-        assertNotNull(author);
+//        assertNotNull(author);
     }
 
     @Test
+    @DisplayName("Обновление автора")
     void updateObject() {
         authorDao.save(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")

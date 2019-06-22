@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 

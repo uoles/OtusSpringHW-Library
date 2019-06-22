@@ -119,14 +119,14 @@ class BookDaoJpaTest {
     }
 
     private Book getNewBook() {
-        Author author = authorDao.getById(1);
-        Genre genre = genreDao.getById(1);
+        Author author = authorDao.findById(1L).get();
+        Genre genre = genreDao.findById(1L).get();
         return new Book("Test_Book", author, genre, "Test_Description");
     }
 
     private Book getUpdatedBook() {
-        Author author = authorDao.getById(1);
-        Genre genre = genreDao.getById(1);
+        Author author = authorDao.findById(1L).get();
+        Genre genre = genreDao.findById(1L).get();
         return new Book(1L,"Test_Book", author, genre, "Test_Description");
     }
 }
