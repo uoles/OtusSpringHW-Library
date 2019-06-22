@@ -17,9 +17,7 @@ public interface AuthorDao<T extends Author> {
 
     List<T> getAllObjects();
 
-    int addObject(T t);
+    int save(T t);
 
     int deleteObject(long id);
-
-    int updateObject(T t);
 }

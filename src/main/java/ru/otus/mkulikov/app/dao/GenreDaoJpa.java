@@ -27,24 +27,37 @@ public class GenreDaoJpa implements GenreDao<Genre> {
 
     @Override
     public Genre getById(long id) {
-        List<Genre> list = em.createQuery("select g from Genre g where g.id = :id ", Genre.class)
+        List<Genre> list = em.createQuery(
+                    "select g " +
+                       "from Genre g " +
+                       "where g.id = :id ", Genre.class)
                 .setParameter("id", id)
                 .getResultList();
 
-        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
-        // не хочу ошибку, хочу null
+        em.clear();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
     @Override
     public List<Genre> getAllObjects() {
-        return em.createQuery("select g from Genre g order by g.id", Genre.class)
+        List<Genre> list = em.createQuery(
+                     "select g " +
+                        "from Genre g " +
+                        "order by g.id", Genre.class)
                 .getResultList();
+
+        em.clear();
+        return list;
     }
 
     @Override
-    public int addObject(Genre genre) {
-        em.persist(genre);
+    public int save(Genre genre) {
+        if (genre.getId() == 0) {
+            em.persist(genre);
+        } else {
+            em.merge(genre);
+        }
+        System.out.println("Genre saved with id: " + genre.getId());
         return 1;
     }
 
@@ -53,16 +66,5 @@ public class GenreDaoJpa implements GenreDao<Genre> {
         return em.createQuery("delete from Genre g where g.id = :id ")
                 .setParameter("id", id)
                 .executeUpdate();
-    }
-
-    @Override
-    public int updateObject(Genre genre) {
-        int count = em.createQuery("update Genre g set g.name = :name where g.id = :id ")
-                .setParameter("name", genre.getName())
-                .setParameter("id", genre.getId())
-                .executeUpdate();
-
-        em.clear();
-        return count;
     }
 }

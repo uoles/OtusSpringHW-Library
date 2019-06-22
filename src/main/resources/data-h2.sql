@@ -27,13 +27,13 @@ values (sq_book.nextval, to_date('2019-01-01','YYYY-MM-DD'), 'book_3', 1, 1, 'de
 --------------------------
 
 insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
-values (sq_comment.nextval, 1, to_date('2019-01-01','YYYY-MM-DD'), 'user1', 'text1');
+values (sq_comment.nextval, 1, to_date('2019-01-01 10:01:01','YYYY-MM-DD HH24-MI-SS'), 'user1', 'text1');
 
 insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
-values (sq_comment.nextval, 1, to_date('2019-01-01','YYYY-MM-DD'), 'user2', 'text2');
+values (sq_comment.nextval, 1, to_date('2019-01-01 10:01:02','YYYY-MM-DD HH24-MI-SS'), 'user2', 'text2');
 
 insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
-values (sq_comment.nextval, 2, to_date('2019-01-01','YYYY-MM-DD'), 'user3', 'text3');
+values (sq_comment.nextval, 2, to_date('2019-01-01 10:01:03','YYYY-MM-DD HH24-MI-SS'), 'user3', 'text3');
 
 insert into COMMENT (ID, BOOK_ID, ADD_RECORD_DATE, USER_NAME, TEXT)
-values (sq_comment.nextval, 2, to_date('2019-01-01','YYYY-MM-DD'), 'user4', 'text4');
+values (sq_comment.nextval, 2, to_date('2019-01-01 10:01:04','YYYY-MM-DD HH24-MI-SS'), 'user4', 'text4');

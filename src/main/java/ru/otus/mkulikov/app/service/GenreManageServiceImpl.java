@@ -32,12 +32,12 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public int addGenre(String name) {
-        return genreDao.addObject(new Genre(name));
+        return genreDao.save(new Genre(name));
     }
 
     @Override
     public int updateGenre(long id, String name) {
-        return genreDao.updateObject(new Genre(id, name));
+        return genreDao.save(new Genre(id, name));
     }
 
     @Override

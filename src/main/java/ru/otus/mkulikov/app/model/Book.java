@@ -3,9 +3,12 @@ package ru.otus.mkulikov.app.model;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,10 +34,6 @@ public class Book {
     @Column(name = "DESCRIPTION")
     private String description;
 
-//    @Fetch(FetchMode.JOIN)
-//    @ManyToOne(optional=false, fetch = FetchType.EAGER)
-//    private Comment comment;
-
     @Fetch(FetchMode.JOIN)
     @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Author author;
@@ -42,6 +41,10 @@ public class Book {
     @Fetch(FetchMode.JOIN)
     @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Genre genre;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Comment> comments;
 
     public Book() {
     }

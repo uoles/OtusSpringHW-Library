@@ -31,20 +31,27 @@ public class AuthorDaoJpa implements AuthorDao<Author> {
                 .setParameter("id", id)
                 .getResultList();
 
-        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
-        // не хочу ошибку, хочу null
+        em.clear();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
     @Override
     public List<Author> getAllObjects() {
-        return em.createQuery("select a from Author a order by a.id", Author.class)
+        List<Author> list = em.createQuery("select a from Author a order by a.id", Author.class)
                 .getResultList();
+
+        em.clear();
+        return list;
     }
 
     @Override
-    public int addObject(Author author) {
-        em.persist(author);
+    public int save(Author author) {
+        if (author.getId() == 0) {
+            em.persist(author);
+        } else {
+            em.merge(author);
+        }
+        System.out.println("Author saved with id: " + author.getId());
         return 1;
     }
 
@@ -53,18 +60,5 @@ public class AuthorDaoJpa implements AuthorDao<Author> {
         return em.createQuery("delete from Author a where a.id = :id ")
                 .setParameter("id", id)
                 .executeUpdate();
-    }
-
-    @Override
-    public int updateObject(Author author) {
-        int count = em.createQuery("update Author a set a.surname = :surname, a.firstName = :firstName, a.secondName = :secondName where a.id = :id ")
-                .setParameter("surname", author.getSurname())
-                .setParameter("firstName", author.getFirstName())
-                .setParameter("secondName", author.getSecondName())
-                .setParameter("id", author.getId())
-                .executeUpdate();
-
-        em.clear();
-        return count;
     }
 }

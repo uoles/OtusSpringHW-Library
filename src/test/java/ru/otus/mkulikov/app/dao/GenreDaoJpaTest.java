@@ -63,7 +63,7 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Добавление жанра")
     void addObject() {
-        int count = genreDaoJpa.addObject(new Genre("Test4"));
+        int count = genreDaoJpa.save(new Genre("Test4"));
 
         Genre genre = genreDaoJpa.getById(4L);
 
@@ -86,7 +86,7 @@ class GenreDaoJpaTest {
     @DisplayName("Обновление жанра")
     void updateObject() {
         Genre genre1 = genreDaoJpa.getById(1L);
-        int count = genreDaoJpa.updateObject(new Genre(1L, "UpdatedName"));
+        int count = genreDaoJpa.save(new Genre(1L, "UpdatedName"));
         Genre genre2 = genreDaoJpa.getById(1L);
 
         assertAll(

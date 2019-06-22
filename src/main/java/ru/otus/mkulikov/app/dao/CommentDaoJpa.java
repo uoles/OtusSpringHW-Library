@@ -3,7 +3,7 @@ package ru.otus.mkulikov.app.dao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.mkulikov.app.model.Author;
+import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 
 import javax.persistence.EntityManager;
@@ -28,24 +28,41 @@ public class CommentDaoJpa implements CommentDao<Comment> {
 
     @Override
     public Comment getById(long id) {
-        List<Comment> list = em.createQuery("select a from Comment a where a.id = :id", Comment.class)
+        List<Comment> list = em.createQuery(
+                "select c " +
+                        "from Comment c " +
+                        "inner join fetch c.book b " +
+                        "where c.id = :id", Comment.class)
                 .setParameter("id", id)
                 .getResultList();
 
-        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
-        // не хочу ошибку, хочу null
+        em.clear();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
     @Override
-    public Comment getByBookId(long bookId) {
-        List<Comment> list = em.createQuery("select a from Comment a where a.bookId = :bookId", Comment.class)
-                .setParameter("bookId", bookId)
+    public List<Comment> getByBook(Book book) {
+        List<Comment> list = em.createQuery(
+                "select c " +
+                        "from Comment c " +
+                        "inner join fetch c.book b " +
+                        "where c.book = :book", Comment.class)
+                .setParameter("book", book)
                 .getResultList();
 
-        // не использую getSingleResult, т.к. он возвращает ошибку, если нет данных
-        // не хочу ошибку, хочу null
-        return (list != null && !list.isEmpty()) ? list.get(0) : null;
+        em.clear();
+        return list;
+    }
+
+    @Override
+    public int save(Comment comment) {
+        if (comment.getId() == 0) {
+            em.persist(comment);
+        } else {
+            em.merge(comment);
+        }
+        System.out.println("Comment saved with id: " + comment.getId());
+        return 1;
     }
 
     @Override
@@ -55,28 +72,9 @@ public class CommentDaoJpa implements CommentDao<Comment> {
     }
 
     @Override
-    public int addObject(Comment comment) {
-        em.persist(comment);
-        return 1;
-    }
-
-    @Override
     public int deleteObject(long id) {
         return em.createQuery("delete from Comment a where a.id = :id ")
                 .setParameter("id", id)
                 .executeUpdate();
-    }
-
-    @Override
-    public int updateObject(Comment comment) {
-        int count = em.createQuery("update Comment a set a.addRecordDate = :addRecordDate, a.userName = :userName , a.text = :text where a.id = :id ")
-                .setParameter("addRecordDate", comment.getAddRecordDate())
-                .setParameter("userName", comment.getUserName())
-                .setParameter("text", comment.getText())
-                .setParameter("id", comment.getId())
-                .executeUpdate();
-
-        em.clear();
-        return count;
     }
 }

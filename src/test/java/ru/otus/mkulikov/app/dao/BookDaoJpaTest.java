@@ -51,7 +51,7 @@ class BookDaoJpaTest {
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("comment", book.getComment())
+                () -> assertEquals("description", book.getDescription())
         );
     }
 
@@ -73,7 +73,7 @@ class BookDaoJpaTest {
     @Test
     @DisplayName("Добавление книги")
     void addObject() {
-        int count = bookDaoJpa.addObject(getNewBook());
+        int count = bookDaoJpa.save(getNewBook());
         Book book = bookDaoJpa.getById(4L);
 
         assertAll(
@@ -84,7 +84,7 @@ class BookDaoJpaTest {
                 () -> assertEquals("Test_Book", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("Test_Comment", book.getComment())
+                () -> assertEquals("Test_Description", book.getDescription())
         );
     }
 
@@ -104,28 +104,28 @@ class BookDaoJpaTest {
     @DisplayName("Обновление книги")
     void updateObject() {
         Book book1 = bookDaoJpa.getById(1L);
-        int count = bookDaoJpa.updateObject(getUpdatedBook());
+        int count = bookDaoJpa.save(getUpdatedBook());
         Book book2 = bookDaoJpa.getById(1L);
 
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
                 () -> assertEquals("book_1", book1.getCaption()),
-                () -> assertEquals("comment", book1.getComment()),
+                () -> assertEquals("description", book1.getDescription()),
                 () -> assertEquals("Test_Book", book2.getCaption()),
-                () -> assertEquals("Test_Comment", book2.getComment())
+                () -> assertEquals("Test_Description", book2.getDescription())
         );
     }
 
     private Book getNewBook() {
         Author author = authorDao.getById(1);
         Genre genre = genreDao.getById(1);
-        return new Book("Test_Book", author, genre, "Test_Comment");
+        return new Book("Test_Book", author, genre, "Test_Description");
     }
 
     private Book getUpdatedBook() {
         Author author = authorDao.getById(1);
         Genre genre = genreDao.getById(1);
-        return new Book(1L,"Test_Book", author, genre, "Test_Comment");
+        return new Book(1L,"Test_Book", author, genre, "Test_Description");
     }
 }

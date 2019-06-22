@@ -32,12 +32,12 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public int addAuthor(String surname, String firstName, String secondName) {
-        return authorDao.addObject(new Author(surname, firstName, secondName));
+        return authorDao.save(new Author(surname, firstName, secondName));
     }
 
     @Override
     public int updateAuthor(long id, String surname, String firstName, String secondName) {
-        return authorDao.updateObject(new Author(id, surname, firstName, secondName));
+        return authorDao.save(new Author(id, surname, firstName, secondName));
     }
 
     @Override

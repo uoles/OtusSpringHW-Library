@@ -47,7 +47,7 @@ class BookManageSeviceImplTest {
                 () -> assertEquals("book_1", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
                 () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("comment", book.getComment())
+                () -> assertEquals("description", book.getDescription())
         );
     }
 
@@ -69,7 +69,7 @@ class BookManageSeviceImplTest {
     @Test
     @DisplayName("Добавление книги")
     void addBook() {
-        int count = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Comment");
+        int count = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Description");
         Book book = booksManageSevice.getBookById(4L);
 
         assertAll(
@@ -80,7 +80,7 @@ class BookManageSeviceImplTest {
                 () -> assertEquals("Test_Book", book.getCaption()),
                 () -> assertEquals(2, book.getAuthor().getId()),
                 () -> assertEquals(3, book.getGenre().getId()),
-                () -> assertEquals("Test_Comment", book.getComment())
+                () -> assertEquals("Test_Description", book.getDescription())
         );
     }
 
@@ -88,16 +88,16 @@ class BookManageSeviceImplTest {
     @DisplayName("Обновление книги")
     void updateBook() {
         Book book1 = booksManageSevice.getBookById(1L);
-        int count = booksManageSevice.updateBook(1L, "Test_Book", 2, 3, "Test_Comment");
+        int count = booksManageSevice.updateBook(1L, "Test_Book", 2, 3, "Test_Description");
         Book book2 = booksManageSevice.getBookById(1L);
 
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
                 () -> assertEquals("book_1", book1.getCaption()),
-                () -> assertEquals("comment", book1.getComment()),
+                () -> assertEquals("description", book1.getDescription()),
                 () -> assertEquals("Test_Book", book2.getCaption()),
-                () -> assertEquals("Test_Comment", book2.getComment())
+                () -> assertEquals("Test_Description", book2.getDescription())
         );
     }
 

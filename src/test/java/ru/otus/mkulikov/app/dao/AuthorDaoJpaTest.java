@@ -66,7 +66,7 @@ class AuthorDaoJpaTest {
     @DisplayName("Добавление автора")
     void addObject() {
         Author author = new Author("TestSurname", "TestFirstName", "TestSecondName");
-        int count = authorDaoJpa.addObject(author);
+        int count = authorDaoJpa.save(author);
         Author author_selected = authorDaoJpa.getById(4L);
 
         assertAll(
@@ -90,7 +90,7 @@ class AuthorDaoJpaTest {
     @DisplayName("Обновление автора")
     void updateObject() {
         Author author1 = authorDaoJpa.getById(1L);
-        int count = authorDaoJpa.updateObject(
+        int count = authorDaoJpa.save(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
         );
         Author author2 = authorDaoJpa.getById(1L);

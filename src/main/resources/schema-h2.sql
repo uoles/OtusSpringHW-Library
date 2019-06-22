@@ -30,11 +30,11 @@ CREATE TABLE BOOK(
 CREATE TABLE COMMENT(
     ID NUMBER(20,0) PRIMARY KEY not null,
     BOOK_ID NUMBER(20,0) not null,
-    ADD_RECORD_DATE DATE default sysdate,
+    ADD_RECORD_DATE TIMESTAMP default sysdate,
     USER_NAME VARCHAR(20),
     TEXT VARCHAR(500),
 
-    foreign key (BOOK_ID) references BOOK(ID)
+    foreign key (BOOK_ID) references BOOK(ID) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE sq_author minvalue 1 start with 1 increment by 1;

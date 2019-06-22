@@ -1,7 +1,6 @@
 package ru.otus.mkulikov.app.service;
 
 import ru.otus.mkulikov.app.model.Comment;
-import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
@@ -17,9 +16,11 @@ public interface CommentManageService<T extends Comment> {
 
     List<T> getComments();
 
+    List<T> getCommentsByBookId(long bookId);
+
     int addComment(long bookId, String userName, String text);
 
-    int updateComment(long id, long bookId, String userName, String text);
+    int updateComment(long id, String userName, String text);
 
     int deleteComment(long id);
 }

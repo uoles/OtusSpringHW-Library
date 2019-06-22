@@ -2,10 +2,10 @@ package ru.otus.mkulikov.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.CommentDao;
-import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
-import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +22,7 @@ import java.util.List;
 public class CommentManageServiceImpl implements CommentManageService {
 
     private final CommentDao commentDao;
+    private final BookDao bookDao;
 
     @Override
     public Comment getCommentById(long id) {
@@ -34,13 +35,27 @@ public class CommentManageServiceImpl implements CommentManageService {
     }
 
     @Override
-    public int addComment(long bookId, String userName, String text) {
-        return commentDao.addObject(new Comment(bookId, new Date(), userName, text));
+    public List<Comment> getCommentsByBookId(long bookId) {
+        Book book = bookDao.getById(bookId);
+
+        return commentDao.getByBook(book);
     }
 
     @Override
-    public int updateComment(long id, long bookId, String userName, String text) {
-        return commentDao.updateObject(new Comment(id, bookId, new Date(), userName, text));
+    public int addComment(long bookId, String userName, String text) {
+        Book book = bookDao.getById(bookId);
+
+        return commentDao.save(new Comment(book, new Date(), userName, text));
+    }
+
+    @Override
+    public int updateComment(long id, String userName, String text) {
+        Comment comment = commentDao.getById(id);
+        comment.setAddRecordDate(new Date());
+        comment.setUserName(userName);
+        comment.setText(text);
+
+        return commentDao.save(comment);
     }
 
     @Override

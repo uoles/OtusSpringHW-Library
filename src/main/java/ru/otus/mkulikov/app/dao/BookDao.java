@@ -17,9 +17,7 @@ public interface BookDao<T extends Book> {
 
     List<T> getAllObjects();
 
-    int addObject(T t);
+    int save(T t);
 
     int deleteObject(long id);
-
-    int updateObject(T t);
 }
