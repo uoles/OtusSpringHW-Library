@@ -13,7 +13,10 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -87,15 +90,12 @@ class BookManageSeviceImplTest {
     @Test
     @DisplayName("Обновление книги")
     void updateBook() {
-        Book book1 = booksManageSevice.getBookById(1L);
-        int count = booksManageSevice.updateBook(1L, "Test_Book", 2, 3, "Test_Description");
+        int count = booksManageSevice.updateBook(1L, "Test_Book", 1, 1, "Test_Description");
         Book book2 = booksManageSevice.getBookById(1L);
 
         assertAll(
                 "book",
                 () -> assertEquals(1, count),
-                () -> assertEquals("book_1", book1.getCaption()),
-                () -> assertEquals("description", book1.getDescription()),
                 () -> assertEquals("Test_Book", book2.getCaption()),
                 () -> assertEquals("Test_Description", book2.getDescription())
         );

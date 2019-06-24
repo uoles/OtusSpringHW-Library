@@ -42,11 +42,6 @@ public class Book {
     @ManyToOne(optional=false, fetch = FetchType.EAGER)
     private Genre genre;
 
-    @Fetch(FetchMode.JOIN)
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Comment> comments;
-
     public Book() {
     }
 
@@ -61,6 +56,7 @@ public class Book {
 
     public Book(long id, String caption, Author author, Genre genre, String description) {
         this.id = id;
+        this.addRecordDate = new Date();
         this.caption = caption;
         this.author = author;
         this.genre = genre;
@@ -69,6 +65,7 @@ public class Book {
 
     public Book(String caption, Author author, Genre genre, String description) {
         this.id = 0L;
+        this.addRecordDate = new Date();
         this.caption = caption;
         this.author = author;
         this.genre = genre;
@@ -84,7 +81,6 @@ public class Book {
                 ", description=" + description +
                 ", author=" + author +
                 ", genre=" + genre +
-                ", comments=" + (comments != null ? comments : "none") +
                 "}\n";
     }
 }

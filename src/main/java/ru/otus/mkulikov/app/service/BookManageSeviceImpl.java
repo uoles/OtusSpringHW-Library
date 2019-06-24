@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,25 +38,27 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public int addBook(String caption, int authorId, int genreId, String comment) {
-    //    Author author = authorDao.getById(authorId);
-    //    Genre genre = genreDao.getById(genreId);
-    //
-    //    return bookDao.addObject(new Book(caption, author, genre, comment));
+    public int addBook(String caption, long authorId, long genreId, String comment) {
+        Author author = authorDao.findById(authorId).get();
+        Genre genre = genreDao.findById(genreId).get();
+
+        bookDao.save(new Book(caption, author, genre, comment));
         return 1;
     }
 
     @Override
-    public int updateBook(long id, String caption, int authorId, int genreId, String comment) {
-    //    Author author = authorDao.getById(authorId);
-    //    Genre genre = genreDao.getById(genreId);
-    //
-    //    return bookDao.updateObject(new Book(id, caption, author, genre, comment));
+    public int updateBook(long id, String caption, long authorId, long genreId, String comment) {
+        Author author = authorDao.findById(authorId).get();
+        Genre genre = genreDao.findById(genreId).get();
+
+        bookDao.save(new Book(id, caption, author, genre, comment));
         return 1;
     }
 
     @Override
     public int deleteBook(long id) {
-        return bookDao.deleteObject(id);
+        bookDao.deleteById(id);
+        bookDao.count();
+        return 1;
     }
 }

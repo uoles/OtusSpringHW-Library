@@ -31,21 +31,19 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public List<Comment> getComments() {
-        return commentDao.getAllObjects();
+        return commentDao.findAll();
     }
 
     @Override
     public List<Comment> getCommentsByBookId(long bookId) {
-        Book book = bookDao.getById(bookId);
-
-        return commentDao.getByBook(book);
+        return commentDao.getByBookId(bookId);
     }
 
     @Override
     public int addComment(long bookId, String userName, String text) {
         Book book = bookDao.getById(bookId);
-
-        return commentDao.save(new Comment(book, new Date(), userName, text));
+        commentDao.save(new Comment(book, new Date(), userName, text));
+        return 1;
     }
 
     @Override
@@ -55,11 +53,14 @@ public class CommentManageServiceImpl implements CommentManageService {
         comment.setUserName(userName);
         comment.setText(text);
 
-        return commentDao.save(comment);
+        commentDao.save(comment);
+        return 1;
     }
 
     @Override
     public int deleteComment(long id) {
-        return commentDao.deleteObject(id);
+        commentDao.deleteById(id);
+        commentDao.count();
+        return 1;
     }
 }

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
@@ -13,7 +14,10 @@ import ru.otus.mkulikov.app.model.Genre;
 import javax.persistence.PersistenceException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -78,14 +82,12 @@ class GenreManageSeviceImplTest {
     @Test
     @DisplayName("Обновление жанра")
     void updateGenre() {
-        Genre genre1 = genreManageService.getGenreById(1L);
         int count = genreManageService.updateGenre(1L, "UpdatedName");
         Genre genre2 = genreManageService.getGenreById(1L);
 
         assertAll(
                 "genre",
                 () -> assertEquals(1, count),
-                () -> assertEquals("Genre1", genre1.getName()),
                 () -> assertEquals("UpdatedName", genre2.getName())
         );
     }
@@ -93,6 +95,6 @@ class GenreManageSeviceImplTest {
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteGenre() {
-        assertThrows(PersistenceException.class, () -> { genreManageService.deleteGenre(1L); });
+        assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(1L); });
     }
 }

@@ -1,5 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.mkulikov.app.model.Book;
 
 import java.util.List;
@@ -11,13 +12,6 @@ import java.util.List;
  * Time: 13:28
  */
 
-public interface BookDao<T extends Book> {
+public interface BookDao extends JpaRepository<Book, Long>, BookDaoCustom<Book> {
 
-    T getById(long id);
-
-    List<T> getAllObjects();
-
-    int save(T t);
-
-    int deleteObject(long id);
 }

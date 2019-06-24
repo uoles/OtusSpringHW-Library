@@ -1,6 +1,5 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 
@@ -13,6 +12,9 @@ import java.util.List;
  * Time: 23:48
  */
 
-public interface CommentDao extends JpaRepository<Comment, Long>, CommentDaoCustom<Comment> {
+public interface CommentDaoCustom<T extends Comment> {
 
+    T getById(long id);
+
+    List<T> getByBookId(long bookId);
 }

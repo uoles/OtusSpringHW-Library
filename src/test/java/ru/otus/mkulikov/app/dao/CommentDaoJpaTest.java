@@ -15,7 +15,11 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс CommentDaoJpa")
 @RunWith(SpringRunner.class)
-@Import({CommentDaoJpa.class, BookDaoJpa.class})
+@Import({CommentDaoCustomImpl.class, BookDaoCustomImpl.class})
 @DataJpaTest
 @TestPropertySource(locations= "classpath:application.yml")
 class CommentDaoJpaTest {
@@ -55,7 +59,7 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Получение всех комментариев")
     void getAllObjects() {
-        List<Comment> comments = commentDaoJpa.getAllObjects();
+        List<Comment> comments = commentDaoJpa.findAll();
 
         assertAll(
                 "comments",
@@ -71,8 +75,7 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Получение всех комментариев для книги")
     void getObjectsByBook() {
-        Book book = bookDaoJpa.getById(1L);
-        List<Comment> comments = commentDaoJpa.getByBook(book);
+        List<Comment> comments = commentDaoJpa.getByBookId(1L);
 
         assertAll(
                 "comments",
@@ -88,7 +91,7 @@ class CommentDaoJpaTest {
     void addObject() {
         Date date = new Date();
         Book book = bookDaoJpa.getById(1L);
-        int count = commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
+        commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
 
         Comment comment = commentDaoJpa.getById(5L);
 
@@ -96,7 +99,6 @@ class CommentDaoJpaTest {
                 "comment",
                 () -> assertNotNull(comment),
                 () -> assertNotNull(comment.getBook()),
-                () -> assertEquals(1, count),
                 () -> assertEquals(5L, comment.getId()),
                 () -> assertEquals(date, comment.getAddRecordDate()),
                 () -> assertEquals("user5", comment.getUserName()),
@@ -107,8 +109,9 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Удаление комментария")
     void deleteObject() {
-        commentDaoJpa.deleteObject(1L);
-        assertNull(commentDaoJpa.getById(1L));
+        commentDaoJpa.deleteById(1L);
+        Comment comment = commentDaoJpa.getById(1L);
+        assertNull(comment);
     }
 
     @Test
@@ -117,7 +120,7 @@ class CommentDaoJpaTest {
         Comment comment1 = commentDaoJpa.getById(1L);
 
         Date date = new Date();
-        int count = commentDaoJpa.save(new Comment(1L, comment1.getBook(), date, "TestUser", "TestText"));
+        commentDaoJpa.save(new Comment(1L, comment1.getBook(), date, "TestUser", "TestText"));
 
         Comment comment2 = commentDaoJpa.getById(1L);
 
@@ -127,7 +130,6 @@ class CommentDaoJpaTest {
                 () -> assertNotNull(comment2),
                 () -> assertNotNull(comment1.getBook()),
                 () -> assertNotNull(comment2.getBook()),
-                () -> assertEquals(1, count),
                 () -> assertEquals("user1", comment1.getUserName()),
                 () -> assertEquals("text1", comment1.getText()),
                 () -> assertEquals(date, comment2.getAddRecordDate()),

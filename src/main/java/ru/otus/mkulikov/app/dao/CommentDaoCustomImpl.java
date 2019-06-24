@@ -21,7 +21,7 @@ import java.util.List;
 @Repository
 @Transactional
 @RequiredArgsConstructor
-public class CommentDaoJpa implements CommentDao<Comment> {
+public class CommentDaoCustomImpl implements CommentDaoCustom<Comment> {
 
     @PersistenceContext
     private EntityManager em;
@@ -41,40 +41,16 @@ public class CommentDaoJpa implements CommentDao<Comment> {
     }
 
     @Override
-    public List<Comment> getByBook(Book book) {
+    public List<Comment> getByBookId(long bookId) {
         List<Comment> list = em.createQuery(
                 "select c " +
                         "from Comment c " +
                         "inner join fetch c.book b " +
-                        "where c.book = :book", Comment.class)
-                .setParameter("book", book)
+                        "where c.book.id = :bookId", Comment.class)
+                .setParameter("bookId", bookId)
                 .getResultList();
 
         em.clear();
         return list;
-    }
-
-    @Override
-    public int save(Comment comment) {
-        if (comment.getId() == 0) {
-            em.persist(comment);
-        } else {
-            em.merge(comment);
-        }
-        System.out.println("Comment saved with id: " + comment.getId());
-        return 1;
-    }
-
-    @Override
-    public List<Comment> getAllObjects() {
-        return em.createQuery("select a from Comment a order by a.id", Comment.class)
-                .getResultList();
-    }
-
-    @Override
-    public int deleteObject(long id) {
-        return em.createQuery("delete from Comment a where a.id = :id ")
-                .setParameter("id", id)
-                .executeUpdate();
     }
 }

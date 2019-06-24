@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
@@ -14,9 +13,15 @@ import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
+import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -74,13 +79,12 @@ class BookDaoJpaTest {
     @Test
     @DisplayName("Добавление книги")
     void addObject() {
-        int count = bookDaoJpa.save(getNewBook());
+        bookDaoJpa.save(getNewBook());
         Book book = bookDaoJpa.getById(4L);
 
         assertAll(
                 "book",
                 () -> assertNotNull(book),
-                () -> assertEquals(1, count),
                 () -> assertEquals(4L, book.getId()),
                 () -> assertEquals("Test_Book", book.getCaption()),
                 () -> assertEquals(1, book.getAuthor().getId()),
@@ -92,27 +96,19 @@ class BookDaoJpaTest {
     @Test
     @DisplayName("Удаление книги по id")
     void deleteObject() {
-        int count = bookDaoJpa.deleteObject(1L);
-
-        assertAll(
-                "book",
-                () -> assertEquals(1, count),
-                () -> assertThrows(IndexOutOfBoundsException.class, () -> { bookDaoJpa.getById(1L); })
-        );
+        bookDaoJpa.deleteById(1L);
+        Book book = bookDaoJpa.getById(1L);
+        assertNull(book);
     }
 
     @Test
     @DisplayName("Обновление книги")
     void updateObject() {
-        Book book1 = bookDaoJpa.getById(1L);
-        int count = bookDaoJpa.save(getUpdatedBook());
+        bookDaoJpa.save(getUpdatedBook());
         Book book2 = bookDaoJpa.getById(1L);
 
         assertAll(
                 "book",
-                () -> assertEquals(1, count),
-                () -> assertEquals("book_1", book1.getCaption()),
-                () -> assertEquals("description", book1.getDescription()),
                 () -> assertEquals("Test_Book", book2.getCaption()),
                 () -> assertEquals("Test_Description", book2.getDescription())
         );
@@ -127,6 +123,6 @@ class BookDaoJpaTest {
     private Book getUpdatedBook() {
         Author author = authorDao.findById(1L).get();
         Genre genre = genreDao.findById(1L).get();
-        return new Book(1L,"Test_Book", author, genre, "Test_Description");
+        return new Book(1L, new Date(), "Test_Book", author, genre, "Test_Description");
     }
 }

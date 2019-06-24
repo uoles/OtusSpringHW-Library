@@ -47,13 +47,17 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public int updateGenre(long id, String name) {
-        genreDao.save(new Genre(id, name));
+        Genre genre = genreDao.findById(id).get();
+        genre.setName(name);
+
+        genreDao.save(genre);
         return 1;
     }
 
     @Override
     public int deleteGenre(long id) {
         genreDao.deleteById(id);
+        genreDao.count();
         return 1;
     }
 }

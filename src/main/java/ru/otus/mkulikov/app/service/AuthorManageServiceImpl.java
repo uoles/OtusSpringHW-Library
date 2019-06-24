@@ -47,13 +47,22 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public int updateAuthor(long id, String surname, String firstName, String secondName) {
-        authorDao.save(new Author(id, surname, firstName, secondName));
+        Author author = authorDao.findById(id).get();
+        author.setSurname(surname);
+        author.setFirstName(firstName);
+        author.setSecondName(secondName);
+
+        authorDao.save(author);
         return 1;
     }
 
     @Override
     public int deleteAuthor(long id) {
         authorDao.deleteById(id);
+        // при удалении записи, которая используется в другой таблице не выдает никакой ошибки,
+        // ошибка выдается только при вызове следующей команды
+        // поэтому вызываю count
+        authorDao.count();
         return 1;
     }
 }

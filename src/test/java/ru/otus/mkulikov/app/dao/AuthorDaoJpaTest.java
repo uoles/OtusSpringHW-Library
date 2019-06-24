@@ -6,18 +6,20 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -89,9 +91,8 @@ class AuthorDaoJpaTest {
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteObject() {
         authorDao.deleteById(1L);
-        Author author = authorDao.findById(1L).get();
-
-//        assertNotNull(author);
+        //assertThat(authorDao.count()).isEqualTo(1);
+        assertThrows(DataIntegrityViolationException.class, () -> { authorDao.count(); });
     }
 
     @Test
