@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Comment;
@@ -37,6 +38,7 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение комментария по id")
+    @Rollback
     void getCommentById() {
         Comment comment = commentManageService.getCommentById(1L);
 
@@ -53,6 +55,7 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех комментариев")
+    @Rollback
     void getComments() {
         List<Comment> comments = commentManageService.getComments();
 
@@ -69,8 +72,9 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление комментария")
+    @Rollback
     void addComment() {
-        int count = commentManageService.addComment(1L, "user5", "text5");
+        long id = commentManageService.addComment(1L, "user5", "text5");
 
         Comment comment = commentManageService.getCommentById(5L);
 
@@ -78,7 +82,7 @@ class CommentManageSeviceImplTest {
                 "comment",
                 () -> assertNotNull(comment),
                 () -> assertNotNull(comment.getBook()),
-                () -> assertEquals(1, count),
+                () -> assertEquals(5L, id),
                 () -> assertEquals(5L, comment.getId()),
                 () -> assertEquals("user5", comment.getUserName()),
                 () -> assertEquals("text5", comment.getText())
@@ -87,6 +91,7 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение комментариев по Id книги")
+    @Rollback
     void getCommentsByBookId() {
         List<Comment> comments = commentManageService.getCommentsByBookId(1L);
 
@@ -101,6 +106,7 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Обновление комментария")
+    @Rollback
     void updateComment() {
         Comment comment1 = commentManageService.getCommentById(1L);
         int count = commentManageService.updateComment(1L, "TestUser", "TestText");
@@ -122,6 +128,7 @@ class CommentManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление комментария")
+    @Rollback
     void deleteComment() {
         commentManageService.deleteComment(1L);
         assertNull(commentManageService.getCommentById(1L));

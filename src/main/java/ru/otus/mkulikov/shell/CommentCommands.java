@@ -42,8 +42,8 @@ public class CommentCommands {
 
     @ShellMethod(key = {"addComment"}, value = "Add new comment.")
     public String addComment(@ShellOption long bookId, @ShellOption String userName, @ShellOption String text) {
-        int count = commentManageService.addComment(bookId, userName, text);
-        return "Add " + count + " row(s)";
+        long id = commentManageService.addComment(bookId, userName, text);
+        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
     }
 
     @ShellMethod(key = {"updateComment"}, value = "Update comment by id.")

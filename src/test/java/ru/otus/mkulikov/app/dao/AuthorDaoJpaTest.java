@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,6 +39,7 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Получение автора по id")
+    @Rollback
     void getById() {
         Optional<Author> author = authorDao.findById(1L);
 
@@ -55,24 +55,23 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Получение всех авторов")
+    @Rollback
     void getAllObjects() {
-        Iterable<Author> authors = authorDao.findAll();
-        List<Author> list = StreamSupport
-                .stream(authors.spliterator(), false)
-                .collect(Collectors.toList());
+        List<Author> authors = authorDao.findAll();
 
         assertAll(
                 "authors",
-                () -> assertNotNull(list),
-                () -> assertEquals(3, list.size()),
-                () -> assertEquals("Surname", list.get(0).getSurname()),
-                () -> assertEquals("Surname2", list.get(1).getSurname()),
-                () -> assertEquals("Surname3", list.get(2).getSurname())
+                () -> assertNotNull(authors),
+                () -> assertEquals(3, authors.size()),
+                () -> assertEquals("Surname", authors.get(0).getSurname()),
+                () -> assertEquals("Surname2", authors.get(1).getSurname()),
+                () -> assertEquals("Surname3", authors.get(2).getSurname())
         );
     }
 
     @Test
     @DisplayName("Добавление автора")
+    @Rollback
     void addObject() {
         Author author = authorDao.save(new Author("TestSurname", "TestFirstName", "TestSecondName"));
         Optional<Author> author_selected = authorDao.findById(4L);
@@ -89,6 +88,7 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
+    @Rollback
     void deleteObject() {
         authorDao.deleteById(1L);
         //assertThat(authorDao.count()).isEqualTo(1);
@@ -97,6 +97,7 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Обновление автора")
+    @Rollback
     void updateObject() {
         authorDao.save(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")

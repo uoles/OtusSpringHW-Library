@@ -36,8 +36,8 @@ public class AuthorCommands {
 
     @ShellMethod(key = {"addAuthor"}, value = "Add new author.")
     public String addAuthor(@ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
-        int count = authorManageService.addAuthor(surname, firstName, secondName);
-        return "Add " + count + " row(s)";
+        long id = authorManageService.addAuthor(surname, firstName, secondName);
+        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
     }
 
     @ShellMethod(key = {"updateAuthor"}, value = "Update author by id.")

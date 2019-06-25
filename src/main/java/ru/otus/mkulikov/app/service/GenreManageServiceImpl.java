@@ -40,9 +40,9 @@ public class GenreManageServiceImpl implements GenreManageService {
     }
 
     @Override
-    public int addGenre(String name) {
-        genreDao.save(new Genre(name));
-        return 1;
+    public long addGenre(String name) {
+        Genre genre = genreDao.save(new Genre(name));
+        return genre.getId();
     }
 
     @Override

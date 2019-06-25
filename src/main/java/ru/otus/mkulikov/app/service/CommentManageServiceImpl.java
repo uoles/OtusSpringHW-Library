@@ -40,10 +40,11 @@ public class CommentManageServiceImpl implements CommentManageService {
     }
 
     @Override
-    public int addComment(long bookId, String userName, String text) {
+    public long addComment(long bookId, String userName, String text) {
         Book book = bookDao.getById(bookId);
-        commentDao.save(new Comment(book, new Date(), userName, text));
-        return 1;
+
+        Comment comment = commentDao.save(new Comment(book, new Date(), userName, text));
+        return comment.getId();
     }
 
     @Override

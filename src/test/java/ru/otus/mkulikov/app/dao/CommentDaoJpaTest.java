@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
@@ -19,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,6 +42,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Получение комментария по id")
+    @Rollback
     void getById() {
         Comment comment = commentDaoJpa.getById(1L);
 
@@ -58,6 +59,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Получение всех комментариев")
+    @Rollback
     void getAllObjects() {
         List<Comment> comments = commentDaoJpa.findAll();
 
@@ -74,6 +76,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Получение всех комментариев для книги")
+    @Rollback
     void getObjectsByBook() {
         List<Comment> comments = commentDaoJpa.getByBookId(1L);
 
@@ -88,6 +91,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Добавление комментария")
+    @Rollback
     void addObject() {
         Date date = new Date();
         Book book = bookDaoJpa.getById(1L);
@@ -108,6 +112,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Удаление комментария")
+    @Rollback
     void deleteObject() {
         commentDaoJpa.deleteById(1L);
         Comment comment = commentDaoJpa.getById(1L);
@@ -116,6 +121,7 @@ class CommentDaoJpaTest {
 
     @Test
     @DisplayName("Обновление комментария")
+    @Rollback
     void updateObject() {
         Comment comment1 = commentDaoJpa.getById(1L);
 

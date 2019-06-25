@@ -3,7 +3,6 @@ package ru.otus.mkulikov.app.dao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 
 import javax.persistence.EntityManager;

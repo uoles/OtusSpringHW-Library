@@ -36,8 +36,8 @@ public class GenreCommands {
 
     @ShellMethod(key = {"addGenre"}, value = "Add new genre.")
     public String addGenre(@ShellOption String name) {
-        int count = genreManageService.addGenre(name);
-        return "Add " + count + " row(s)";
+        long id = genreManageService.addGenre(name);
+        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
     }
 
     @ShellMethod(key = {"updateGenre"}, value = "Update genre by id.")

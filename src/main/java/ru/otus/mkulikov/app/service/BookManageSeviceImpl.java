@@ -9,7 +9,6 @@ import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,20 +37,27 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public int addBook(String caption, long authorId, long genreId, String comment) {
+    public long addBook(String caption, long authorId, long genreId, String description) {
         Author author = authorDao.findById(authorId).get();
         Genre genre = genreDao.findById(genreId).get();
 
-        bookDao.save(new Book(caption, author, genre, comment));
-        return 1;
+        Book book = bookDao.save(new Book(caption, author, genre, description));
+        return book.getId();
     }
 
     @Override
-    public int updateBook(long id, String caption, long authorId, long genreId, String comment) {
+    public int updateBook(long id, String caption, long authorId, long genreId, String description) {
         Author author = authorDao.findById(authorId).get();
         Genre genre = genreDao.findById(genreId).get();
 
-        bookDao.save(new Book(id, caption, author, genre, comment));
+        Book book = bookDao.findById(id).get();
+        book.setCaption(caption);
+        book.setAuthor(author);
+        book.setGenre(genre);
+        book.setGenre(genre);
+        book.setDescription(description);
+
+        bookDao.save(book);
         return 1;
     }
 

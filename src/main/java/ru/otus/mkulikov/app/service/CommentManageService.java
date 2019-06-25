@@ -18,7 +18,7 @@ public interface CommentManageService<T extends Comment> {
 
     List<T> getCommentsByBookId(long bookId);
 
-    int addComment(long bookId, String userName, String text);
+    long addComment(long bookId, String userName, String text);
 
     int updateComment(long id, String userName, String text);
 

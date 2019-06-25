@@ -17,7 +17,7 @@ public interface AuthorManageService<T extends Author> {
 
     List<T> getAuthors();
 
-    int addAuthor(String surname, String firstName, String secondName);
+    long addAuthor(String surname, String firstName, String secondName);
 
     int updateAuthor(long id, String surname, String firstName, String secondName);
 

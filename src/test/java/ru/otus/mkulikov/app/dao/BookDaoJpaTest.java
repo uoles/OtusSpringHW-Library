@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
@@ -16,12 +17,10 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -46,6 +45,7 @@ class BookDaoJpaTest {
 
     @Test
 	@DisplayName("Получение книги по id")
+    @Rollback
     void getById() {
         Book book = bookDaoJpa.getById(1L);
 
@@ -63,6 +63,7 @@ class BookDaoJpaTest {
 
     @Test
 	@DisplayName("Получение всех книг")
+    @Rollback
     void getAllObjects() {
         List<Book> books = bookDaoJpa.getAllObjects();
 
@@ -78,6 +79,7 @@ class BookDaoJpaTest {
 
     @Test
     @DisplayName("Добавление книги")
+    @Rollback
     void addObject() {
         bookDaoJpa.save(getNewBook());
         Book book = bookDaoJpa.getById(4L);
@@ -95,6 +97,7 @@ class BookDaoJpaTest {
 
     @Test
     @DisplayName("Удаление книги по id")
+    @Rollback
     void deleteObject() {
         bookDaoJpa.deleteById(1L);
         Book book = bookDaoJpa.getById(1L);
@@ -103,6 +106,7 @@ class BookDaoJpaTest {
 
     @Test
     @DisplayName("Обновление книги")
+    @Rollback
     void updateObject() {
         bookDaoJpa.save(getUpdatedBook());
         Book book2 = bookDaoJpa.getById(1L);

@@ -3,8 +3,6 @@ package ru.otus.mkulikov.app.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.mkulikov.app.model.Book;
 
-import java.util.List;
-
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov

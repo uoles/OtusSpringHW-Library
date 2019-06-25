@@ -36,8 +36,8 @@ public class BookCommands {
 
     @ShellMethod(key = {"addBook"}, value = "Add new book.")
     public String addBook(@ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String description) {
-        int count = bookManageSevice.addBook(caption, authorId, genreId, description);
-        return "Add " + count + " row(s)";
+        long id = bookManageSevice.addBook(caption, authorId, genreId, description);
+        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
     }
 
     @ShellMethod(key = {"updateBook"}, value = "Update book by id.")

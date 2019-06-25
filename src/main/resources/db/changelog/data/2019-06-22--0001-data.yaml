@@ -8,7 +8,7 @@ databaseChangeLog:
           dbms: h2, oracle
           encoding: utf8
           endDelimiter: ;
-          path: sql/data-h2.sql
+          path: sql/2019-06-22--0001-data-h2.sql
           relativeToChangelogFile: true
           splitStatements: true
           stripComments: true

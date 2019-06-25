@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
@@ -13,10 +14,11 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,6 +39,7 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение книги по id")
+    @Rollback
     void getBookById() {
         Book book = booksManageSevice.getBookById(1L);
 
@@ -56,6 +59,7 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех книг")
+    @Rollback
     void getBooks() {
         List<Book> books = booksManageSevice.getBooks();
 
@@ -71,15 +75,15 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление книги")
+    @Rollback
     void addBook() {
-        int count = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Description");
-        Book book = booksManageSevice.getBookById(4L);
+        long id = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Description");
+        Book book = booksManageSevice.getBookById(id);
 
         assertAll(
                 "book",
                 () -> assertNotNull(book),
-                () -> assertEquals(1, count),
-                () -> assertEquals(4L, book.getId()),
+                () -> assertNotEquals(0, id),
                 () -> assertEquals("Test_Book", book.getCaption()),
                 () -> assertEquals(2, book.getAuthor().getId()),
                 () -> assertEquals(3, book.getGenre().getId()),
@@ -89,6 +93,7 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Обновление книги")
+    @Rollback
     void updateBook() {
         int count = booksManageSevice.updateBook(1L, "Test_Book", 1, 1, "Test_Description");
         Book book2 = booksManageSevice.getBookById(1L);
@@ -103,14 +108,10 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление книги по id")
+    @Rollback
     void deleteBook() {
-        int count = booksManageSevice.deleteBook(1L);
-
-        assertAll(
-                "book",
-                () -> assertEquals(1, count),
-                () -> assertThrows(IndexOutOfBoundsException.class, () -> { booksManageSevice.getBookById(1L); })
-        );
+        booksManageSevice.deleteBook(1L);
+        assertNull(booksManageSevice.getBookById(1L));
     }
 
 }

@@ -1,6 +1,5 @@
 package ru.otus.mkulikov.app.dao;
 
-import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 
 import java.util.List;

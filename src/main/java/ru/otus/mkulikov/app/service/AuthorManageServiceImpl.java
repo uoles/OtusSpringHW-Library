@@ -40,9 +40,9 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     }
 
     @Override
-    public int addAuthor(String surname, String firstName, String secondName) {
-        authorDao.save(new Author(surname, firstName, secondName));
-        return 1;
+    public long addAuthor(String surname, String firstName, String secondName) {
+        Author author = authorDao.save(new Author(surname, firstName, secondName));
+        return author.getId();
     }
 
     @Override

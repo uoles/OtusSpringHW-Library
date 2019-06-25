@@ -7,15 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -38,6 +39,7 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение жанра по id")
+    @Rollback
     void getGenreById() {
         Genre genre = genreManageService.getGenreById(1L);
 
@@ -51,6 +53,7 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех жанров")
+    @Rollback
     void getGenres() {
         List<Genre> genres = genreManageService.getGenres();
 
@@ -66,21 +69,22 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление жанра")
+    @Rollback
     void addGenre() {
-        int count = genreManageService.addGenre("Test4");
-        Genre genre = genreManageService.getGenreById(4L);
+        long id = genreManageService.addGenre("Test4");
+        Genre genre = genreManageService.getGenreById(id);
 
         assertAll(
                 "genre",
                 () -> assertNotNull(genre),
-                () -> assertEquals(1, count),
-                () -> assertEquals(4L, genre.getId()),
+                () -> assertNotEquals(0, id),
                 () -> assertEquals("Test4", genre.getName())
         );
     }
 
     @Test
     @DisplayName("Обновление жанра")
+    @Rollback
     void updateGenre() {
         int count = genreManageService.updateGenre(1L, "UpdatedName");
         Genre genre2 = genreManageService.getGenreById(1L);
@@ -94,6 +98,7 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
+    @Rollback
     void deleteGenre() {
         assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(1L); });
     }

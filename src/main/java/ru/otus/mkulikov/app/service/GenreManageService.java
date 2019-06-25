@@ -16,7 +16,7 @@ public interface GenreManageService<T extends Genre> {
 
     List<T> getGenres();
 
-    int addGenre(String name);
+    long addGenre(String name);
 
     int updateGenre(long id, String name);
 
