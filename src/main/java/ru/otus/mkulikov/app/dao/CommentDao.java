@@ -1,6 +1,7 @@
 package ru.otus.mkulikov.app.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Comment;
 
 /**
@@ -10,6 +11,7 @@ import ru.otus.mkulikov.app.model.Comment;
  * Time: 23:48
  */
 
+@Repository
 public interface CommentDao extends JpaRepository<Comment, Long>, CommentDaoCustom<Comment> {
 
 }

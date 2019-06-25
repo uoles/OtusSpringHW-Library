@@ -1,8 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Comment;
 
 import javax.persistence.EntityManager;
@@ -17,8 +15,6 @@ import java.util.List;
  */
 
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
-@Repository
-@Transactional
 @RequiredArgsConstructor
 public class CommentDaoCustomImpl implements CommentDaoCustom<Comment> {
 

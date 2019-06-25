@@ -1,7 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Book;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
  */
 
 @Repository
-@Transactional
 public interface BookDaoCustom<T extends Book> {
 
     Book getById(long id);

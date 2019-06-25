@@ -2,7 +2,6 @@ package ru.otus.mkulikov.app.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
 
 /**
@@ -13,7 +12,6 @@ import ru.otus.mkulikov.app.model.Genre;
  */
 
 @Repository
-@Transactional
 public interface GenreDao extends JpaRepository<Genre, Long> {
 
 }

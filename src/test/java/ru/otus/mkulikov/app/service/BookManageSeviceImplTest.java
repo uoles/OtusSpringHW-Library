@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
@@ -39,7 +38,6 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение книги по id")
-    @Rollback
     void getBookById() {
         Book book = booksManageSevice.getBookById(1L);
 
@@ -59,7 +57,6 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех книг")
-    @Rollback
     void getBooks() {
         List<Book> books = booksManageSevice.getBooks();
 
@@ -75,7 +72,6 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление книги")
-    @Rollback
     void addBook() {
         long id = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Description");
         Book book = booksManageSevice.getBookById(id);
@@ -93,7 +89,6 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Обновление книги")
-    @Rollback
     void updateBook() {
         int count = booksManageSevice.updateBook(1L, "Test_Book", 1, 1, "Test_Description");
         Book book2 = booksManageSevice.getBookById(1L);
@@ -108,7 +103,6 @@ class BookManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление книги по id")
-    @Rollback
     void deleteBook() {
         booksManageSevice.deleteBook(1L);
         assertNull(booksManageSevice.getBookById(1L));

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
@@ -39,7 +38,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение автора по id")
-    @Rollback
     void getAuthorById() {
         Author author = authorManageService.getAuthorById(1L);
 
@@ -55,7 +53,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех авторов")
-    @Rollback
     void getAuthors() {
         List<Author> authors = authorManageService.getAuthors();
 
@@ -71,7 +68,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление автора")
-    @Rollback
     void addAuthor() {
         long id = authorManageService.addAuthor("TestSurname", "TestFirstName", "TestSecondName");
         Author author_selected = authorManageService.getAuthorById(id);
@@ -88,7 +84,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Обновление автора")
-    @Rollback
     void updateAuthor() {
         int count = authorManageService.updateAuthor(1L, "TestSurname", "TestFirstName", "TestSecondName");
         Author author2 = authorManageService.getAuthorById(1L);
@@ -104,7 +99,6 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
-    @Rollback
     void deleteAuthor() {
         assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(1L); });
     }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
@@ -39,7 +38,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение жанра по id")
-    @Rollback
     void getGenreById() {
         Genre genre = genreManageService.getGenreById(1L);
 
@@ -53,7 +51,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Получение всех жанров")
-    @Rollback
     void getGenres() {
         List<Genre> genres = genreManageService.getGenres();
 
@@ -69,7 +66,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Добавление жанра")
-    @Rollback
     void addGenre() {
         long id = genreManageService.addGenre("Test4");
         Genre genre = genreManageService.getGenreById(id);
@@ -84,7 +80,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Обновление жанра")
-    @Rollback
     void updateGenre() {
         int count = genreManageService.updateGenre(1L, "UpdatedName");
         Genre genre2 = genreManageService.getGenreById(1L);
@@ -98,7 +93,6 @@ class GenreManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
-    @Rollback
     void deleteGenre() {
         assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(1L); });
     }

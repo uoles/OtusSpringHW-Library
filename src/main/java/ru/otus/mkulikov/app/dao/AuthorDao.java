@@ -2,7 +2,6 @@ package ru.otus.mkulikov.app.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
 /**
@@ -13,7 +12,6 @@ import ru.otus.mkulikov.app.model.Author;
  */
 
 @Repository
-@Transactional
 public interface AuthorDao extends JpaRepository<Author, Long> {
 
 }

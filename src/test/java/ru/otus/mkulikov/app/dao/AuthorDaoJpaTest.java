@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Author;
@@ -39,7 +38,6 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Получение автора по id")
-    @Rollback
     void getById() {
         Optional<Author> author = authorDao.findById(1L);
 
@@ -55,7 +53,6 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Получение всех авторов")
-    @Rollback
     void getAllObjects() {
         List<Author> authors = authorDao.findAll();
 
@@ -71,7 +68,6 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Добавление автора")
-    @Rollback
     void addObject() {
         Author author = authorDao.save(new Author("TestSurname", "TestFirstName", "TestSecondName"));
         Optional<Author> author_selected = authorDao.findById(4L);
@@ -88,7 +84,6 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
-    @Rollback
     void deleteObject() {
         authorDao.deleteById(1L);
         //assertThat(authorDao.count()).isEqualTo(1);
@@ -97,7 +92,6 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Обновление автора")
-    @Rollback
     void updateObject() {
         authorDao.save(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")

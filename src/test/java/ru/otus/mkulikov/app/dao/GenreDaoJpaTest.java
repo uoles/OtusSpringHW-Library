@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
@@ -38,7 +37,6 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Получение жанра по id")
-    @Rollback
     void getById() {
         Genre genre = genreDaoJpa.findById(1L).get();
 
@@ -52,7 +50,6 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Получение всех жанров")
-    @Rollback
     void getAllObjects() {
         List<Genre> genres = genreDaoJpa.findAll();
 
@@ -68,7 +65,6 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Добавление жанра")
-    @Rollback
     void addObject() {
         genreDaoJpa.save(new Genre("Test4"));
         Genre genre = genreDaoJpa.findById(4L).get();
@@ -83,7 +79,6 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
-    @Rollback
     void deleteObject() {
         genreDaoJpa.deleteById(1L);
         //assertThat(authorDao.count()).isEqualTo(1);
@@ -92,7 +87,6 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Обновление жанра")
-    @Rollback
     void updateObject() {
         genreDaoJpa.save(new Genre(1L, "UpdatedName"));
         Genre genre = genreDaoJpa.findById(1L).get();

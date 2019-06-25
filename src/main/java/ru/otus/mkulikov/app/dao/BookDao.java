@@ -1,6 +1,7 @@
 package ru.otus.mkulikov.app.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Book;
 
 /**
@@ -10,6 +11,7 @@ import ru.otus.mkulikov.app.model.Book;
  * Time: 13:28
  */
 
+@Repository
 public interface BookDao extends JpaRepository<Book, Long>, BookDaoCustom<Book> {
 
 }
