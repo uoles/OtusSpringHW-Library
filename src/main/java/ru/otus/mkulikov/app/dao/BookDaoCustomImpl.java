@@ -6,6 +6,7 @@ import ru.otus.mkulikov.app.model.Book;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +23,7 @@ public class BookDaoCustomImpl implements BookDaoCustom<Book> {
     private EntityManager em;
 
     @Override
-    public Book getById(long id) {
+    public Optional<Book> getById(long id) {
         List<Book> books = em.createQuery("select b "
                                           + "from Book b "
                                           + "inner join fetch b.author a "
@@ -32,7 +33,9 @@ public class BookDaoCustomImpl implements BookDaoCustom<Book> {
                 .getResultList();
 
         em.clear();
-        return (books != null && !books.isEmpty()) ? books.get(0) : null;
+        return Optional.of(
+                (books != null && !books.isEmpty()) ? books.get(0) : null
+        );
     }
 
     @Override

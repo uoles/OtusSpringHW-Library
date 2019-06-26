@@ -25,10 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 9:45
  */
 
-@DisplayName("Класс GenreDaoJpa")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс GenreDaoJpa")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class GenreDaoJpaTest {
 

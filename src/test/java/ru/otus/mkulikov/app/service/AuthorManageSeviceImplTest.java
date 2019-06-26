@@ -9,10 +9,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -26,10 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 15:59
  */
 
-@DisplayName("Класс AuthorManageSevice")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс AuthorManageSevice")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class AuthorManageSeviceImplTest {
 
@@ -99,6 +101,7 @@ class AuthorManageSeviceImplTest {
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void deleteAuthor() {
         assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(1L); });
     }

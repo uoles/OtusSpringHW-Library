@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,10 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * Time: 9:45
  */
 
-@DisplayName("Класс CommentDaoJpa")
-@RunWith(SpringRunner.class)
-@Import({CommentDaoCustomImpl.class, BookDaoCustomImpl.class})
 @DataJpaTest
+@DisplayName("Класс CommentDaoJpa")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class CommentDaoJpaTest {
 
@@ -42,7 +42,7 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Получение комментария по id")
     void getById() {
-        Comment comment = commentDaoJpa.getById(1L);
+        Comment comment = commentDaoJpa.getById(1L).get();
 
         assertAll(
                 "comment",
@@ -89,10 +89,10 @@ class CommentDaoJpaTest {
     @DisplayName("Добавление комментария")
     void addObject() {
         Date date = new Date();
-        Book book = bookDaoJpa.getById(1L);
+        Book book = bookDaoJpa.getById(1L).get();
         commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
 
-        Comment comment = commentDaoJpa.getById(5L);
+        Comment comment = commentDaoJpa.getById(5L).get();
 
         assertAll(
                 "comment",
@@ -109,19 +109,19 @@ class CommentDaoJpaTest {
     @DisplayName("Удаление комментария")
     void deleteObject() {
         commentDaoJpa.deleteById(1L);
-        Comment comment = commentDaoJpa.getById(1L);
+        Comment comment = commentDaoJpa.getById(1L).get();
         assertNull(comment);
     }
 
     @Test
     @DisplayName("Обновление комментария")
     void updateObject() {
-        Comment comment1 = commentDaoJpa.getById(1L);
+        Comment comment1 = commentDaoJpa.getById(1L).get();
 
         Date date = new Date();
         commentDaoJpa.save(new Comment(1L, comment1.getBook(), date, "TestUser", "TestText"));
 
-        Comment comment2 = commentDaoJpa.getById(1L);
+        Comment comment2 = commentDaoJpa.getById(1L).get();
 
         assertAll(
                 "comment",

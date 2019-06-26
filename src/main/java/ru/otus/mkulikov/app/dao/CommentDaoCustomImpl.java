@@ -6,6 +6,7 @@ import ru.otus.mkulikov.app.model.Comment;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,7 +23,7 @@ public class CommentDaoCustomImpl implements CommentDaoCustom<Comment> {
     private EntityManager em;
 
     @Override
-    public Comment getById(long id) {
+    public Optional<Comment> getById(long id) {
         List<Comment> list = em.createQuery(
                 "select c " +
                         "from Comment c " +
@@ -32,7 +33,9 @@ public class CommentDaoCustomImpl implements CommentDaoCustom<Comment> {
                 .getResultList();
 
         em.clear();
-        return (list != null && !list.isEmpty()) ? list.get(0) : null;
+        return Optional.of(
+                (list != null && !list.isEmpty()) ? list.get(0) : null
+        );
     }
 
     @Override

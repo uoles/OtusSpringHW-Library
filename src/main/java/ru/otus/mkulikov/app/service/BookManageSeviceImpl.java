@@ -28,7 +28,7 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book getBookById(long id) {
-        return bookDao.getById(id);
+        return bookDao.getById(id).get();
     }
 
     @Override

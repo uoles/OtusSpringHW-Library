@@ -28,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * Time: 13:16
  */
 
-@DisplayName("Класс BookDaoJpa")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс BookDaoJpa")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
-
 class BookDaoJpaTest {
 
     @Autowired
@@ -46,7 +44,7 @@ class BookDaoJpaTest {
     @Test
 	@DisplayName("Получение книги по id")
     void getById() {
-        Book book = bookDaoJpa.getById(1L);
+        Book book = bookDaoJpa.getById(1L).get();
 
         assertAll(
                 "book",
@@ -79,7 +77,7 @@ class BookDaoJpaTest {
     @DisplayName("Добавление книги")
     void addObject() {
         bookDaoJpa.save(getNewBook());
-        Book book = bookDaoJpa.getById(4L);
+        Book book = bookDaoJpa.getById(4L).get();
 
         assertAll(
                 "book",
@@ -96,7 +94,7 @@ class BookDaoJpaTest {
     @DisplayName("Удаление книги по id")
     void deleteObject() {
         bookDaoJpa.deleteById(1L);
-        Book book = bookDaoJpa.getById(1L);
+        Book book = bookDaoJpa.getById(1L).get();
         assertNull(book);
     }
 
@@ -104,7 +102,7 @@ class BookDaoJpaTest {
     @DisplayName("Обновление книги")
     void updateObject() {
         bookDaoJpa.save(getUpdatedBook());
-        Book book2 = bookDaoJpa.getById(1L);
+        Book book2 = bookDaoJpa.getById(1L).get();
 
         assertAll(
                 "book",

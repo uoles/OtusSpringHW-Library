@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.mkulikov.app.model.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +16,7 @@ import java.util.List;
 @Repository
 public interface BookDaoCustom<T extends Book> {
 
-    Book getById(long id);
+    Optional<T> getById(long id);
 
-    List<Book> getAllObjects();
+    List<T> getAllObjects();
 }

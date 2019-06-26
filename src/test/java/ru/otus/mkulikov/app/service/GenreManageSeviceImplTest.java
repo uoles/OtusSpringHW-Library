@@ -26,10 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 15:56
  */
 
-@DisplayName("Класс GenreManageSevice")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс GenreManageSevice")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class GenreManageSeviceImplTest {
 

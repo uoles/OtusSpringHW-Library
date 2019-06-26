@@ -9,11 +9,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,10 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 10:12
  */
 
-@DisplayName("Класс AuthorDaoJpa")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс AuthorDaoJpa")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class AuthorDaoJpaTest {
 
@@ -84,10 +86,14 @@ class AuthorDaoJpaTest {
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void deleteObject() {
-        authorDao.deleteById(1L);
-        //assertThat(authorDao.count()).isEqualTo(1);
-        assertThrows(DataIntegrityViolationException.class, () -> { authorDao.count(); });
+        //authorDao.deleteById(1L);
+        ////assertThat(authorDao.count()).isEqualTo(1);
+        //assertThrows(DataIntegrityViolationException.class, () -> { authorDao.count(); });
+
+        assertThrows(DataIntegrityViolationException.class, () -> authorDao.deleteById(1L));
+        assertThat(authorDao.count()).isEqualTo(3);
     }
 
     @Test

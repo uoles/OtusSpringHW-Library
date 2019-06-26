@@ -13,6 +13,7 @@ import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.List;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,10 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * Time: 15:56
  */
 
-@DisplayName("Класс CommentManageSevice")
-@RunWith(SpringRunner.class)
-@ComponentScan("ru.otus.mkulikov.app")
 @DataJpaTest
+@DisplayName("Класс CommentManageSevice")
+@ComponentScan("ru.otus.mkulikov.app")
 @TestPropertySource(locations= "classpath:application.yml")
 class CommentManageSeviceImplTest {
 
@@ -71,15 +71,13 @@ class CommentManageSeviceImplTest {
     @DisplayName("Добавление комментария")
     void addComment() {
         long id = commentManageService.addComment(1L, "user5", "text5");
-
-        Comment comment = commentManageService.getCommentById(5L);
+        Comment comment = commentManageService.getCommentById(id);
 
         assertAll(
                 "comment",
                 () -> assertNotNull(comment),
                 () -> assertNotNull(comment.getBook()),
-                () -> assertEquals(5L, id),
-                () -> assertEquals(5L, comment.getId()),
+                () -> assertNotEquals(0, id),
                 () -> assertEquals("user5", comment.getUserName()),
                 () -> assertEquals("text5", comment.getText())
         );
