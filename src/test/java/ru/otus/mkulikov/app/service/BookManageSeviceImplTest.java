@@ -2,12 +2,10 @@ package ru.otus.mkulikov.app.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
@@ -17,7 +15,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -104,7 +102,7 @@ class BookManageSeviceImplTest {
     @DisplayName("Удаление книги по id")
     void deleteBook() {
         booksManageSevice.deleteBook(1L);
-        assertNull(booksManageSevice.getBookById(1L));
+        assertThrows(NullPointerException.class, () -> { booksManageSevice.getBookById(1L); });
     }
 
 }

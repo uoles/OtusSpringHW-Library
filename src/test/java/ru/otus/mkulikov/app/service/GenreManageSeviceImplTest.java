@@ -2,22 +2,27 @@ package ru.otus.mkulikov.app.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,73 +31,92 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 15:56
  */
 
-@DataJpaTest
 @DisplayName("Класс GenreManageSevice")
-@ComponentScan("ru.otus.mkulikov.app")
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations= "classpath:application.yml")
 class GenreManageSeviceImplTest {
 
-    @Autowired
-    private GenreManageService genreManageService;
+    @Mock
+    private GenreDao genreDao;
+
+    @InjectMocks
+    private GenreManageServiceImpl genreManageService;
 
     @Test
     @DisplayName("Получение жанра по id")
     void getGenreById() {
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
         Genre genre = genreManageService.getGenreById(1L);
 
-        assertAll(
-                "genre",
-                () -> assertNotNull(genre),
-                () -> assertEquals(1L, genre.getId()),
-                () -> assertEquals("Genre1", genre.getName())
-        );
+        assertThat(genre).isNotNull();
+        assertThat(genre).isEqualTo(getGenre(1L));
     }
 
     @Test
     @DisplayName("Получение всех жанров")
     void getGenres() {
-        List<Genre> genres = genreManageService.getGenres();
+        when(genreDao.findAll()).thenReturn( getGenreList() );
+        List<Genre> authors = genreManageService.getGenres();
 
-        assertAll(
-                "genres",
-                () -> assertNotNull(genres),
-                () -> assertEquals(3, genres.size()),
-                () -> assertEquals("Genre1", genres.get(0).getName()),
-                () -> assertEquals("Genre2", genres.get(1).getName()),
-                () -> assertEquals("Genre3", genres.get(2).getName())
-        );
+        assertThat(authors).isNotNull();
+        assertThat(authors).hasSize(3);
+        assertThat(authors).containsAll(getGenreList());
     }
 
     @Test
     @DisplayName("Добавление жанра")
     void addGenre() {
-        long id = genreManageService.addGenre("Test4");
-        Genre genre = genreManageService.getGenreById(id);
+        when(genreDao.save(any(Genre.class))).then(new Answer<Genre>() {
+            int sequence = 1;
 
-        assertAll(
-                "genre",
-                () -> assertNotNull(genre),
-                () -> assertNotEquals(0, id),
-                () -> assertEquals("Test4", genre.getName())
-        );
+            @Override
+            public Genre answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Genre author = (Genre) invocationOnMock.getArgument(0);
+                author.setId(++sequence);
+                return author;
+            }
+        });
+
+        long id = genreManageService.addGenre("Test4");
+
+        assertThat(id).isEqualTo(2L);
     }
 
     @Test
     @DisplayName("Обновление жанра")
     void updateGenre() {
-        int count = genreManageService.updateGenre(1L, "UpdatedName");
-        Genre genre2 = genreManageService.getGenreById(1L);
+        when(genreDao.save(any(Genre.class))).then(new Answer<Genre>() {
 
-        assertAll(
-                "genre",
-                () -> assertEquals(1, count),
-                () -> assertEquals("UpdatedName", genre2.getName())
-        );
+            @Override
+            public Genre answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Genre genre = (Genre) invocationOnMock.getArgument(0);
+                genre.setId(1L);
+                return genre;
+            }
+        });
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
+
+        int count = genreManageService.updateGenre(1L, "UpdatedName");
+
+        assertThat(count).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteGenre() {
+        doThrow(DataIntegrityViolationException.class).when(genreDao).deleteById(1L);
         assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(1L); });
+    }
+
+    private List<Genre> getGenreList() {
+        List<Genre> genres = new ArrayList<Genre>();
+        genres.add(getGenre(1L));
+        genres.add(getGenre(2L));
+        genres.add(getGenre(3L));
+        return genres;
+    }
+
+    private Genre getGenre(long id) {
+        return new Genre(id, "Genre" + id);
     }
 }
