@@ -9,6 +9,7 @@ import ru.otus.mkulikov.app.model.Comment;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,7 +27,8 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public Comment getCommentById(long id) {
-        return commentDao.getById(id).get();
+        Optional<Comment> comment = commentDao.getById(id);
+        return comment.get();
     }
 
     @Override

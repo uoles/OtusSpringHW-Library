@@ -1,10 +1,7 @@
 package ru.otus.mkulikov.app.model;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.text.DateFormat;
@@ -23,15 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 
 @DisplayName("Класс DateUtil")
-@Ignore
-@ExtendWith({SpringExtension.class})
 class DateUtilTest {
 
+    private final String DATE_PATTERN = "yyyy-MM-dd";
+    private final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     @Test
-    @DisplayName("Формат даты 'yyyy-MM-dd'")
+    @DisplayName("Перевод даты в строку, формат даты '" + DATE_PATTERN + "'")
     void dateToString() {
         Book book = getNewBook();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
 
         assertAll(
                 "book",
@@ -41,16 +39,27 @@ class DateUtilTest {
     }
 
     @Test
-    @DisplayName("Формат даты 'yyyy-MM-dd HH:mm:ss'")
+    @DisplayName("Перевод даты в строку, формат даты '" + DATETIME_PATTERN + "'")
     void dateTimeToString() {
         Book book = getNewBook();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
 
         assertAll(
                 "book",
                 () -> assertNotNull(book),
                 () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateTimeToString(book.getAddRecordDate()))
         );
+    }
+
+    @Test
+    @DisplayName("Перевод строки в дату, формат даты '" + DATETIME_PATTERN + "'")
+    void stringToDateTime() {
+        String datetime = "2019-01-01 10:01:01";
+
+        Date date = DateUtil.stringToDateTime(datetime);
+        DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
+
+        assertEquals(datetime, dateFormat.format(date));
     }
 
     private Book getNewBook() {

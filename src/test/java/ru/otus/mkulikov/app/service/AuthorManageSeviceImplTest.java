@@ -129,5 +129,4 @@ class AuthorManageSeviceImplTest {
     private Author getAuthor(long id) {
         return new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
     }
-
 }

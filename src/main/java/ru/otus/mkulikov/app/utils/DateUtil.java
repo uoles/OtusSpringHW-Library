@@ -2,6 +2,10 @@ package ru.otus.mkulikov.app.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -25,5 +29,17 @@ public class DateUtil {
     public static String dateTimeToString(Date date) {
         DateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT);
         return date != null ? dateFormat.format(date) : null;
+    }
+
+    public static java.util.Date stringToDateTime(String stringDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        LocalDateTime dateTime = LocalDateTime.parse(stringDate, formatter);
+        return dateTime != null ? convertToDateViaInstant(dateTime) : null;
+    }
+
+    public static Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+        return java.util.Date
+                .from(dateToConvert.atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 }
