@@ -4,15 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -25,8 +17,38 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "BOOK")
-public class Book {
 
+@NamedEntityGraph(
+        name = "BookGraph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "id"),
+                @NamedAttributeNode(value = "addRecordDate"),
+                @NamedAttributeNode(value = "caption"),
+                @NamedAttributeNode(value = "description"),
+                @NamedAttributeNode(value = "author", subgraph = "authorGraph"),
+                @NamedAttributeNode(value = "genre", subgraph = "genreGraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "authorGraph",
+                        attributeNodes = {
+                                @NamedAttributeNode(value = "id"),
+                                @NamedAttributeNode(value = "surname"),
+                                @NamedAttributeNode(value = "firstName"),
+                                @NamedAttributeNode(value = "secondName")
+                        }
+                ),
+                @NamedSubgraph(
+                        name = "genreGraph",
+                        attributeNodes = {
+                                @NamedAttributeNode(value = "id"),
+                                @NamedAttributeNode(value = "name")
+                        }
+                )
+        }
+)
+
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_book")
     @SequenceGenerator(name = "sq_book", sequenceName = "sq_book", allocationSize = 1)

@@ -2,13 +2,11 @@ package ru.otus.mkulikov.app.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
@@ -17,10 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,11 +40,11 @@ class AuthorDaoJpaTest {
 
         assertAll(
                 "author",
-                () -> assertNotNull(author.get()),
-                () -> assertEquals(1L, author.get().getId()),
-                () -> assertEquals("Surname", author.get().getSurname()),
-                () -> assertEquals("FirstName", author.get().getFirstName()),
-                () -> assertEquals("SecondName", author.get().getSecondName())
+                () -> assertNotNull(author.orElse(null)),
+                () -> assertEquals(1L, author.orElse(null).getId()),
+                () -> assertEquals("Surname", author.orElse(null).getSurname()),
+                () -> assertEquals("FirstName", author.orElse(null).getFirstName()),
+                () -> assertEquals("SecondName", author.orElse(null).getSecondName())
         );
     }
 
@@ -77,10 +72,10 @@ class AuthorDaoJpaTest {
         assertAll(
                 "author",
                 () -> assertNotNull(author_selected),
-                () -> assertEquals(4, author_selected.get().getId()),
-                () -> assertEquals(author.getSurname(), author_selected.get().getSurname()),
-                () -> assertEquals(author.getFirstName(), author_selected.get().getFirstName()),
-                () -> assertEquals(author.getSecondName(), author_selected.get().getSecondName())
+                () -> assertEquals(4, author_selected.orElse(null).getId()),
+                () -> assertEquals(author.getSurname(), author_selected.orElse(null).getSurname()),
+                () -> assertEquals(author.getFirstName(), author_selected.orElse(null).getFirstName()),
+                () -> assertEquals(author.getSecondName(), author_selected.orElse(null).getSecondName())
         );
     }
 
@@ -88,10 +83,6 @@ class AuthorDaoJpaTest {
     @DisplayName("Удаление автора, который используется в таблице книг")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void deleteObject() {
-        //authorDao.deleteById(1L);
-        ////assertThat(authorDao.count()).isEqualTo(1);
-        //assertThrows(DataIntegrityViolationException.class, () -> { authorDao.count(); });
-
         assertThrows(DataIntegrityViolationException.class, () -> authorDao.deleteById(1L));
         assertThat(authorDao.count()).isEqualTo(3);
     }
@@ -102,7 +93,7 @@ class AuthorDaoJpaTest {
         authorDao.save(
                 new Author(1L, "TestSurname", "TestFirstName", "TestSecondName")
         );
-        Author author = authorDao.findById(1L).get();
+        Author author = authorDao.findById(1L).orElse(null);
 
         assertAll(
                 "author",

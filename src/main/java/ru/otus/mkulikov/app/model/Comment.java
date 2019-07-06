@@ -4,17 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -27,6 +17,17 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "COMMENT")
+
+@NamedEntityGraph(
+        name = "CommentGraph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "id"),
+                @NamedAttributeNode(value = "addRecordDate"),
+                @NamedAttributeNode(value = "userName"),
+                @NamedAttributeNode(value = "text"),
+                @NamedAttributeNode(value = "book")
+        }
+)
 public class Comment {
 
     @Id
@@ -72,6 +73,7 @@ public class Comment {
                 ", addRecordDate=" + addRecordDate +
                 ", userName=" + userName +
                 ", text='" + text + '\'' +
+                ", book='" + book + '\'' +
                 "}\n";
     }
 }

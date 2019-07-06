@@ -26,7 +26,7 @@ public class GenreManageServiceImpl implements GenreManageService {
     @Override
     public Genre getGenreById(long id) {
         Optional<Genre> genre = genreDao.findById(id);
-        return genre.get();
+        return genre.orElse(null);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public int updateGenre(long id, String name) {
-        Genre genre = genreDao.findById(id).get();
+        Genre genre = genreDao.findById(id).orElse(null);
         genre.setName(name);
 
         genreDao.save(genre);

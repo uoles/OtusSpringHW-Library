@@ -26,7 +26,7 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     @Override
     public Author getAuthorById(long id) {
         Optional<Author> author = authorDao.findById(id);
-        return author.get();
+        return author.orElse(null);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public int updateAuthor(long id, String surname, String firstName, String secondName) {
-        Author author = authorDao.findById(id).get();
+        Author author = authorDao.findById(id).orElse(null);
         author.setSurname(surname);
         author.setFirstName(firstName);
         author.setSecondName(secondName);

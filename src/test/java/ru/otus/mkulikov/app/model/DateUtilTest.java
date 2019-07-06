@@ -8,9 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,27 +26,19 @@ class DateUtilTest {
     @Test
     @DisplayName("Перевод даты в строку, формат даты '" + DATE_PATTERN + "'")
     void dateToString() {
-        Book book = getNewBook();
-        DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        Date date = new Date();
 
-        assertAll(
-                "book",
-                () -> assertNotNull(book),
-                () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateToString(book.getAddRecordDate()))
-        );
+        DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        assertEquals(dateFormat.format(date), DateUtil.dateToString(date));
     }
 
     @Test
     @DisplayName("Перевод даты в строку, формат даты '" + DATETIME_PATTERN + "'")
     void dateTimeToString() {
-        Book book = getNewBook();
-        DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
+        Date date = new Date();
 
-        assertAll(
-                "book",
-                () -> assertNotNull(book),
-                () -> assertEquals(dateFormat.format(new Date()), DateUtil.dateTimeToString(book.getAddRecordDate()))
-        );
+        DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
+        assertEquals(dateFormat.format(date), DateUtil.dateTimeToString(date));
     }
 
     @Test
@@ -60,11 +50,5 @@ class DateUtilTest {
         DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
 
         assertEquals(datetime, dateFormat.format(date));
-    }
-
-    private Book getNewBook() {
-        Author author = new Author(1L, "TestSurname", "TestFirstName", "TestSecondName");
-        Genre genre = new Genre("Test4");
-        return new Book(1L, new Date(), "Test_Book", author, genre, "Test_Comment");
     }
 }

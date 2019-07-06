@@ -3,6 +3,7 @@ package ru.otus.mkulikov.app.dao;
 import lombok.RequiredArgsConstructor;
 import ru.otus.mkulikov.app.model.Book;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -24,27 +25,21 @@ public class BookDaoCustomImpl implements BookDaoCustom<Book> {
 
     @Override
     public Optional<Book> getById(long id) {
-        List<Book> books = em.createQuery("select b "
-                                          + "from Book b "
-                                          + "inner join fetch b.author a "
-                                          + "inner join fetch b.genre g "
-                                          + "where b.id = :id ", Book.class)
+        EntityGraph entityGraph = em.getEntityGraph("BookGraph");
+        List<Book> books = em.createQuery("select b from Book b where b.id = :id ", Book.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .setParameter("id", id)
                 .getResultList();
 
         em.clear();
-        return Optional.of(
-                (books != null && !books.isEmpty()) ? books.get(0) : null
-        );
+        return (books != null && !books.isEmpty()) ? Optional.of(books.get(0)) : Optional.empty();
     }
 
     @Override
     public List<Book> getAllObjects() {
-        List<Book> books = em.createQuery("select b "
-                                          + "from Book b "
-                                          + "inner join fetch b.author a "
-                                          + "inner join fetch b.genre g "
-                                          + "order by b.id ", Book.class)
+        EntityGraph entityGraph = em.getEntityGraph("BookGraph");
+        List<Book> books = em.createQuery("select b from Book b order by b.id ", Book.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getResultList();
 
         em.clear();

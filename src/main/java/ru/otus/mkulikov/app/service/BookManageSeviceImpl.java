@@ -28,7 +28,7 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book getBookById(long id) {
-        return bookDao.getById(id).get();
+        return bookDao.getById(id).orElse(null);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public long addBook(String caption, long authorId, long genreId, String description) {
-        Author author = authorDao.findById(authorId).get();
-        Genre genre = genreDao.findById(genreId).get();
+        Author author = authorDao.findById(authorId).orElse(null);
+        Genre genre = genreDao.findById(genreId).orElse(null);
 
         Book book = bookDao.save(new Book(caption, author, genre, description));
         return book.getId();
@@ -47,10 +47,10 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public int updateBook(long id, String caption, long authorId, long genreId, String description) {
-        Author author = authorDao.findById(authorId).get();
-        Genre genre = genreDao.findById(genreId).get();
+        Author author = authorDao.findById(authorId).orElse(null);
+        Genre genre = genreDao.findById(genreId).orElse(null);
 
-        Book book = bookDao.findById(id).get();
+        Book book = bookDao.getById(id).orElse(null);
         book.setCaption(caption);
         book.setAuthor(author);
         book.setGenre(genre);

@@ -71,9 +71,9 @@ class GenreManageSeviceImplTest {
 
             @Override
             public Genre answer(InvocationOnMock invocationOnMock) throws Throwable {
-                Genre author = (Genre) invocationOnMock.getArgument(0);
-                author.setId(++sequence);
-                return author;
+                Genre genre = (Genre) invocationOnMock.getArgument(0);
+                genre.setId(++sequence);
+                return genre;
             }
         });
 

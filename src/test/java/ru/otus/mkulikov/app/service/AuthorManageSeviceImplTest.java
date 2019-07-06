@@ -1,6 +1,5 @@
 package ru.otus.mkulikov.app.service;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -88,7 +87,6 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
-    @Ignore
     @DisplayName("Обновление автора")
     void updateAuthor() {
         when(authorDao.save(any(Author.class))).then(new Answer<Author>() {
@@ -111,7 +109,6 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
-    @Ignore
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
         doThrow(DataIntegrityViolationException.class).when(authorDao).deleteById(1L);

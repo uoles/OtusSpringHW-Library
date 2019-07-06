@@ -3,6 +3,7 @@ package ru.otus.mkulikov.app.dao;
 import lombok.RequiredArgsConstructor;
 import ru.otus.mkulikov.app.model.Comment;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -24,27 +25,21 @@ public class CommentDaoCustomImpl implements CommentDaoCustom<Comment> {
 
     @Override
     public Optional<Comment> getById(long id) {
-        List<Comment> list = em.createQuery(
-                "select c " +
-                        "from Comment c " +
-                        "inner join fetch c.book b " +
-                        "where c.id = :id", Comment.class)
+        EntityGraph entityGraph = em.getEntityGraph("CommentGraph");
+        List<Comment> list = em.createQuery("select c from Comment c where c.id = :id ", Comment.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .setParameter("id", id)
                 .getResultList();
 
         em.clear();
-        return Optional.of(
-                (list != null && !list.isEmpty()) ? list.get(0) : null
-        );
+        return (list != null && !list.isEmpty()) ? Optional.of(list.get(0)) : Optional.empty();
     }
 
     @Override
     public List<Comment> getByBookId(long bookId) {
-        List<Comment> list = em.createQuery(
-                "select c " +
-                        "from Comment c " +
-                        "inner join fetch c.book b " +
-                        "where c.book.id = :bookId", Comment.class)
+        EntityGraph entityGraph = em.getEntityGraph("CommentGraph");
+        List<Comment> list = em.createQuery("select c from Comment c where c.book.id = :bookId ", Comment.class)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .setParameter("bookId", bookId)
                 .getResultList();
 

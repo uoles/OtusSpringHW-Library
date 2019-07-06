@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
+import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.CommentDao;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
@@ -22,6 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -40,6 +44,9 @@ class CommentManageSeviceImplTest {
 
     @Mock
     private CommentDao commentDao;
+
+    @Mock
+    private BookDao bookDao;
 
     @InjectMocks
     private CommentManageServiceImpl commentManageService;
@@ -67,56 +74,57 @@ class CommentManageSeviceImplTest {
         assertThat(comments).containsAll(commentsList);
     }
 
-    //@Test
-    //@DisplayName("Добавление комментария")
-    //void addComment() {
-    //    long id = commentManageService.addComment(1L, "user5", "text5");
-    //    Comment comment = commentManageService.getCommentById(id);
-    //
-    //    assertAll(
-    //            "comment",
-    //            () -> assertNotNull(comment),
-    //            () -> assertNotNull(comment.getBook()),
-    //            () -> assertNotEquals(0, id),
-    //            () -> assertEquals("user5", comment.getUserName()),
-    //            () -> assertEquals("text5", comment.getText())
-    //    );
-    //}
+    @Test
+    @DisplayName("Добавление комментария")
+    void addComment() {
+        Book book = getBook(1L);
 
-    //@Test
-    //@DisplayName("Получение комментариев по Id книги")
-    //void getCommentsByBookId() {
-    //    List<Comment> comments = commentManageService.getCommentsByBookId(1L);
-    //
-    //    assertAll(
-    //            "comments",
-    //            () -> assertNotNull(comments),
-    //            () -> assertEquals(2, comments.size()),
-    //            () -> assertEquals("text1", comments.get(0).getText()),
-    //            () -> assertEquals("text2", comments.get(1).getText())
-    //    );
-    //}
+        when(commentDao.save(any(Comment.class))).then(new Answer<Comment>() {
+            int sequence = 1;
 
-    //@Test
-    //@DisplayName("Обновление комментария")
-    //void updateComment() {
-    //    Comment comment1 = commentManageService.getCommentById(1L);
-    //    int count = commentManageService.updateComment(1L, "TestUser", "TestText");
-    //    Comment comment2 = commentManageService.getCommentById(1L);
-    //
-    //    assertAll(
-    //            "comment",
-    //            () -> assertNotNull(comment1),
-    //            () -> assertNotNull(comment2),
-    //            () -> assertNotNull(comment1.getBook()),
-    //            () -> assertNotNull(comment2.getBook()),
-    //            () -> assertEquals(1, count),
-    //            () -> assertEquals("user1", comment1.getUserName()),
-    //            () -> assertEquals("text1", comment1.getText()),
-    //            () -> assertEquals("TestUser", comment2.getUserName()),
-    //            () -> assertEquals("TestText", comment2.getText())
-    //    );
-    //}
+            @Override
+            public Comment answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Comment comment = (Comment) invocationOnMock.getArgument(0);
+                comment.setId(++sequence);
+                return comment;
+            }
+        });
+        when(bookDao.getById(anyLong())).thenReturn( Optional.of(book) );
+
+        long id = commentManageService.addComment(1L, "user5", "text5");
+
+        assertThat(id).isEqualTo(2L);
+    }
+
+    @Test
+    @DisplayName("Получение комментариев по Id книги")
+    void getCommentsByBookId() {
+        List<Comment> commentList = getCommentList();
+        when(commentDao.getByBookId(anyLong())).thenReturn( commentList );
+        List<Comment> comments = commentManageService.getCommentsByBookId(1L);
+
+        assertThat(comments).isNotNull();
+        assertThat(comments).isEqualTo(commentList);
+    }
+
+    @Test
+    @DisplayName("Обновление комментария")
+    void updateComment() {
+        when(commentDao.save(any(Comment.class))).then(new Answer<Comment>() {
+
+            @Override
+            public Comment answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Comment comment = (Comment) invocationOnMock.getArgument(0);
+                comment.setId(1L);
+                return comment;
+            }
+        });
+        when(commentDao.getById(anyLong())).thenReturn( Optional.of(getComment(1L)) );
+
+        int count = commentManageService.updateComment(1L, "TestUser", "TestText");
+
+        assertThat(count).isEqualTo(1);
+    }
 
     @Test
     @DisplayName("Удаление комментария")
@@ -127,10 +135,14 @@ class CommentManageSeviceImplTest {
 
     private Comment getComment(long id) {
         Date date = DateUtil.stringToDateTime("2019-01-01 10:01:01");
+        Book book = getBook(id);
+        return new Comment(id, book, date, "user" + id, "text" + id);
+    }
+
+    private Book getBook(long id) {
         Author author = new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
         Genre genre = new Genre(id, "Genre" + id);
-        Book book = new Book(id, "Test_Book", author, genre, "Test_Description");
-        return new Comment(id, book, date, "user" + id, "text" + id);
+        return new Book(id, "Test_Book", author, genre, "Test_Description");
     }
 
     private List<Comment> getCommentList() {

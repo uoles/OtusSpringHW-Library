@@ -2,21 +2,16 @@ package ru.otus.mkulikov.app.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,7 +32,7 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Получение жанра по id")
     void getById() {
-        Genre genre = genreDaoJpa.findById(1L).get();
+        Genre genre = genreDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "genre",
@@ -66,7 +61,7 @@ class GenreDaoJpaTest {
     @DisplayName("Добавление жанра")
     void addObject() {
         genreDaoJpa.save(new Genre("Test4"));
-        Genre genre = genreDaoJpa.findById(4L).get();
+        Genre genre = genreDaoJpa.findById(4L).orElse(null);
 
         assertAll(
                 "genre",
@@ -88,7 +83,7 @@ class GenreDaoJpaTest {
     @DisplayName("Обновление жанра")
     void updateObject() {
         genreDaoJpa.save(new Genre(1L, "UpdatedName"));
-        Genre genre = genreDaoJpa.findById(1L).get();
+        Genre genre = genreDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "genre",

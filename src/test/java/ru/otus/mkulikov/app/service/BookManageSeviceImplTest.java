@@ -2,20 +2,31 @@ package ru.otus.mkulikov.app.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
+import ru.otus.mkulikov.app.dao.AuthorDao;
+import ru.otus.mkulikov.app.dao.BookDao;
+import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.utils.DateUtil;
+import ru.otus.mkulikov.app.model.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,85 +35,114 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Time: 13:40
  */
 
-@DataJpaTest
 @DisplayName("Класс BookManageSevice")
-@ComponentScan("ru.otus.mkulikov.app")
+@ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations= "classpath:application.yml")
 class BookManageSeviceImplTest {
 
-    @Autowired
-    private BookManageSevice booksManageSevice;
+    @Mock
+    private BookDao bookDao;
+
+    @Mock
+    private AuthorDao authorDao;
+
+    @Mock
+    private GenreDao genreDao;
+
+    @InjectMocks
+    private BookManageSeviceImpl booksManageSevice;
 
     @Test
     @DisplayName("Получение книги по id")
     void getBookById() {
-        Book book = booksManageSevice.getBookById(1L);
+        Book book = getBook(1L);
+        when(bookDao.getById(anyLong())).thenReturn( Optional.of(book) );
+        Book bookById = booksManageSevice.getBookById(1L);
 
-        assertAll(
-                "book",
-                () -> assertNotNull(book),
-                () -> assertNotNull(book.getAuthor()),
-                () -> assertNotNull(book.getGenre()),
-                () -> assertEquals(1L, book.getId()),
-                () -> assertEquals("2019-01-01", DateUtil.dateToString(book.getAddRecordDate())),
-                () -> assertEquals("book_1", book.getCaption()),
-                () -> assertEquals(1, book.getAuthor().getId()),
-                () -> assertEquals(1, book.getGenre().getId()),
-                () -> assertEquals("description", book.getDescription())
-        );
+        assertThat(bookById).isNotNull();
+        assertThat(bookById).isEqualTo(book);
     }
 
     @Test
     @DisplayName("Получение всех книг")
     void getBooks() {
-        List<Book> books = booksManageSevice.getBooks();
+        List<Book> list = getBooksList();
+        when(bookDao.getAllObjects()).thenReturn( list );
+        List<Book> comments = booksManageSevice.getBooks();
 
-        assertAll(
-                "books",
-                () -> assertNotNull(books),
-                () -> assertEquals(3, books.size()),
-                () -> assertEquals("book_1", books.get(0).getCaption()),
-                () -> assertEquals("book_2", books.get(1).getCaption()),
-                () -> assertEquals("book_3", books.get(2).getCaption())
-        );
+        assertThat(comments).isNotNull();
+        assertThat(comments).hasSize(3);
+        assertThat(comments).containsAll(list);
     }
 
     @Test
     @DisplayName("Добавление книги")
     void addBook() {
-        long id = booksManageSevice.addBook("Test_Book", 2, 3, "Test_Description");
-        Book book = booksManageSevice.getBookById(id);
+        when(bookDao.save(any(Book.class))).then(new Answer<Book>() {
+            int sequence = 1;
 
-        assertAll(
-                "book",
-                () -> assertNotNull(book),
-                () -> assertNotEquals(0, id),
-                () -> assertEquals("Test_Book", book.getCaption()),
-                () -> assertEquals(2, book.getAuthor().getId()),
-                () -> assertEquals(3, book.getGenre().getId()),
-                () -> assertEquals("Test_Description", book.getDescription())
-        );
+            @Override
+            public Book answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Book book = (Book) invocationOnMock.getArgument(0);
+                book.setId(++sequence);
+                return book;
+            }
+        });
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
+
+        long id = booksManageSevice.addBook("Caption", 1L, 1L, "description");
+
+        assertThat(id).isEqualTo(2L);
     }
 
     @Test
     @DisplayName("Обновление книги")
     void updateBook() {
-        int count = booksManageSevice.updateBook(1L, "Test_Book", 1, 1, "Test_Description");
-        Book book2 = booksManageSevice.getBookById(1L);
+        when(bookDao.save(any(Book.class))).then(new Answer<Book>() {
 
-        assertAll(
-                "book",
-                () -> assertEquals(1, count),
-                () -> assertEquals("Test_Book", book2.getCaption()),
-                () -> assertEquals("Test_Description", book2.getDescription())
-        );
+            @Override
+            public Book answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Book book = (Book) invocationOnMock.getArgument(0);
+                book.setId(1L);
+                return book;
+            }
+        });
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
+        when(bookDao.getById(anyLong())).thenReturn( Optional.of(getBook(1L)) );
+
+        int count = booksManageSevice.updateBook(1L, "Caption", 1L, 1L, "description");
+
+        assertThat(count).isEqualTo(1);
     }
 
     @Test
     @DisplayName("Удаление книги по id")
     void deleteBook() {
-        booksManageSevice.deleteBook(1L);
-        assertThrows(NullPointerException.class, () -> { booksManageSevice.getBookById(1L); });
+        doThrow(DataIntegrityViolationException.class).when(bookDao).deleteById(1L);
+        assertThrows(DataIntegrityViolationException.class, () -> { booksManageSevice.deleteBook(1L); });
     }
 
+    private Author getAuthor(long id) {
+        return new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
+    }
+
+    private Genre getGenre(long id) {
+        return new Genre(id, "Genre" + id);
+    }
+
+    private Book getBook(long id) {
+        Author author = getAuthor(id);
+        Genre genre = getGenre(id);
+        return new Book(id, "Test_Book", author, genre, "Test_Description");
+    }
+
+    private List<Book> getBooksList() {
+        List<Book> list = new ArrayList<>();
+        list.add(getBook(1L));
+        list.add(getBook(2L));
+        list.add(getBook(3L));
+        return list;
+    }
 }

@@ -2,24 +2,19 @@ package ru.otus.mkulikov.app.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,13 +31,14 @@ class CommentDaoJpaTest {
 
     @Autowired
     private BookDao bookDaoJpa;
+
     @Autowired
     private CommentDao commentDaoJpa;
 
     @Test
     @DisplayName("Получение комментария по id")
     void getById() {
-        Comment comment = commentDaoJpa.getById(1L).get();
+        Comment comment = commentDaoJpa.getById(1L).orElse(null);
 
         assertAll(
                 "comment",
@@ -89,10 +85,10 @@ class CommentDaoJpaTest {
     @DisplayName("Добавление комментария")
     void addObject() {
         Date date = new Date();
-        Book book = bookDaoJpa.getById(1L).get();
+        Book book = bookDaoJpa.getById(1L).orElse(null);
         commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
 
-        Comment comment = commentDaoJpa.getById(5L).get();
+        Comment comment = commentDaoJpa.getById(5L).orElse(null);
 
         assertAll(
                 "comment",
@@ -109,19 +105,19 @@ class CommentDaoJpaTest {
     @DisplayName("Удаление комментария")
     void deleteObject() {
         commentDaoJpa.deleteById(1L);
-        Comment comment = commentDaoJpa.getById(1L).get();
-        assertNull(comment);
+        Optional<Comment> comment = commentDaoJpa.getById(1L);
+        assertTrue(comment.isEmpty());
     }
 
     @Test
     @DisplayName("Обновление комментария")
     void updateObject() {
-        Comment comment1 = commentDaoJpa.getById(1L).get();
+        Comment comment1 = commentDaoJpa.getById(1L).orElse(null);
 
         Date date = new Date();
         commentDaoJpa.save(new Comment(1L, comment1.getBook(), date, "TestUser", "TestText"));
 
-        Comment comment2 = commentDaoJpa.getById(1L).get();
+        Comment comment2 = commentDaoJpa.getById(1L).orElse(null);
 
         assertAll(
                 "comment",
