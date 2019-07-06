@@ -7,10 +7,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,12 +30,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class GenreDaoJpaTest {
 
     @Autowired
-    private GenreDao genreDaoJpa;
+    private GenreDao genreDao;
 
     @Test
     @DisplayName("Получение жанра по id")
     void getById() {
-        Genre genre = genreDaoJpa.findById(1L).orElse(null);
+        Genre genre = genreDao.findById(1L).orElse(null);
 
         assertAll(
                 "genre",
@@ -45,7 +48,7 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Получение всех жанров")
     void getAllObjects() {
-        List<Genre> genres = genreDaoJpa.findAll();
+        List<Genre> genres = genreDao.findAll();
 
         assertAll(
                 "genres",
@@ -60,8 +63,8 @@ class GenreDaoJpaTest {
     @Test
     @DisplayName("Добавление жанра")
     void addObject() {
-        genreDaoJpa.save(new Genre("Test4"));
-        Genre genre = genreDaoJpa.findById(4L).orElse(null);
+        genreDao.save(new Genre("Test4"));
+        Genre genre = genreDao.findById(4L).orElse(null);
 
         assertAll(
                 "genre",
@@ -73,17 +76,17 @@ class GenreDaoJpaTest {
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void deleteObject() {
-        genreDaoJpa.deleteById(1L);
-        //assertThat(authorDao.count()).isEqualTo(1);
-        assertThrows(DataIntegrityViolationException.class, () -> { genreDaoJpa.count(); });
+        assertThrows(DataIntegrityViolationException.class, () -> genreDao.deleteById(1L));
+        assertThat(genreDao.count()).isEqualTo(3);
     }
 
     @Test
     @DisplayName("Обновление жанра")
     void updateObject() {
-        genreDaoJpa.save(new Genre(1L, "UpdatedName"));
-        Genre genre = genreDaoJpa.findById(1L).orElse(null);
+        genreDao.save(new Genre(1L, "UpdatedName"));
+        Genre genre = genreDao.findById(1L).orElse(null);
 
         assertAll(
                 "genre",
