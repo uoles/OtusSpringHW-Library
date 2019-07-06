@@ -1,0 +1,154 @@
+databaseChangeLog:
+- changeSet:
+    id: 2019-06-22--0001-schema-author
+    author: KulikovMV
+    createTable:
+      tableName: author
+      columns:
+      - column:
+          name: id
+          type: number(20,0)
+          constraints:
+            nullable: false
+            primaryKey: true
+            primaryKeyName: pk_author
+      - column:
+          name: surname
+          type: varchar(100)
+          constraints:
+            nullable: false
+      - column:
+          name: first_name
+          type: varchar(100)
+          constraints:
+            nullable: false
+      - column:
+          name: second_name
+          type: varchar(100)
+- changeSet:
+    id: 2019-06-22--0001-schema-genre
+    author: KulikovMV
+    createTable:
+      tableName: genre
+      columns:
+        - column:
+            name: id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pk_genre
+        - column:
+            name: name
+            type: varchar(100)
+            constraints:
+              nullable: false
+- changeSet:
+    id: 2019-06-22--0001-schema-book
+    author: KulikovMV
+    createTable:
+      tableName: book
+      columns:
+        - column:
+            name: id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pk_book
+        - column:
+            name: add_record_date
+            type: timestamp
+            defaultValueDate: sysdate
+            constraints:
+              nullable: false
+        - column:
+            name: caption
+            type: varchar(255)
+            constraints:
+              nullable: false
+        - column:
+            name: author_id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              foreignKeyName: fk_author
+              references: author(id)
+        - column:
+            name: genre_id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              foreignKeyName: fk_genre
+              references: genre(id)
+        - column:
+            name: description
+            type: varchar(255)
+            constraints:
+              nullable: false
+- changeSet:
+    id: 2019-06-22--0001-schema-comment
+    author: KulikovMV
+    createTable:
+      tableName: comment
+      columns:
+        - column:
+            name: id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pk_comment
+        - column:
+            name: book_id
+            type: number(20,0)
+            constraints:
+              nullable: false
+              foreignKeyName: fk_comment
+              references: book(id)
+              deleteCascade: true
+              onDelete: cascade
+        - column:
+            name: add_record_date
+            type: timestamp
+            defaultValueDate: sysdate
+            constraints:
+              nullable: false
+        - column:
+            name: user_name
+            type: varchar(20)
+            constraints:
+              nullable: false
+        - column:
+            name: text
+            type: varchar(500)
+            constraints:
+              nullable: false
+- changeSet:
+    id: 2019-06-22--0001-schema-sequences
+    author: KulikovMV
+    changes:
+      - createSequence:
+          cycle: true
+          incrementBy: 1
+          ordered: true
+          sequenceName: sq_author
+          startValue: 1
+      - createSequence:
+          cycle: true
+          incrementBy: 1
+          ordered: true
+          sequenceName: sq_genre
+          startValue: 1
+      - createSequence:
+          cycle: true
+          incrementBy: 1
+          ordered: true
+          sequenceName: sq_book
+          startValue: 1
+      - createSequence:
+          cycle: true
+          incrementBy: 1
+          ordered: true
+          sequenceName: sq_comment
+          startValue: 1
