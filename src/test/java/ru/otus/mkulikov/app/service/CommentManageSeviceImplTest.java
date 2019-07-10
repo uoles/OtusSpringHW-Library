@@ -9,7 +9,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.TestPropertySource;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.CommentDao;
 import ru.otus.mkulikov.app.model.Author;
@@ -39,7 +38,6 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("Класс CommentManageSevice")
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations= "classpath:application.yml")
 class CommentManageSeviceImplTest {
 
     @Mock

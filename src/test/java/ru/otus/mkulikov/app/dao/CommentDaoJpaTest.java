@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.TestPropertySource;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 import ru.otus.mkulikov.app.utils.DateUtil;
@@ -25,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DisplayName("Класс CommentDaoJpa")
-@ComponentScan("ru.otus.mkulikov.app")
-@TestPropertySource(locations= "classpath:application.yml")
 class CommentDaoJpaTest {
 
     @Autowired

@@ -9,7 +9,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.TestPropertySource;
 import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Genre;
 
@@ -33,7 +32,6 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("Класс GenreManageSevice")
 @ExtendWith(MockitoExtension.class)
-@TestPropertySource(locations= "classpath:application.yml")
 class GenreManageSeviceImplTest {
 
     @Mock
