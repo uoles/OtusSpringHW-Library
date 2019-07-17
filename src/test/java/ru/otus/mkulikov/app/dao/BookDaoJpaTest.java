@@ -3,7 +3,7 @@ package ru.otus.mkulikov.app.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Time: 13:16
  */
 
-@DataJpaTest
+@DataMongoTest
 @DisplayName("Класс BookDaoJpa")
 class BookDaoJpaTest {
 
@@ -38,7 +38,7 @@ class BookDaoJpaTest {
     @Test
 	@DisplayName("Получение книги по id")
     void getById() {
-        Book book = bookDaoJpa.getById(1L).orElse(null);
+        Book book = bookDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "book",
@@ -55,7 +55,7 @@ class BookDaoJpaTest {
     @Test
 	@DisplayName("Получение всех книг")
     void getAllObjects() {
-        List<Book> books = bookDaoJpa.getAllObjects();
+        List<Book> books = bookDaoJpa.findAll();
 
         assertAll(
                 "books",
@@ -71,7 +71,7 @@ class BookDaoJpaTest {
     @DisplayName("Добавление книги")
     void addObject() {
         bookDaoJpa.save(getNewBook());
-        Book book = bookDaoJpa.getById(4L).orElse(null);
+        Book book = bookDaoJpa.findById(4L).orElse(null);
 
         assertAll(
                 "book",
@@ -88,7 +88,7 @@ class BookDaoJpaTest {
     @DisplayName("Удаление книги по id")
     void deleteObject() {
         bookDaoJpa.deleteById(1L);
-        Optional<Book> book = bookDaoJpa.getById(1L);
+        Optional<Book> book = bookDaoJpa.findById(1L);
         assertTrue(book.isEmpty());
     }
 
@@ -96,7 +96,7 @@ class BookDaoJpaTest {
     @DisplayName("Обновление книги")
     void updateObject() {
         bookDaoJpa.save(getUpdatedBook());
-        Book book2 = bookDaoJpa.getById(1L).orElse(null);
+        Book book2 = bookDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "book",

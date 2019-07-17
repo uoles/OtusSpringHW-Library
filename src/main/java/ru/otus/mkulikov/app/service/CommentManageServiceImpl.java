@@ -27,7 +27,7 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public Comment getCommentById(long id) {
-        Optional<Comment> comment = commentDao.getById(id);
+        Optional<Comment> comment = commentDao.findById(id);
         return comment.orElse(null);
     }
 
@@ -38,12 +38,12 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public List<Comment> getCommentsByBookId(long bookId) {
-        return commentDao.getByBookId(bookId);
+        return commentDao.findByBookId(bookId);
     }
 
     @Override
     public long addComment(long bookId, String userName, String text) {
-        Book book = bookDao.getById(bookId).orElse(null);
+        Book book = bookDao.findById(bookId).orElse(null);
 
         Comment comment = commentDao.save(new Comment(book, new Date(), userName, text));
         return comment.getId();
@@ -51,7 +51,7 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public int updateComment(long id, String userName, String text) {
-        Comment comment = commentDao.getById(id).orElse(null);
+        Comment comment = commentDao.findById(id).orElse(null);
         comment.setAddRecordDate(new Date());
         comment.setUserName(userName);
         comment.setText(text);

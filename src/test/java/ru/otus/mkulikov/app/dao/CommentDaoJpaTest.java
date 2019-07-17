@@ -3,7 +3,7 @@ package ru.otus.mkulikov.app.dao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 import ru.otus.mkulikov.app.utils.DateUtil;
@@ -12,7 +12,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Time: 9:45
  */
 
-@DataJpaTest
+@DataMongoTest
 @DisplayName("Класс CommentDaoJpa")
 class CommentDaoJpaTest {
 
@@ -34,7 +37,7 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Получение комментария по id")
     void getById() {
-        Comment comment = commentDaoJpa.getById(1L).orElse(null);
+        Comment comment = commentDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "comment",
@@ -66,7 +69,7 @@ class CommentDaoJpaTest {
     @Test
     @DisplayName("Получение всех комментариев для книги")
     void getObjectsByBook() {
-        List<Comment> comments = commentDaoJpa.getByBookId(1L);
+        List<Comment> comments = commentDaoJpa.findByBookId(1L);
 
         assertAll(
                 "comments",
@@ -81,10 +84,10 @@ class CommentDaoJpaTest {
     @DisplayName("Добавление комментария")
     void addObject() {
         Date date = new Date();
-        Book book = bookDaoJpa.getById(1L).orElse(null);
+        Book book = bookDaoJpa.findById(1L).orElse(null);
         commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
 
-        Comment comment = commentDaoJpa.getById(5L).orElse(null);
+        Comment comment = commentDaoJpa.findById(5L).orElse(null);
 
         assertAll(
                 "comment",
@@ -101,19 +104,19 @@ class CommentDaoJpaTest {
     @DisplayName("Удаление комментария")
     void deleteObject() {
         commentDaoJpa.deleteById(1L);
-        Optional<Comment> comment = commentDaoJpa.getById(1L);
-        assertTrue(comment.isEmpty());
+        Optional<Comment> comment = commentDaoJpa.findById(1L);
+        assertThat(comment).isNotEmpty();
     }
 
     @Test
     @DisplayName("Обновление комментария")
     void updateObject() {
-        Comment comment1 = commentDaoJpa.getById(1L).orElse(null);
+        Comment comment1 = commentDaoJpa.findById(1L).orElse(null);
 
         Date date = new Date();
         commentDaoJpa.save(new Comment(1L, comment1.getBook(), date, "TestUser", "TestText"));
 
-        Comment comment2 = commentDaoJpa.getById(1L).orElse(null);
+        Comment comment2 = commentDaoJpa.findById(1L).orElse(null);
 
         assertAll(
                 "comment",
@@ -128,5 +131,4 @@ class CommentDaoJpaTest {
                 () -> assertEquals("TestText", comment2.getText())
         );
     }
-
 }

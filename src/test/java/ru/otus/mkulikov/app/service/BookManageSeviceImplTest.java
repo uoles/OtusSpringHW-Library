@@ -54,7 +54,7 @@ class BookManageSeviceImplTest {
     @DisplayName("Получение книги по id")
     void getBookById() {
         Book book = getBook(1L);
-        when(bookDao.getById(anyLong())).thenReturn( Optional.of(book) );
+        when(bookDao.findById(anyLong())).thenReturn( Optional.of(book) );
         Book bookById = booksManageSevice.getBookById(1L);
 
         assertThat(bookById).isNotNull();
@@ -65,7 +65,7 @@ class BookManageSeviceImplTest {
     @DisplayName("Получение всех книг")
     void getBooks() {
         List<Book> list = getBooksList();
-        when(bookDao.getAllObjects()).thenReturn( list );
+        when(bookDao.findAll()).thenReturn( list );
         List<Book> comments = booksManageSevice.getBooks();
 
         assertThat(comments).isNotNull();
@@ -108,7 +108,7 @@ class BookManageSeviceImplTest {
         });
         when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
         when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
-        when(bookDao.getById(anyLong())).thenReturn( Optional.of(getBook(1L)) );
+        when(bookDao.findById(anyLong())).thenReturn( Optional.of(getBook(1L)) );
 
         int count = booksManageSevice.updateBook(1L, "Caption", 1L, 1L, "description");
 

@@ -1,7 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.mkulikov.app.model.Author;
 
 /**
@@ -11,7 +10,6 @@ import ru.otus.mkulikov.app.model.Author;
  * Time: 17:06
  */
 
-@Repository
-public interface AuthorDao extends JpaRepository<Author, Long> {
+public interface AuthorDao extends MongoRepository<Author, Long> {
 
 }

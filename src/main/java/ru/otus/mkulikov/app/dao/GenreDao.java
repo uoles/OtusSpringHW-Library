@@ -1,7 +1,6 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.mkulikov.app.model.Genre;
 
 /**
@@ -11,7 +10,6 @@ import ru.otus.mkulikov.app.model.Genre;
  * Time: 17:07
  */
 
-@Repository
-public interface GenreDao extends JpaRepository<Genre, Long> {
+public interface GenreDao extends MongoRepository<Genre, Long> {
 
 }

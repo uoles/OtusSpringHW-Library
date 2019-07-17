@@ -1,10 +1,11 @@
 package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.keyvalue.annotation.KeySpace;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -15,36 +16,17 @@ import java.util.Date;
  */
 
 @Data
-@Entity
-@Table(name = "COMMENT")
-
-@NamedEntityGraph(
-        name = "CommentGraph",
-        attributeNodes = {
-                @NamedAttributeNode(value = "id"),
-                @NamedAttributeNode(value = "addRecordDate"),
-                @NamedAttributeNode(value = "userName"),
-                @NamedAttributeNode(value = "text"),
-                @NamedAttributeNode(value = "book")
-        }
-)
+@Document
+@KeySpace("comment")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_comment")
-    @SequenceGenerator(name = "sq_comment", sequenceName = "sq_comment", allocationSize = 1)
-    @Column(name = "ID")
     private long id;
-    @Column(name = "ADD_RECORD_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date addRecordDate;
-    @Column(name = "USER_NAME")
     private String userName;
-    @Column(name = "TEXT")
     private String text;
 
-    @Fetch(FetchMode.JOIN)
-    @ManyToOne(optional=false, fetch = FetchType.EAGER)
+    @DBRef(db = "book")
     private Book book;
 
     public Comment() {

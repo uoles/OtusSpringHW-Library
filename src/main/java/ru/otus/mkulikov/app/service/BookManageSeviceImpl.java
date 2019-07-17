@@ -28,12 +28,12 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book getBookById(long id) {
-        return bookDao.getById(id).orElse(null);
+        return bookDao.findById(id).orElse(null);
     }
 
     @Override
     public List<Book> getBooks() {
-        return bookDao.getAllObjects();
+        return bookDao.findAll();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BookManageSeviceImpl implements BookManageSevice {
         Author author = authorDao.findById(authorId).orElse(null);
         Genre genre = genreDao.findById(genreId).orElse(null);
 
-        Book book = bookDao.getById(id).orElse(null);
+        Book book = bookDao.findById(id).orElse(null);
         book.setCaption(caption);
         book.setAuthor(author);
         book.setGenre(genre);

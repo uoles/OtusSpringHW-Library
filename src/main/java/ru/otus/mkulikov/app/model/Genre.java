@@ -1,8 +1,9 @@
 package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.keyvalue.annotation.KeySpace;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,16 +13,12 @@ import javax.persistence.*;
  */
 
 @Data
-@Entity
-@Table(name = "GENRE")
+@Document
+@KeySpace("genre")
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_genre")
-    @SequenceGenerator(name = "sq_genre", sequenceName = "sq_genre", allocationSize = 1)
-    @Column(name = "ID")
     private long id;
-    @Column(name = "NAME")
     private String name;
 
     public Genre() {

@@ -1,8 +1,9 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.mkulikov.app.model.Comment;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,7 +12,7 @@ import ru.otus.mkulikov.app.model.Comment;
  * Time: 23:48
  */
 
-@Repository
-public interface CommentDao extends JpaRepository<Comment, Long>, CommentDaoCustom<Comment> {
+public interface CommentDao extends MongoRepository<Comment, Long> {
 
+    List<Comment> findByBookId(long bookId);
 }
