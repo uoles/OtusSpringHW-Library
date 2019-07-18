@@ -38,7 +38,9 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public List<Comment> getCommentsByBookId(long bookId) {
-        return commentDao.findByBookId(bookId);
+        Optional<Book> book = bookDao.findById(bookId);
+
+        return commentDao.findByBook(book.orElse(null));
     }
 
     @Override

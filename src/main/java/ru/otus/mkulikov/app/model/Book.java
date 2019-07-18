@@ -17,7 +17,7 @@ import java.util.Date;
 
 @Data
 @Document
-@KeySpace("book")
+//@KeySpace("book")
 public class Book {
 
     @Id
@@ -26,9 +26,9 @@ public class Book {
     private String caption;
     private String description;
 
-    @DBRef(db = "author")
+    @DBRef
     private Author author;
-    @DBRef(db = "genre")
+    @DBRef
     private Genre genre;
 
     public Book() {

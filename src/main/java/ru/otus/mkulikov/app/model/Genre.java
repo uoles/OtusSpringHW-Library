@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-@KeySpace("genre")
+//@KeySpace("genre")
 public class Genre {
 
     @Id

@@ -1,6 +1,8 @@
 package ru.otus.mkulikov.app.dao;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 
 import java.util.List;
@@ -14,5 +16,8 @@ import java.util.List;
 
 public interface CommentDao extends MongoRepository<Comment, Long> {
 
-    List<Comment> findByBookId(long bookId);
+//    @Query(value = "{ 'book.id' : ?0 }")
+//    List<Comment> findByBook(long id);
+
+    List<Comment> findByBook(Book book);
 }

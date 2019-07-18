@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 
 @DataMongoTest
-@DisplayName("Класс AuthorDaoJpa")
-class AuthorDaoJpaTest {
+@DisplayName("Класс AuthorDao")
+class AuthorDaoTest {
 
     @Autowired
     private AuthorDao authorDao;

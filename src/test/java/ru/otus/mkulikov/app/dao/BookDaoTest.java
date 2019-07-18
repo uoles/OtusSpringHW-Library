@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 @DataMongoTest
-@DisplayName("Класс BookDaoJpa")
-class BookDaoJpaTest {
+@DisplayName("Класс BookDao")
+class BookDaoTest {
 
     @Autowired
     private BookDao bookDaoJpa;

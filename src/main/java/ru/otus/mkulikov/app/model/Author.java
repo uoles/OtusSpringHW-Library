@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-@KeySpace("author")
+//@KeySpace("author")
 public class Author {
 
     @Id
