@@ -2,7 +2,6 @@ package ru.otus.mkulikov.app.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.keyvalue.annotation.KeySpace;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-//@KeySpace("genre")
 public class Genre {
 
     @Id

@@ -26,23 +26,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Класс GenreDao")
 class GenreDaoTest {
 
+    private final long ID_1 = 1L;
+    private final long ID_2 = 2L;
+    private final long ID_3 = 3L;
+    private final long ID_4 = 4L;
+
+    private final int OBJECT_COUNT_3 = 3;
+    private final int OBJECT_COUNT_2 = 2;
+
+    private final String UPDATED_NAME = "UpdatedName";
+    private final String GENRE_NAME = "GenreName";
+
     @Autowired
     private GenreDao genreDao;
 
     @BeforeEach
     void init() {
-        genreDao.save(getGenre(1L));
-        genreDao.save(getGenre(2L));
-        genreDao.save(getGenre(3L));
+        genreDao.save(getGenre(ID_1));
+        genreDao.save(getGenre(ID_2));
+        genreDao.save(getGenre(ID_3));
     }
 
     @Test
     @DisplayName("Получение жанра по id")
     void getById() {
-        Optional<Genre> genre = genreDao.findById(1L);
+        Optional<Genre> genre = genreDao.findById(ID_1);
 
         assertThat(genre).isNotEmpty();
-        assertThat(genre).contains(getGenre(1L));
+        assertThat(genre).contains(getGenre(ID_1));
     }
 
     @Test
@@ -51,14 +62,14 @@ class GenreDaoTest {
         List<Genre> genres = genreDao.findAll();
 
         assertThat(genres).isNotEmpty();
-        assertThat(genres).size().isEqualTo(3);
+        assertThat(genres).size().isEqualTo(OBJECT_COUNT_3);
         assertThat(genres).containsAll(getGenres());
     }
 
     @Test
     @DisplayName("Добавление жанра")
     void addObject() {
-        Genre genre = genreDao.save(getGenre(4L));
+        Genre genre = genreDao.save(getGenre(ID_4));
         Optional<Genre> genre_selected = genreDao.findById(genre.getId());
 
         assertThat(genre_selected).isNotEmpty();
@@ -69,20 +80,18 @@ class GenreDaoTest {
     @DisplayName("Удаление жанра")
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     void deleteObject() {
-//        assertThrows(DataIntegrityViolationException.class, () -> genreDao.deleteById(1L));
-
-        assertThat(genreDao.count()).isEqualTo(3);
-        genreDao.deleteById(1L);
-        assertThat(genreDao.count()).isEqualTo(2);
+        assertThat(genreDao.count()).isEqualTo(OBJECT_COUNT_3);
+        genreDao.deleteById(ID_1);
+        assertThat(genreDao.count()).isEqualTo(OBJECT_COUNT_2);
     }
 
     @Test
     @DisplayName("Обновление жанра")
     void updateObject() {
-        Genre genre = new Genre(1L, "UpdatedName");
+        Genre genre = new Genre(ID_1, UPDATED_NAME);
 
         genreDao.save(genre);
-        Optional<Genre> genre_updated = genreDao.findById(1L);
+        Optional<Genre> genre_updated = genreDao.findById(ID_1);
 
         assertThat(genre_updated).isNotEmpty();
         assertThat(genre_updated).contains(genre);
@@ -90,13 +99,13 @@ class GenreDaoTest {
 
     private List<Genre> getGenres() {
         List<Genre> genres = new ArrayList<Genre>();
-        genres.add(getGenre(1L));
-        genres.add(getGenre(2L));
-        genres.add(getGenre(3L));
+        genres.add(getGenre(ID_1));
+        genres.add(getGenre(ID_2));
+        genres.add(getGenre(ID_3));
         return genres;
     }
 
     private Genre getGenre(long id) {
-        return new Genre(id, "Genre" + id);
+        return new Genre(id, GENRE_NAME + id);
     }
 }

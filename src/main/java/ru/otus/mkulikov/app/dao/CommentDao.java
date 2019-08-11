@@ -1,6 +1,5 @@
 package ru.otus.mkulikov.app.dao;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
