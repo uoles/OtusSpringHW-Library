@@ -33,16 +33,11 @@ class BookDaoTest {
     private final long ID_3 = 3L;
     private final long ID_4 = 4L;
 
-    private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
 
     private final String SURNAME = "Surname";
     private final String FIRST_NAME = "FirstName";
     private final String SECOND_NAME = "SecondName";
-
-    private final String TEST_SURNAME = "TestSurname";
-    private final String TEST_FIRST_NAME = "TestFirstName";
-    private final String TEST_SECOND_NAME = "TestSecondName";
 
     private final String GENRE_NAME = "GenreName";
     private final String DATE_TIME = "2019-01-01 10:01:01";
@@ -96,42 +91,35 @@ class BookDaoTest {
     @Test
     @DisplayName("Добавление книги")
     void addObject() {
-        bookDaoJpa.save(getBook(ID_4));
-        Optional<Book> book = bookDaoJpa.findById(ID_4);
+        Book book = getNewBook(ID_4);
 
+        bookDaoJpa.save(book);
+        Optional<Book> book_selected = bookDaoJpa.findById(ID_4);
 
-
-//        assertAll(
-//                "book",
-//                () -> assertNotNull(book),
-//                () -> assertEquals(4L, book.getId()),
-//                () -> assertEquals("Test_Book", book.getCaption()),
-//                () -> assertEquals(1, book.getAuthor().getId()),
-//                () -> assertEquals(1, book.getGenre().getId()),
-//                () -> assertEquals("Test_Description", book.getDescription())
-//        );
+        assertThat(book_selected).isNotEmpty();
+        assertThat(book_selected).contains(book);
     }
-//
-//    @Test
-//    @DisplayName("Удаление книги по id")
-//    void deleteObject() {
-//        bookDaoJpa.deleteById(1L);
-//        Optional<Book> book = bookDaoJpa.findById(1L);
-//        assertThat(book).isEmpty();
-//    }
-//
-//    @Test
-//    @DisplayName("Обновление книги")
-//    void updateObject() {
-//        bookDaoJpa.save(getUpdatedBook());
-//        Book book2 = bookDaoJpa.findById(1L).orElse(null);
-//
-//        assertAll(
-//                "book",
-//                () -> assertEquals("Test_Book", book2.getCaption()),
-//                () -> assertEquals("Test_Description", book2.getDescription())
-//        );
-//    }
+
+    @Test
+    @DisplayName("Удаление книги по id")
+    void deleteObject() {
+        bookDaoJpa.deleteById(ID_1);
+        Optional<Book> book = bookDaoJpa.findById(ID_1);
+//        assertThat(book).isNotEmpty();
+        assertThat(book).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Обновление книги")
+    void updateObject() {
+        Book book = getUpdatedBook();
+
+        bookDaoJpa.save(book);
+        Optional<Book> book_selected = bookDaoJpa.findById(ID_1);
+
+        assertThat(book_selected).isNotEmpty();
+        assertThat(book_selected).contains(book);
+    }
 
     private Book getBook(long id) {
         Author author = getAuthor(id);
@@ -156,8 +144,15 @@ class BookDaoTest {
     }
 
     private Book getUpdatedBook() {
-        Author author = authorDao.findById(1L).orElse(null);
-        Genre genre = genreDao.findById(1L).orElse(null);
-        return new Book(1L, new Date(), UPDATED_BOOK_NAME, author, genre, UPDATED_DESCRIPTION);
+        Author author = authorDao.findById(ID_1).orElse(null);
+        Genre genre = genreDao.findById(ID_1).orElse(null);
+        return new Book(ID_1, new Date(), UPDATED_BOOK_NAME, author, genre, UPDATED_DESCRIPTION);
+    }
+
+    private Book getNewBook(long id) {
+        Author author = authorDao.findById(ID_1).orElse(null);
+        Genre genre = genreDao.findById(ID_1).orElse(null);
+        Date date = DateUtil.stringToDateTime(DATE_TIME);
+        return new Book(id, date, UPDATED_BOOK_NAME, author, genre, UPDATED_DESCRIPTION);
     }
 }

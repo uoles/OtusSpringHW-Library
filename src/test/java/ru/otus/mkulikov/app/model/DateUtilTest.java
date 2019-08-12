@@ -22,6 +22,7 @@ class DateUtilTest {
 
     private final String DATE_PATTERN = "yyyy-MM-dd";
     private final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    private final String DATE_TIME = "2019-01-01 10:01:01";
 
     @Test
     @DisplayName("Перевод даты в строку, формат даты '" + DATE_PATTERN + "'")
@@ -44,11 +45,9 @@ class DateUtilTest {
     @Test
     @DisplayName("Перевод строки в дату, формат даты '" + DATETIME_PATTERN + "'")
     void stringToDateTime() {
-        String datetime = "2019-01-01 10:01:01";
-
-        Date date = DateUtil.stringToDateTime(datetime);
+        Date date = DateUtil.stringToDateTime(DATE_TIME);
         DateFormat dateFormat = new SimpleDateFormat(DATETIME_PATTERN);
 
-        assertEquals(datetime, dateFormat.format(date));
+        assertEquals(DATE_TIME, dateFormat.format(date));
     }
 }

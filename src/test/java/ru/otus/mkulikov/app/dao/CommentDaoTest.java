@@ -17,9 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,12 +33,13 @@ class CommentDaoTest {
     private final long ID_2 = 2L;
     private final long ID_3 = 3L;
     private final long ID_4 = 4L;
+    private final long ID_5 = 5L;
 
     private final int OBJECT_COUNT_4 = 4;
     private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
 
-    private final String TEST_DATE_TIME = "2019-01-01 10:01:01";
+    private final String DATE_TIME = "2019-01-01 10:01:01";
     private final String GENRE_NAME = "GenreName";
 
     @Autowired
@@ -51,10 +49,10 @@ class CommentDaoTest {
     private GenreDao genreDao;
 
     @Autowired
-    private BookDao bookDaoJpa;
+    private BookDao bookDao;
 
     @Autowired
-    private CommentDao commentDaoJpa;
+    private CommentDao commentDao;
 
     @BeforeEach
     void init() {
@@ -66,19 +64,19 @@ class CommentDaoTest {
         genreDao.save(getGenre(ID_2));
         genreDao.save(getGenre(ID_3));
 
-        bookDaoJpa.save(getBook(ID_1));
-        bookDaoJpa.save(getBook(ID_2));
+        bookDao.save(getBook(ID_1));
+        bookDao.save(getBook(ID_2));
 
-        commentDaoJpa.save(getComment(ID_1, ID_1));
-        commentDaoJpa.save(getComment(ID_2, ID_1));
-        commentDaoJpa.save(getComment(ID_3, ID_2));
-        commentDaoJpa.save(getComment(ID_4, ID_2));
+        commentDao.save(getComment(ID_1, ID_1));
+        commentDao.save(getComment(ID_2, ID_1));
+        commentDao.save(getComment(ID_3, ID_2));
+        commentDao.save(getComment(ID_4, ID_2));
     }
 
     @Test
     @DisplayName("Получение комментария по id")
     void getById() {
-        Optional<Comment> comment = commentDaoJpa.findById(ID_1);
+        Optional<Comment> comment = commentDao.findById(ID_1);
 
         assertThat(comment).isNotEmpty();
         assertThat(comment).contains(getComment(ID_1, ID_1));
@@ -87,7 +85,7 @@ class CommentDaoTest {
     @Test
     @DisplayName("Получение всех комментариев")
     void getAllObjects() {
-        List<Comment> comments = commentDaoJpa.findAll();
+        List<Comment> comments = commentDao.findAll();
 
         assertThat(comments).isNotEmpty();
         assertThat(comments).size().isEqualTo(OBJECT_COUNT_4);
@@ -97,8 +95,8 @@ class CommentDaoTest {
     @Test
     @DisplayName("Получение всех комментариев для книги")
     void getObjectsByBook() {
-        Optional<Book> book = bookDaoJpa.findById(ID_1);
-        List<Comment> comments = commentDaoJpa.findByBook(book.orElse(null));
+        Optional<Book> book = bookDao.findById(ID_1);
+        List<Comment> comments = commentDao.findByBook(book.orElse(null));
 
         assertThat(comments).isNotEmpty();
         assertThat(comments).size().isEqualTo(OBJECT_COUNT_2);
@@ -108,57 +106,38 @@ class CommentDaoTest {
     @Test
     @DisplayName("Добавление комментария")
     void addObject() {
-        Date date = new Date();
-        Book book = bookDaoJpa.findById(ID_1).orElse(null);
-        commentDaoJpa.save(new Comment(book, date, "user5", "text5"));
+        Date date = DateUtil.stringToDateTime(DATE_TIME);
+        Book book = bookDao.findById(ID_1).orElse(null);
+        Comment comment = new Comment(ID_5, book, date, "user5", "text5");
+        commentDao.save(comment);
 
-        Comment comment = commentDaoJpa.findById(5L).orElse(null);
+        Optional<Comment> comment_selected = commentDao.findById(5L);
 
-        assertAll(
-                "comment",
-                () -> assertNotNull(comment),
-                () -> assertNotNull(comment.getBook()),
-                () -> assertEquals(5L, comment.getId()),
-                () -> assertEquals(date, comment.getAddRecordDate()),
-                () -> assertEquals("user5", comment.getUserName()),
-                () -> assertEquals("text5", comment.getText())
-        );
+        assertThat(comment_selected).isNotEmpty();
+        assertThat(comment_selected).contains(comment);
     }
 
     @Test
     @DisplayName("Удаление комментария")
     void deleteObject() {
-        commentDaoJpa.deleteById(ID_1);
-        Optional<Comment> comment = commentDaoJpa.findById(ID_1);
-        assertThat(comment).isNotEmpty();
+        commentDao.deleteById(ID_1);
+        Optional<Comment> comment = commentDao.findById(ID_1);
+        assertThat(comment).isEmpty();
     }
 
     @Test
     @DisplayName("Обновление комментария")
     void updateObject() {
-        Comment comment1 = commentDaoJpa.findById(ID_1).orElse(null);
+        Comment comment = getUpdatedComment();
+        commentDao.save(comment);
+        Optional<Comment> comment_selected = commentDao.findById(ID_1);
 
-        Date date = new Date();
-        commentDaoJpa.save(new Comment(ID_1, comment1.getBook(), date, "TestUser", "TestText"));
-
-        Comment comment2 = commentDaoJpa.findById(ID_1).orElse(null);
-
-        assertAll(
-                "comment",
-                () -> assertNotNull(comment1),
-                () -> assertNotNull(comment2),
-                () -> assertNotNull(comment1.getBook()),
-                () -> assertNotNull(comment2.getBook()),
-                () -> assertEquals("user1", comment1.getUserName()),
-                () -> assertEquals("text1", comment1.getText()),
-                () -> assertEquals(date, comment2.getAddRecordDate()),
-                () -> assertEquals("TestUser", comment2.getUserName()),
-                () -> assertEquals("TestText", comment2.getText())
-        );
+        assertThat(comment_selected).isNotEmpty();
+        assertThat(comment_selected).contains(comment);
     }
 
     private Comment getComment(long id, long bookId) {
-        Date date = DateUtil.stringToDateTime(TEST_DATE_TIME);
+        Date date = DateUtil.stringToDateTime(DATE_TIME);
         Book book = getBook(bookId);
         return new Comment(id, book, date, "user" + id, "text" + id);
     }
@@ -166,7 +145,7 @@ class CommentDaoTest {
     private Book getBook(long id) {
         Author author = getAuthor(id);
         Genre genre = getGenre(id);
-        Date date = DateUtil.stringToDateTime(TEST_DATE_TIME);
+        Date date = DateUtil.stringToDateTime(DATE_TIME);
         return new Book(id, date, "Test_Book", author, genre, "Test_Description");
     }
 
@@ -185,5 +164,13 @@ class CommentDaoTest {
         comments.add(getComment(ID_3, ID_2));
         comments.add(getComment(ID_4, ID_2));
         return comments;
+    }
+
+    private Comment getUpdatedComment() {
+        Comment comment = commentDao.findById(ID_1).orElse(null);
+        comment.setAddRecordDate(new Date());
+        comment.setUserName("TestUser");
+        comment.setText("TestText");
+        return comment;
     }
 }

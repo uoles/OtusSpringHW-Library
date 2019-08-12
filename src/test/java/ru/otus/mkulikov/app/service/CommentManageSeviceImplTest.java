@@ -100,7 +100,11 @@ class CommentManageSeviceImplTest {
     @DisplayName("Получение комментариев по Id книги")
     void getCommentsByBookId() {
         List<Comment> commentList = getCommentList();
-        when(commentDao.findByBook(getBook(1L))).thenReturn( commentList );
+        Optional<Book> book = Optional.of(getBook(1L));
+
+        when(bookDao.findById( anyLong() )).thenReturn( book );
+        when(commentDao.findByBook( book.orElse(null) )).thenReturn( commentList );
+
         List<Comment> comments = commentManageService.getCommentsByBookId(1L);
 
         assertThat(comments).isNotNull();

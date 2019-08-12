@@ -34,6 +34,16 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AuthorManageSeviceImplTest {
 
+    private final long ID_1 = 1L;
+    private final long ID_2 = 2L;
+    private final long ID_3 = 3L;
+
+    private final int OBJECT_COUNT_3 = 3;
+
+    private final String SURNAME = "Surname";
+    private final String FIRST_NAME = "FirstName";
+    private final String SECOND_NAME = "SecondName";
+
     @Mock
     private AuthorDao authorDao;
 
@@ -43,11 +53,11 @@ class AuthorManageSeviceImplTest {
     @Test
     @DisplayName("Получение автора по id")
     void getAuthorById() {
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
-        Author author = authorManageService.getAuthorById(1L);
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
+        Author author = authorManageService.getAuthorById(ID_1);
 
         assertThat(author).isNotNull();
-        assertThat(author).isEqualTo(getAuthor(1L));
+        assertThat(author).isEqualTo(getAuthor(ID_1));
     }
 
     @Test
@@ -57,7 +67,7 @@ class AuthorManageSeviceImplTest {
         List<Author> authors = authorManageService.getAuthors();
 
         assertThat(authors).isNotNull();
-        assertThat(authors).hasSize(3);
+        assertThat(authors).hasSize(OBJECT_COUNT_3);
         assertThat(authors).containsAll(getAuthorList());
     }
 
@@ -74,14 +84,14 @@ class AuthorManageSeviceImplTest {
                 return author;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(2L)) );
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_2)) );
 
         long id = authorManageService.addAuthor("Surname1", "FirstName1", "SecondName1");
         Author author = authorManageService.getAuthorById(id);
 
-        assertThat(id).isEqualTo(2L);
+        assertThat(id).isEqualTo(ID_2);
         assertThat(author).isNotNull();
-        assertThat(author).isEqualTo(getAuthor(2L));
+        assertThat(author).isEqualTo(getAuthor(ID_2));
     }
 
     @Test
@@ -92,36 +102,36 @@ class AuthorManageSeviceImplTest {
             @Override
             public Author answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Author author = (Author) invocationOnMock.getArgument(0);
-                author.setId(1L);
+                author.setId(ID_1);
                 return author;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
 
-        int count = authorManageService.updateAuthor(1L, "Surname1", "FirstName1", "SecondName1");
-        Author author = authorManageService.getAuthorById(1L);
+        int count = authorManageService.updateAuthor(ID_1, "Surname1", "FirstName1", "SecondName1");
+        Author author = authorManageService.getAuthorById(ID_1);
 
         assertThat(count).isEqualTo(1);
         assertThat(author).isNotNull();
-        assertThat(author).isEqualTo(getAuthor(1L));
+        assertThat(author).isEqualTo(getAuthor(ID_1));
     }
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
-        doThrow(DataIntegrityViolationException.class).when(authorDao).deleteById(1L);
-        assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(1L); });
+        doThrow(DataIntegrityViolationException.class).when(authorDao).deleteById(ID_1);
+        assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(ID_1); });
     }
 
     private List<Author> getAuthorList() {
         List<Author> authors = new ArrayList<Author>();
-        authors.add(getAuthor(1L));
-        authors.add(getAuthor(2L));
-        authors.add(getAuthor(3L));
+        authors.add(getAuthor(ID_1));
+        authors.add(getAuthor(ID_2));
+        authors.add(getAuthor(ID_3));
         return authors;
     }
 
     private Author getAuthor(long id) {
-        return new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
+        return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
     }
 }
