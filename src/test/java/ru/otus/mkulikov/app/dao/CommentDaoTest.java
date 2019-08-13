@@ -36,11 +36,22 @@ class CommentDaoTest {
     private final long ID_5 = 5L;
 
     private final int OBJECT_COUNT_4 = 4;
-    private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
 
     private final String DATE_TIME = "2019-01-01 10:01:01";
     private final String GENRE_NAME = "GenreName";
+
+    private final String COMMENT_USER_NAME = "user";
+    private final String COMMENT_UPDATED_USER_NAME = "TestUser";
+    private final String COMMENT_TEXT = "text";
+    private final String COMMENT_UPDATED_TEXT = "TestText";
+
+    private final String AUTHOR_SURNAME = "Surname";
+    private final String AUTHOR_FIRST_NAME = "FirstName";
+    private final String AUTHOR_SECOND_NAME = "SecondName";
+
+    private final String BOOK_NAME = "BookName";
+    private final String BOOK_DESCRIPTION = "Description";
 
     @Autowired
     private AuthorDao authorDao;
@@ -108,10 +119,10 @@ class CommentDaoTest {
     void addObject() {
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         Book book = bookDao.findById(ID_1).orElse(null);
-        Comment comment = new Comment(ID_5, book, date, "user5", "text5");
+        Comment comment = new Comment(ID_5, book, date, COMMENT_USER_NAME + ID_5, COMMENT_TEXT + ID_5);
         commentDao.save(comment);
 
-        Optional<Comment> comment_selected = commentDao.findById(5L);
+        Optional<Comment> comment_selected = commentDao.findById(ID_5);
 
         assertThat(comment_selected).isNotEmpty();
         assertThat(comment_selected).contains(comment);
@@ -139,18 +150,18 @@ class CommentDaoTest {
     private Comment getComment(long id, long bookId) {
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         Book book = getBook(bookId);
-        return new Comment(id, book, date, "user" + id, "text" + id);
+        return new Comment(id, book, date, COMMENT_USER_NAME + id, COMMENT_TEXT + id);
     }
 
     private Book getBook(long id) {
         Author author = getAuthor(id);
         Genre genre = getGenre(id);
         Date date = DateUtil.stringToDateTime(DATE_TIME);
-        return new Book(id, date, "Test_Book", author, genre, "Test_Description");
+        return new Book(id, date, BOOK_NAME, author, genre, BOOK_DESCRIPTION);
     }
 
     private Author getAuthor(long id) {
-        return new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
+        return new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
     }
 
     private Genre getGenre(long id) {
@@ -169,8 +180,8 @@ class CommentDaoTest {
     private Comment getUpdatedComment() {
         Comment comment = commentDao.findById(ID_1).orElse(null);
         comment.setAddRecordDate(new Date());
-        comment.setUserName("TestUser");
-        comment.setText("TestText");
+        comment.setUserName(COMMENT_UPDATED_USER_NAME);
+        comment.setText(COMMENT_UPDATED_TEXT);
         return comment;
     }
 }

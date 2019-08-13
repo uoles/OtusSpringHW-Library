@@ -38,6 +38,21 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BookManageSeviceImplTest {
 
+    private final long ID_1 = 1L;
+    private final long ID_2 = 2L;
+    private final long ID_3 = 3L;
+
+    private final int OBJECT_COUNT_3 = 3;
+
+    private final String GENRE_NAME = "Genre";
+
+    private final String AUTHOR_SURNAME = "Surname";
+    private final String AUTHOR_FIRST_NAME = "FirstName";
+    private final String AUTHOR_SECOND_NAME = "SecondName";
+
+    private final String BOOK_NAME = "BookName";
+    private final String BOOK_DESCRIPTION = "Description";
+
     @Mock
     private BookDao bookDao;
 
@@ -53,9 +68,9 @@ class BookManageSeviceImplTest {
     @Test
     @DisplayName("Получение книги по id")
     void getBookById() {
-        Book book = getBook(1L);
+        Book book = getBook(ID_1);
         when(bookDao.findById(anyLong())).thenReturn( Optional.of(book) );
-        Book bookById = booksManageSevice.getBookById(1L);
+        Book bookById = booksManageSevice.getBookById(ID_1);
 
         assertThat(bookById).isNotNull();
         assertThat(bookById).isEqualTo(book);
@@ -69,7 +84,7 @@ class BookManageSeviceImplTest {
         List<Book> comments = booksManageSevice.getBooks();
 
         assertThat(comments).isNotNull();
-        assertThat(comments).hasSize(3);
+        assertThat(comments).hasSize(OBJECT_COUNT_3);
         assertThat(comments).containsAll(list);
     }
 
@@ -86,12 +101,12 @@ class BookManageSeviceImplTest {
                 return book;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
-        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(ID_1)) );
 
-        long id = booksManageSevice.addBook("Caption", 1L, 1L, "description");
+        long id = booksManageSevice.addBook(BOOK_NAME, ID_1, ID_1, BOOK_DESCRIPTION);
 
-        assertThat(id).isEqualTo(2L);
+        assertThat(id).isEqualTo(ID_2);
     }
 
     @Test
@@ -102,15 +117,15 @@ class BookManageSeviceImplTest {
             @Override
             public Book answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Book book = (Book) invocationOnMock.getArgument(0);
-                book.setId(1L);
+                book.setId(ID_1);
                 return book;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(1L)) );
-        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(1L)) );
-        when(bookDao.findById(anyLong())).thenReturn( Optional.of(getBook(1L)) );
+        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
+        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(ID_1)) );
+        when(bookDao.findById(anyLong())).thenReturn( Optional.of(getBook(ID_1)) );
 
-        int count = booksManageSevice.updateBook(1L, "Caption", 1L, 1L, "description");
+        int count = booksManageSevice.updateBook(ID_1, BOOK_NAME, ID_1, ID_1, BOOK_DESCRIPTION);
 
         assertThat(count).isEqualTo(1);
     }
@@ -118,29 +133,29 @@ class BookManageSeviceImplTest {
     @Test
     @DisplayName("Удаление книги по id")
     void deleteBook() {
-        doThrow(DataIntegrityViolationException.class).when(bookDao).deleteById(1L);
-        assertThrows(DataIntegrityViolationException.class, () -> { booksManageSevice.deleteBook(1L); });
+        doThrow(DataIntegrityViolationException.class).when(bookDao).deleteById(ID_1);
+        assertThrows(DataIntegrityViolationException.class, () -> { booksManageSevice.deleteBook(ID_1); });
     }
 
     private Author getAuthor(long id) {
-        return new Author(id, "Surname" + id, "FirstName" + id, "SecondName" + id);
+        return new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
     }
 
     private Genre getGenre(long id) {
-        return new Genre(id, "Genre" + id);
+        return new Genre(id, GENRE_NAME + id);
     }
 
     private Book getBook(long id) {
         Author author = getAuthor(id);
         Genre genre = getGenre(id);
-        return new Book(id, "Test_Book", author, genre, "Test_Description");
+        return new Book(id, BOOK_NAME, author, genre, BOOK_DESCRIPTION);
     }
 
     private List<Book> getBooksList() {
         List<Book> list = new ArrayList<>();
-        list.add(getBook(1L));
-        list.add(getBook(2L));
-        list.add(getBook(3L));
+        list.add(getBook(ID_1));
+        list.add(getBook(ID_2));
+        list.add(getBook(ID_3));
         return list;
     }
 }
