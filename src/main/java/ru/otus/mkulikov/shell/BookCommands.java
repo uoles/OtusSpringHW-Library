@@ -23,7 +23,7 @@ public class BookCommands {
     private final BookManageSevice bookManageSevice;
 
     @ShellMethod(key = {"getBookById"}, value = "Select book by id.")
-    public String getBookById(@ShellOption long id) {
+    public String getBookById(@ShellOption String id) {
         Book book = bookManageSevice.getBookById(id);
         return book.toString();
     }
@@ -35,19 +35,19 @@ public class BookCommands {
     }
 
     @ShellMethod(key = {"addBook"}, value = "Add new book.")
-    public String addBook(@ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String description) {
-        long id = bookManageSevice.addBook(caption, authorId, genreId, description);
-        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
+    public String addBook(@ShellOption String caption, @ShellOption String authorId, @ShellOption String genreId, @ShellOption String description) {
+        Book book = bookManageSevice.addBook(caption, authorId, genreId, description);
+        return "Add " + (book != null ? 1 : 0) + " row(s)\nID: " + book.getId();
     }
 
     @ShellMethod(key = {"updateBook"}, value = "Update book by id.")
-    public String updateBook(@ShellOption long id, @ShellOption String caption, @ShellOption int authorId, @ShellOption int genreId, @ShellOption String description) {
-        int count = bookManageSevice.updateBook(id, caption, authorId, genreId, description);
-        return "Updated " + count + " row(s)";
+    public String updateBook(@ShellOption String id, @ShellOption String caption, @ShellOption String authorId, @ShellOption String genreId, @ShellOption String description) {
+        Book book = bookManageSevice.updateBook(id, caption, authorId, genreId, description);
+        return "Updated " + (book != null ? 1 : 0) + " row(s)\nID: " + book.getId();
     }
 
     @ShellMethod(key = {"deleteBook"}, value = "Delete book by id.")
-    public String deleteBook(@ShellOption long id) {
+    public String deleteBook(@ShellOption String id) {
         int count = bookManageSevice.deleteBook(id);
         return "Deleted " + count + " row(s)";
     }

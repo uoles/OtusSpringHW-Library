@@ -16,19 +16,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Genre {
 
     @Id
-    private long id;
+    private String id;
     private String name;
 
     public Genre() {
     }
 
-    public Genre(long id, String name) {
+    public Genre(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
     public Genre(String name) {
-        this.id = 0L;
         this.name = name;
     }
 

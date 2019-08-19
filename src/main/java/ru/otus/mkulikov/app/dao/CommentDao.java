@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 23:48
  */
 
-public interface CommentDao extends MongoRepository<Comment, Long> {
+public interface CommentDao extends MongoRepository<Comment, String> {
 
 //    @Query(value = "{ 'book.id' : ?0 }")
 //    List<Comment> findByBook(long id);

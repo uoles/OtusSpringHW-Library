@@ -26,7 +26,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -42,10 +42,10 @@ import static org.mockito.Mockito.when;
 @Ignore
 class CommentManageSeviceImplTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
-    private final long ID_4 = 4L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
+    private final String ID_4 = "4";
 
     private final int OBJECT_COUNT_4 = 4;
 
@@ -77,7 +77,7 @@ class CommentManageSeviceImplTest {
     @DisplayName("Получение комментария по id")
     void getCommentById() {
         Comment comment = getComment(ID_1);
-        when(commentDao.findById(anyLong())).thenReturn( Optional.of(comment) );
+        when(commentDao.findById(anyString())).thenReturn(Optional.of(comment));
         Comment commentById = commentManageService.getCommentById(ID_1);
 
         assertThat(commentById).isNotNull();
@@ -88,7 +88,7 @@ class CommentManageSeviceImplTest {
     @DisplayName("Получение всех комментариев")
     void getComments() {
         List<Comment> commentsList = getCommentList();
-        when(commentDao.findAll()).thenReturn( commentsList );
+        when(commentDao.findAll()).thenReturn(commentsList);
         List<Comment> comments = commentManageService.getComments();
 
         assertThat(comments).isNotNull();
@@ -102,20 +102,19 @@ class CommentManageSeviceImplTest {
         Book book = getBook(ID_1);
 
         when(commentDao.save(any(Comment.class))).then(new Answer<Comment>() {
-            int sequence = 1;
-
             @Override
             public Comment answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Comment comment = (Comment) invocationOnMock.getArgument(0);
-                comment.setId(++sequence);
+                comment.setId("2");
                 return comment;
             }
         });
-        when(bookDao.findById(anyLong())).thenReturn( Optional.of(book) );
+        when(bookDao.findById(anyString())).thenReturn(Optional.of(book));
 
-        long id = commentManageService.addComment(ID_1, COMMENT_USER_NAME, COMMENT_TEXT);
+        Comment comment = commentManageService.addComment(ID_1, COMMENT_USER_NAME, COMMENT_TEXT);
 
-        assertThat(id).isEqualTo(ID_2);
+        assertThat(comment).isNotNull();
+        assertThat(comment.getId()).isEqualTo(ID_2);
     }
 
     @Test
@@ -124,8 +123,8 @@ class CommentManageSeviceImplTest {
         List<Comment> commentList = getCommentList();
         Optional<Book> book = Optional.of(getBook(ID_1));
 
-        when(bookDao.findById( anyLong() )).thenReturn( book );
-        when(commentDao.findByBook( book.orElse(null) )).thenReturn( commentList );
+        when(bookDao.findById(anyString())).thenReturn(book);
+        when(commentDao.findByBook(book.orElse(null))).thenReturn(commentList);
 
         List<Comment> comments = commentManageService.getCommentsByBookId(ID_1);
 
@@ -145,30 +144,33 @@ class CommentManageSeviceImplTest {
                 return comment;
             }
         });
-        when(commentDao.findById(anyLong())).thenReturn( Optional.of(getComment(ID_1)) );
+        when(commentDao.findById(anyString())).thenReturn(Optional.of(getComment(ID_1)));
 
-        int count = commentManageService.updateComment(ID_1, COMMENT_UPDATED_USER_NAME, COMMENT_UPDATED_TEXT);
+        Comment comment = commentManageService.updateComment(ID_1, COMMENT_UPDATED_USER_NAME, COMMENT_UPDATED_TEXT);
 
-        assertThat(count).isEqualTo(1);
+        assertThat(comment).isNotNull();
+        assertThat(comment.getId()).isEqualTo(ID_1);
     }
 
     @Test
     @DisplayName("Удаление комментария")
     void deleteComment() {
         doThrow(DataIntegrityViolationException.class).when(commentDao).deleteById(ID_1);
-        assertThrows(DataIntegrityViolationException.class, () -> { commentManageService.deleteComment(ID_1); });
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            commentManageService.deleteComment(ID_1);
+        });
     }
 
-    private Comment getComment(long id) {
+    private Comment getComment(String id) {
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         Book book = getBook(id);
         return new Comment(id, book, date, COMMENT_USER_NAME + id, COMMENT_TEXT + id);
     }
 
-    private Book getBook(long id) {
+    private Book getBook(String id) {
         Author author = new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
         Genre genre = new Genre(id, GENRE_NAME + id);
-        return new Book(id, BOOK_NAME, author, genre, BOOK_DESCRIPTION);
+        return new Book(id, new Date(), BOOK_NAME, author, genre, BOOK_DESCRIPTION);
     }
 
     private List<Comment> getCommentList() {

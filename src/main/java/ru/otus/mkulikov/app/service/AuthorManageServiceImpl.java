@@ -24,7 +24,7 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     private final AuthorDao authorDao;
 
     @Override
-    public Author getAuthorById(long id) {
+    public Author getAuthorById(String id) {
         Optional<Author> author = authorDao.findById(id);
         return author.orElse(null);
     }
@@ -40,24 +40,22 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     }
 
     @Override
-    public long addAuthor(String surname, String firstName, String secondName) {
-        Author author = authorDao.save(new Author(surname, firstName, secondName));
-        return author.getId();
+    public Author addAuthor(String surname, String firstName, String secondName) {
+        return authorDao.save(new Author(surname, firstName, secondName));
     }
 
     @Override
-    public int updateAuthor(long id, String surname, String firstName, String secondName) {
+    public Author updateAuthor(String id, String surname, String firstName, String secondName) {
         Author author = authorDao.findById(id).orElse(null);
         author.setSurname(surname);
         author.setFirstName(firstName);
         author.setSecondName(secondName);
 
-        authorDao.save(author);
-        return 1;
+        return authorDao.save(author);
     }
 
     @Override
-    public int deleteAuthor(long id) {
+    public int deleteAuthor(String id) {
         authorDao.deleteById(id);
         // при удалении записи, которая используется в другой таблице не выдает никакой ошибки,
         // ошибка выдается только при вызове следующей команды

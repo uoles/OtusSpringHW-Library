@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -34,9 +34,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AuthorManageSeviceImplTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
 
     private final int OBJECT_COUNT_3 = 3;
 
@@ -53,7 +53,7 @@ class AuthorManageSeviceImplTest {
     @Test
     @DisplayName("Получение автора по id")
     void getAuthorById() {
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
+        when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_1)));
         Author author = authorManageService.getAuthorById(ID_1);
 
         assertThat(author).isNotNull();
@@ -63,7 +63,7 @@ class AuthorManageSeviceImplTest {
     @Test
     @DisplayName("Получение всех авторов")
     void getAuthors() {
-        when(authorDao.findAll()).thenReturn( getAuthorList() );
+        when(authorDao.findAll()).thenReturn(getAuthorList());
         List<Author> authors = authorManageService.getAuthors();
 
         assertThat(authors).isNotNull();
@@ -75,23 +75,21 @@ class AuthorManageSeviceImplTest {
     @DisplayName("Добавление автора")
     void addAuthor() {
         when(authorDao.save(any(Author.class))).then(new Answer<Author>() {
-            int sequence = 1;
-
             @Override
             public Author answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Author author = (Author) invocationOnMock.getArgument(0);
-                author.setId(++sequence);
+                author.setId("2");
                 return author;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_2)) );
+        when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_2)));
 
-        long id = authorManageService.addAuthor("Surname1", "FirstName1", "SecondName1");
-        Author author = authorManageService.getAuthorById(id);
+        Author author1 = authorManageService.addAuthor("Surname1", "FirstName1", "SecondName1");
+        Author author2 = authorManageService.getAuthorById(author1.getId());
 
-        assertThat(id).isEqualTo(ID_2);
-        assertThat(author).isNotNull();
-        assertThat(author).isEqualTo(getAuthor(ID_2));
+        assertThat(author1.getId()).isEqualTo(ID_2);
+        assertThat(author2).isNotNull();
+        assertThat(author2).isEqualTo(getAuthor(ID_2));
     }
 
     @Test
@@ -106,21 +104,22 @@ class AuthorManageSeviceImplTest {
                 return author;
             }
         });
-        when(authorDao.findById(anyLong())).thenReturn( Optional.of(getAuthor(ID_1)) );
+        when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_1)));
 
-        int count = authorManageService.updateAuthor(ID_1, "Surname1", "FirstName1", "SecondName1");
-        Author author = authorManageService.getAuthorById(ID_1);
+        Author author1 = authorManageService.updateAuthor(ID_1, "Surname1", "FirstName1", "SecondName1");
+        Author author2 = authorManageService.getAuthorById(ID_1);
 
-        assertThat(count).isEqualTo(1);
-        assertThat(author).isNotNull();
-        assertThat(author).isEqualTo(getAuthor(ID_1));
+        assertThat(author1).isNotNull();
+        assertThat(author2).isEqualTo(getAuthor(ID_1));
     }
 
     @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
         doThrow(DataIntegrityViolationException.class).when(authorDao).deleteById(ID_1);
-        assertThrows(DataIntegrityViolationException.class, () -> { authorManageService.deleteAuthor(ID_1); });
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            authorManageService.deleteAuthor(ID_1);
+        });
     }
 
     private List<Author> getAuthorList() {
@@ -131,7 +130,7 @@ class AuthorManageSeviceImplTest {
         return authors;
     }
 
-    private Author getAuthor(long id) {
+    private Author getAuthor(String id) {
         return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
     }
 }

@@ -23,7 +23,7 @@ public class CommentCommands {
     private final CommentManageService commentManageService;
 
     @ShellMethod(key = {"getCommentById"}, value = "Select comment by id.")
-    public String getCommentById(@ShellOption long id) {
+    public String getCommentById(@ShellOption String id) {
         Comment comment = commentManageService.getCommentById(id);
         return comment.toString();
     }
@@ -35,25 +35,25 @@ public class CommentCommands {
     }
 
     @ShellMethod(key = {"getCommentsByBookId"}, value = "Select all comments.")
-    public String getCommentsByBookId(@ShellOption long bookId) {
+    public String getCommentsByBookId(@ShellOption String bookId) {
         List<Comment> allObjects = commentManageService.getCommentsByBookId(bookId);
         return allObjects.toString();
     }
 
     @ShellMethod(key = {"addComment"}, value = "Add new comment.")
-    public String addComment(@ShellOption long bookId, @ShellOption String userName, @ShellOption String text) {
-        long id = commentManageService.addComment(bookId, userName, text);
-        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
+    public String addComment(@ShellOption String bookId, @ShellOption String userName, @ShellOption String text) {
+        Comment comment = commentManageService.addComment(bookId, userName, text);
+        return "Add " + (comment != null ? 1 : 0) + " row(s)\nID: " + comment.getId();
     }
 
     @ShellMethod(key = {"updateComment"}, value = "Update comment by id.")
-    public String updateComment(@ShellOption long id, @ShellOption String userName, @ShellOption String text) {
-        int count = commentManageService.updateComment(id, userName, text);
-        return "Updated " + count + " row(s)";
+    public String updateComment(@ShellOption String id, @ShellOption String userName, @ShellOption String text) {
+        Comment comment = commentManageService.updateComment(id, userName, text);
+        return "Updated " + (comment != null ? 1 : 0) + " row(s)\nID: " + comment.getId();
     }
 
     @ShellMethod(key = {"deleteComment"}, value = "Delete comment by id.")
-    public String deleteComment(@ShellOption long id) {
+    public String deleteComment(@ShellOption String id) {
         int count = commentManageService.deleteComment(id);
         return "Deleted " + count + " row(s)";
     }

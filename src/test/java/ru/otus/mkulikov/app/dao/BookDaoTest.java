@@ -28,10 +28,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Класс BookDao")
 class BookDaoTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
-    private final long ID_4 = 4L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
+    private final String ID_4 = "4";
 
     private final int OBJECT_COUNT_2 = 2;
 
@@ -121,18 +121,18 @@ class BookDaoTest {
         assertThat(book_selected).contains(book);
     }
 
-    private Book getBook(long id) {
+    private Book getBook(String id) {
         Author author = getAuthor(id);
         Genre genre = getGenre(id);
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         return new Book(id, date, BOOK_NAME, author, genre, DESCRIPTION);
     }
 
-    private Author getAuthor(long id) {
+    private Author getAuthor(String id) {
         return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
     }
 
-    private Genre getGenre(long id) {
+    private Genre getGenre(String id) {
         return new Genre(id, GENRE_NAME + id);
     }
 
@@ -149,7 +149,7 @@ class BookDaoTest {
         return new Book(ID_1, new Date(), UPDATED_BOOK_NAME, author, genre, UPDATED_DESCRIPTION);
     }
 
-    private Book getNewBook(long id) {
+    private Book getNewBook(String id) {
         Author author = authorDao.findById(ID_1).orElse(null);
         Genre genre = genreDao.findById(ID_1).orElse(null);
         Date date = DateUtil.stringToDateTime(DATE_TIME);

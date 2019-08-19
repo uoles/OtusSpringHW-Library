@@ -12,15 +12,15 @@ import java.util.List;
  */
 public interface CommentManageService<T extends Comment> {
 
-    T getCommentById(long id);
+    T getCommentById(String id);
 
     List<T> getComments();
 
-    List<T> getCommentsByBookId(long bookId);
+    List<T> getCommentsByBookId(String bookId);
 
-    long addComment(long bookId, String userName, String text);
+    T addComment(String bookId, String userName, String text);
 
-    int updateComment(long id, String userName, String text);
+    T updateComment(String id, String userName, String text);
 
-    int deleteComment(long id);
+    int deleteComment(String id);
 }

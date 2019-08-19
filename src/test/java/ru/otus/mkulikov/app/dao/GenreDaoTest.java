@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Класс GenreDao")
 class GenreDaoTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
-    private final long ID_4 = 4L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
+    private final String ID_4 = "4";
 
     private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
@@ -105,7 +105,7 @@ class GenreDaoTest {
         return genres;
     }
 
-    private Genre getGenre(long id) {
+    private Genre getGenre(String id) {
         return new Genre(id, GENRE_NAME + id);
     }
 }

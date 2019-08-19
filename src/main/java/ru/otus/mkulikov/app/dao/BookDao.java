@@ -10,6 +10,6 @@ import ru.otus.mkulikov.app.model.Book;
  * Time: 13:28
  */
 
-public interface BookDao extends MongoRepository<Book, Long> {
+public interface BookDao extends MongoRepository<Book, String> {
 
 }

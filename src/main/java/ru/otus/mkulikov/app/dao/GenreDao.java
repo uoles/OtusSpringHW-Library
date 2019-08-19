@@ -10,6 +10,6 @@ import ru.otus.mkulikov.app.model.Genre;
  * Time: 17:07
  */
 
-public interface GenreDao extends MongoRepository<Genre, Long> {
+public interface GenreDao extends MongoRepository<Genre, String> {
 
 }

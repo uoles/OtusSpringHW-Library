@@ -23,7 +23,7 @@ public class AuthorCommands {
     private final AuthorManageService authorManageService;
 
     @ShellMethod(key = {"getAuthorById"}, value = "Select author by id.")
-    public String getAuthorById(@ShellOption long id) {
+    public String getAuthorById(@ShellOption String id) {
         Author author = authorManageService.getAuthorById(id);
         return author.toString();
     }
@@ -36,18 +36,18 @@ public class AuthorCommands {
 
     @ShellMethod(key = {"addAuthor"}, value = "Add new author.")
     public String addAuthor(@ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
-        long id = authorManageService.addAuthor(surname, firstName, secondName);
-        return "Add " + (id != 0 ? 1 : 0) + " row(s)";
+        Author author = authorManageService.addAuthor(surname, firstName, secondName);
+        return "Add " + (author != null ? 1 : 0) + " row(s)\nID: " + author.getId();
     }
 
     @ShellMethod(key = {"updateAuthor"}, value = "Update author by id.")
-    public String updateAuthor(@ShellOption long id, @ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
-        int count = authorManageService.updateAuthor(id, surname, firstName, secondName);
-        return "Updated " + count + " row(s)";
+    public String updateAuthor(@ShellOption String id, @ShellOption String surname, @ShellOption String firstName, @ShellOption String secondName) {
+        Author author = authorManageService.updateAuthor(id, surname, firstName, secondName);
+        return "Updated " + (author != null ? 1 : 0) + " row(s)\nID: " + author.getId();
     }
 
     @ShellMethod(key = {"deleteAuthor"}, value = "Delete author by id.")
-    public String deleteAuthor(@ShellOption long id) {
+    public String deleteAuthor(@ShellOption String id) {
         int count = authorManageService.deleteAuthor(id);
         return "Deleted " + count + " row(s)";
     }

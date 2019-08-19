@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Класс AuthorDao")
 class AuthorDaoTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
-    private final long ID_4 = 4L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
+    private final String ID_4 = "4";
 
     private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
@@ -92,7 +92,7 @@ class AuthorDaoTest {
     @Test
     @DisplayName("Обновление автора")
     void updateObject() {
-        Author author =  new Author(ID_1, TEST_SURNAME, TEST_FIRST_NAME, TEST_SECOND_NAME);
+        Author author = new Author(ID_1, TEST_SURNAME, TEST_FIRST_NAME, TEST_SECOND_NAME);
         authorDao.save(author);
         Optional<Author> author_selected = authorDao.findById(ID_1);
 
@@ -100,7 +100,7 @@ class AuthorDaoTest {
         assertThat(author_selected).contains(author);
     }
 
-    private Author getAuthor(long id) {
+    private Author getAuthor(String id) {
         return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
     }
 

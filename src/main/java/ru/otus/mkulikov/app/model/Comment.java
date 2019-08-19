@@ -19,7 +19,7 @@ import java.util.Date;
 public class Comment {
 
     @Id
-    private long id;
+    private String id;
     private Date addRecordDate;
     private String userName;
     private String text;
@@ -30,7 +30,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(long id, Book book, Date addRecordDate, String userName, String text) {
+    public Comment(String id, Book book, Date addRecordDate, String userName, String text) {
         this.id = id;
         this.book = book;
         this.addRecordDate = addRecordDate;
@@ -39,7 +39,6 @@ public class Comment {
     }
 
     public Comment(Book book, Date addRecordDate, String userName, String text) {
-        this.id = 0L;
         this.book = book;
         this.addRecordDate = addRecordDate;
         this.userName = userName;

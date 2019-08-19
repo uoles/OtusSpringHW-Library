@@ -29,11 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Класс CommentDao")
 class CommentDaoTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
-    private final long ID_4 = 4L;
-    private final long ID_5 = 5L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
+    private final String ID_4 = "4";
+    private final String ID_5 = "5";
 
     private final int OBJECT_COUNT_4 = 4;
     private final int OBJECT_COUNT_2 = 2;
@@ -147,24 +147,24 @@ class CommentDaoTest {
         assertThat(comment_selected).contains(comment);
     }
 
-    private Comment getComment(long id, long bookId) {
+    private Comment getComment(String id, String bookId) {
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         Book book = getBook(bookId);
         return new Comment(id, book, date, COMMENT_USER_NAME + id, COMMENT_TEXT + id);
     }
 
-    private Book getBook(long id) {
+    private Book getBook(String id) {
         Author author = getAuthor(id);
         Genre genre = getGenre(id);
         Date date = DateUtil.stringToDateTime(DATE_TIME);
         return new Book(id, date, BOOK_NAME, author, genre, BOOK_DESCRIPTION);
     }
 
-    private Author getAuthor(long id) {
+    private Author getAuthor(String id) {
         return new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
     }
 
-    private Genre getGenre(long id) {
+    private Genre getGenre(String id) {
         return new Genre(id, GENRE_NAME + id);
     }
 

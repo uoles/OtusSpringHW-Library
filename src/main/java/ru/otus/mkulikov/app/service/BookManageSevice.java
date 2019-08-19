@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface BookManageSevice<T extends Book> {
 
-    T getBookById(long id);
+    T getBookById(String id);
 
     List<T> getBooks();
 
-    long addBook(String caption, long authorId, long genreId, String description);
+    T addBook(String caption, String authorId, String genreId, String description);
 
-    int updateBook(long id, String caption, long authorId, long genreId, String description);
+    T updateBook(String id, String caption, String authorId, String genreId, String description);
 
-    int deleteBook(long id);
+    int deleteBook(String id);
 }

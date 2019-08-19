@@ -12,13 +12,13 @@ import java.util.List;
  */
 public interface GenreManageService<T extends Genre> {
 
-    T getGenreById(long id);
+    T getGenreById(String id);
 
     List<T> getGenres();
 
-    long addGenre(String name);
+    T addGenre(String name);
 
-    int updateGenre(long id, String name);
+    T updateGenre(String id, String name);
 
-    int deleteGenre(long id);
+    int deleteGenre(String id);
 }

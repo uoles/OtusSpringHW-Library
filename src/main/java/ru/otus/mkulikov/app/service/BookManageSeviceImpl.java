@@ -9,6 +9,7 @@ import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class BookManageSeviceImpl implements BookManageSevice {
     private final GenreDao genreDao;
 
     @Override
-    public Book getBookById(long id) {
+    public Book getBookById(String id) {
         return bookDao.findById(id).orElse(null);
     }
 
@@ -37,16 +38,15 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
-    public long addBook(String caption, long authorId, long genreId, String description) {
+    public Book addBook(String caption, String authorId, String genreId, String description) {
         Author author = authorDao.findById(authorId).orElse(null);
         Genre genre = genreDao.findById(genreId).orElse(null);
 
-        Book book = bookDao.save(new Book(caption, author, genre, description));
-        return book.getId();
+        return bookDao.save(new Book(new Date(), caption, author, genre, description));
     }
 
     @Override
-    public int updateBook(long id, String caption, long authorId, long genreId, String description) {
+    public Book updateBook(String id, String caption, String authorId, String genreId, String description) {
         Author author = authorDao.findById(authorId).orElse(null);
         Genre genre = genreDao.findById(genreId).orElse(null);
 
@@ -57,12 +57,11 @@ public class BookManageSeviceImpl implements BookManageSevice {
         book.setGenre(genre);
         book.setDescription(description);
 
-        bookDao.save(book);
-        return 1;
+        return bookDao.save(book);
     }
 
     @Override
-    public int deleteBook(long id) {
+    public int deleteBook(String id) {
         bookDao.deleteById(id);
         bookDao.count();
         return 1;

@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -34,9 +34,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class GenreManageSeviceImplTest {
 
-    private final long ID_1 = 1L;
-    private final long ID_2 = 2L;
-    private final long ID_3 = 3L;
+    private final String ID_1 = "1";
+    private final String ID_2 = "2";
+    private final String ID_3 = "3";
 
     private final int OBJECT_COUNT_3 = 3;
 
@@ -52,7 +52,7 @@ class GenreManageSeviceImplTest {
     @Test
     @DisplayName("Получение жанра по id")
     void getGenreById() {
-        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(ID_1)) );
+        when(genreDao.findById(anyString())).thenReturn(Optional.of(getGenre(ID_1)));
         Genre genre = genreManageService.getGenreById(ID_1);
 
         assertThat(genre).isNotNull();
@@ -62,7 +62,7 @@ class GenreManageSeviceImplTest {
     @Test
     @DisplayName("Получение всех жанров")
     void getGenres() {
-        when(genreDao.findAll()).thenReturn( getGenreList() );
+        when(genreDao.findAll()).thenReturn(getGenreList());
         List<Genre> authors = genreManageService.getGenres();
 
         assertThat(authors).isNotNull();
@@ -74,19 +74,18 @@ class GenreManageSeviceImplTest {
     @DisplayName("Добавление жанра")
     void addGenre() {
         when(genreDao.save(any(Genre.class))).then(new Answer<Genre>() {
-            int sequence = 1;
-
             @Override
             public Genre answer(InvocationOnMock invocationOnMock) throws Throwable {
                 Genre genre = (Genre) invocationOnMock.getArgument(0);
-                genre.setId(++sequence);
+                genre.setId(ID_2);
                 return genre;
             }
         });
 
-        long id = genreManageService.addGenre(GENRE_NAME);
+        Genre genre = genreManageService.addGenre(GENRE_NAME);
 
-        assertThat(id).isEqualTo(ID_2);
+        assertThat(genre).isNotNull();
+        assertThat(genre.getId()).isEqualTo(ID_2);
     }
 
     @Test
@@ -101,18 +100,21 @@ class GenreManageSeviceImplTest {
                 return genre;
             }
         });
-        when(genreDao.findById(anyLong())).thenReturn( Optional.of(getGenre(ID_1)) );
+        when(genreDao.findById(anyString())).thenReturn(Optional.of(getGenre(ID_1)));
 
-        int count = genreManageService.updateGenre(ID_1, GENRE_UPDATED_NAME);
+        Genre genre = genreManageService.updateGenre(ID_1, GENRE_UPDATED_NAME);
 
-        assertThat(count).isEqualTo(1);
+        assertThat(genre).isNotNull();
+        assertThat(genre.getId()).isEqualTo(ID_1);
     }
 
     @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteGenre() {
         doThrow(DataIntegrityViolationException.class).when(genreDao).deleteById(ID_1);
-        assertThrows(DataIntegrityViolationException.class, () -> { genreManageService.deleteGenre(ID_1); });
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            genreManageService.deleteGenre(ID_1);
+        });
     }
 
     private List<Genre> getGenreList() {
@@ -123,7 +125,7 @@ class GenreManageSeviceImplTest {
         return genres;
     }
 
-    private Genre getGenre(long id) {
+    private Genre getGenre(String id) {
         return new Genre(id, GENRE_NAME + id);
     }
 }
