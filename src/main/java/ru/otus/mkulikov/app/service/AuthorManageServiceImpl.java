@@ -57,10 +57,6 @@ public class AuthorManageServiceImpl implements AuthorManageService {
     @Override
     public int deleteAuthor(String id) {
         authorDao.deleteById(id);
-        // при удалении записи, которая используется в другой таблице не выдает никакой ошибки,
-        // ошибка выдается только при вызове следующей команды
-        // поэтому вызываю count
-        authorDao.count();
         return 1;
     }
 }

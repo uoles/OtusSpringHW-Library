@@ -18,4 +18,5 @@ public class MongoProps {
     private int port;
     private String database;
     private String uri;
+    private String pack;
 }

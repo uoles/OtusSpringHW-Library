@@ -55,7 +55,6 @@ public class GenreManageServiceImpl implements GenreManageService {
     @Override
     public int deleteGenre(String id) {
         genreDao.deleteById(id);
-        genreDao.count();
         return 1;
     }
 }

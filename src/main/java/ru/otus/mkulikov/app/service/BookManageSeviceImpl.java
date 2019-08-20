@@ -63,7 +63,6 @@ public class BookManageSeviceImpl implements BookManageSevice {
     @Override
     public int deleteBook(String id) {
         bookDao.deleteById(id);
-        bookDao.count();
         return 1;
     }
 }

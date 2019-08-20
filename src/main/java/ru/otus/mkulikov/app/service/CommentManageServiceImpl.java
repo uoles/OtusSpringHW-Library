@@ -63,7 +63,6 @@ public class CommentManageServiceImpl implements CommentManageService {
     @Override
     public int deleteComment(String id) {
         commentDao.deleteById(id);
-        commentDao.count();
         return 1;
     }
 }
