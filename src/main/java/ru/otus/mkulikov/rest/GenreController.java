@@ -5,30 +5,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.service.AuthorManageService;
+import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.service.BookManageSevice;
+import ru.otus.mkulikov.app.service.GenreManageService;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class AuthorController {
+public class GenreController {
 
-    private final AuthorManageService authorManageService;
+    private final GenreManageService genreManageService;
 
-    @GetMapping("/list/authors")
+    @GetMapping("/list/genres")
     public String getAll(Model model) {
-        List<Author> authors = authorManageService.getAuthors();
-        model.addAttribute("authors", authors);
-        return "authors";
+        List<Genre> genres = genreManageService.getGenres();
+        model.addAttribute("genres", genres);
+        return "genres";
     }
 
-    @GetMapping("/author")
+    @GetMapping("/genre")
     public String getById(@RequestParam("id") String id, Model model) {
-        Author author = authorManageService.getAuthorById(id);
-        model.addAttribute("author", author);
-        return "author";
+        Genre genre = genreManageService.getGenreById(id);
+        model.addAttribute("genre", genre);
+        return "genre";
     }
 }
