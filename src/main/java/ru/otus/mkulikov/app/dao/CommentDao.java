@@ -19,4 +19,6 @@ public interface CommentDao extends MongoRepository<Comment, String> {
 //    List<Comment> findByBook(long id);
 
     List<Comment> findByBook(Book book);
+
+    void deleteCommentsByBook(Book book);
 }

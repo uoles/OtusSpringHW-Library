@@ -11,6 +11,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
+import ru.otus.mkulikov.app.dao.CommentDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
@@ -25,8 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -62,6 +62,9 @@ class BookManageSeviceImplTest {
 
     @Mock
     private GenreDao genreDao;
+
+    @Mock
+    private CommentDao commentDao;
 
     @InjectMocks
     private BookManageSeviceImpl booksManageSevice;
@@ -134,10 +137,7 @@ class BookManageSeviceImplTest {
     @Test
     @DisplayName("Удаление книги по id")
     void deleteBook() {
-        doThrow(DataIntegrityViolationException.class).when(bookDao).deleteById(ID_1);
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            booksManageSevice.deleteBook(ID_1);
-        });
+        assertThat(booksManageSevice.deleteBook(ID_1)).isEqualTo(0);
     }
 
     private Author getAuthor(String id) {

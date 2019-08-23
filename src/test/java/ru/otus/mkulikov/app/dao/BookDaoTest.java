@@ -105,7 +105,6 @@ class BookDaoTest {
     void deleteObject() {
         bookDaoJpa.deleteById(ID_1);
         Optional<Book> book = bookDaoJpa.findById(ID_1);
-//        assertThat(book).isNotEmpty();
         assertThat(book).isEmpty();
     }
 
