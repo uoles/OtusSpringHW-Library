@@ -17,6 +17,34 @@
 <body>
 <h1>Books:</h1>
 
+<table class="btns">
+    <thead/>
+    <tbody>
+    <tr>
+        <td>
+            <form action="/list/authors">
+                <input type="submit" value="Authors" />
+            </form>
+        </td>
+        <td>
+            <form action="/list/books">
+                <input type="submit" value="Books" />
+            </form>
+        </td>
+        <td>
+            <form action="/list/genres">
+                <input type="submit" value="Genres" />
+            </form>
+        </td>
+        <td>
+            <form action="/list/comments">
+                <input type="submit" value="Comments" />
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
 <table class="books">
     <thead>
     <tr>
@@ -43,21 +71,6 @@
     </tr>
     </tbody>
 </table>
-
-<div class="row">
-    <form action="/list/authors">
-        <input type="submit" value="Authors" />
-    </form>
-    <form action="/list/books">
-        <input type="submit" value="Books" />
-    </form>
-    <form action="/list/genres">
-        <input type="submit" value="Genres" />
-    </form>
-    <form action="/list/comments">
-        <input type="submit" value="Comments" />
-    </form>
-</div>
 
 </body>
 </html>
