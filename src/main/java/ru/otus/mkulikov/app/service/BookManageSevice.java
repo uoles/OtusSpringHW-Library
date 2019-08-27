@@ -21,5 +21,7 @@ public interface BookManageSevice<T extends Book> {
 
     T updateBook(String id, String caption, String authorId, String genreId, String description);
 
+    T updateBook(T t);
+
     int deleteBook(String id);
 }

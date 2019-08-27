@@ -61,6 +61,11 @@ public class BookManageSeviceImpl implements BookManageSevice {
     }
 
     @Override
+    public Book updateBook(Book book) {
+        return bookDao.save(book);
+    }
+
+    @Override
     public int deleteBook(String id) {
         bookDao.deleteById(id);
         return 1;

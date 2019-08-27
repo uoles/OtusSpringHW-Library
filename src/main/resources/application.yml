@@ -12,3 +12,4 @@ spring:
       port: 27017
       database: library
       pack: "ru.otus.mkulikov.changelog"
+

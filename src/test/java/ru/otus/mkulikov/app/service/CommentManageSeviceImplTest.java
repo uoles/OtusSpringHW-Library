@@ -39,7 +39,6 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("Класс CommentManageSevice")
 @ExtendWith(MockitoExtension.class)
-@Ignore
 class CommentManageSeviceImplTest {
 
     private final String ID_1 = "1";
