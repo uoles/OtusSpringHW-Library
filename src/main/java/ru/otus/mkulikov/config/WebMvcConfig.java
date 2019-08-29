@@ -31,6 +31,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/bootstrap/**") //
                 .addResourceLocations("classpath:/META-INF/resources/webjars/bootstrap/4.3.1/");
 
+        registry.addResourceHandler(
+                "/webjars/**",
+                "/img/**",
+                "/css/**",
+                "/js/**")
+                .addResourceLocations(
+                        "classpath:/META-INF/resources/webjars/",
+                        "classpath:/static/img/",
+                        "classpath:/static/css/",
+                        "classpath:/static/js/");
     }
 
 }
