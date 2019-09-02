@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.exception.ObjectNotFound;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
@@ -29,7 +30,7 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book getBookById(String id) {
-        return bookDao.findById(id).orElse(null);
+        return bookDao.findById(id).orElseThrow(() -> new ObjectNotFound("Book", id));
     }
 
     @Override
@@ -39,21 +40,20 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book addBook(String caption, String authorId, String genreId, String description) {
-        Author author = authorDao.findById(authorId).orElse(null);
-        Genre genre = genreDao.findById(genreId).orElse(null);
+        Author author = authorDao.findById(authorId).orElseThrow(() -> new ObjectNotFound("Author", authorId));
+        Genre genre = genreDao.findById(genreId).orElseThrow(() -> new ObjectNotFound("Genre", genreId));
 
         return bookDao.save(new Book(new Date(), caption, author, genre, description));
     }
 
     @Override
     public Book updateBook(String id, String caption, String authorId, String genreId, String description) {
-        Author author = authorDao.findById(authorId).orElse(null);
-        Genre genre = genreDao.findById(genreId).orElse(null);
+        Author author = authorDao.findById(authorId).orElseThrow(() -> new ObjectNotFound("Author", authorId));
+        Genre genre = genreDao.findById(genreId).orElseThrow(() -> new ObjectNotFound("Genre", genreId));
 
-        Book book = bookDao.findById(id).orElse(null);
+        Book book = bookDao.findById(id).orElseThrow(() -> new ObjectNotFound("Book", id));
         book.setCaption(caption);
         book.setAuthor(author);
-        book.setGenre(genre);
         book.setGenre(genre);
         book.setDescription(description);
 
@@ -62,7 +62,11 @@ public class BookManageSeviceImpl implements BookManageSevice {
 
     @Override
     public Book updateBook(Book book) {
-        return bookDao.save(book);
+        Book orig = bookDao.findById(book.getId()).orElseThrow(() -> new ObjectNotFound("Book", book.getId()));
+        orig.setCaption(book.getCaption());
+        orig.setDescription(book.getDescription());
+
+        return bookDao.save(orig);
     }
 
     @Override

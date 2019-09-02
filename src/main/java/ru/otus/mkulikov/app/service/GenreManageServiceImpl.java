@@ -3,12 +3,10 @@ package ru.otus.mkulikov.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.GenreDao;
+import ru.otus.mkulikov.app.exception.ObjectNotFound;
 import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,18 +23,12 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public Genre getGenreById(String id) {
-        Optional<Genre> genre = genreDao.findById(id);
-        return genre.orElse(null);
+        return genreDao.findById(id).orElseThrow(() -> new ObjectNotFound("Genre", id));
     }
 
     @Override
     public List<Genre> getGenres() {
-        Iterable<Genre> authors = genreDao.findAll();
-        List<Genre> list = StreamSupport
-                .stream(authors.spliterator(), false)
-                .collect(Collectors.toList());
-
-        return list;
+        return genreDao.findAll();
     }
 
     @Override
@@ -46,10 +38,18 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public Genre updateGenre(String id, String name) {
-        Genre genre = genreDao.findById(id).orElse(null);
+        Genre genre = genreDao.findById(id).orElseThrow(() -> new ObjectNotFound("Genre", id));
         genre.setName(name);
 
         return genreDao.save(genre);
+    }
+
+    @Override
+    public Genre updateGenre(Genre genre) {
+        Genre orig = genreDao.findById(genre.getId()).orElseThrow(() -> new ObjectNotFound("Genre", genre.getId()));
+        orig.setName(genre.getName());
+
+        return genreDao.save(orig);
     }
 
     @Override

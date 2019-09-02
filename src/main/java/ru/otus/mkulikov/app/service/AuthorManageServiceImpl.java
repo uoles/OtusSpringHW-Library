@@ -3,12 +3,10 @@ package ru.otus.mkulikov.app.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.mkulikov.app.dao.AuthorDao;
+import ru.otus.mkulikov.app.exception.ObjectNotFound;
 import ru.otus.mkulikov.app.model.Author;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,18 +23,12 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public Author getAuthorById(String id) {
-        Optional<Author> author = authorDao.findById(id);
-        return author.orElse(null);
+        return authorDao.findById(id).orElseThrow(() -> new ObjectNotFound("Author", id));
     }
 
     @Override
     public List<Author> getAuthors() {
-        Iterable<Author> authors = authorDao.findAll();
-        List<Author> list = StreamSupport
-                .stream(authors.spliterator(), false)
-                .collect(Collectors.toList());
-
-        return list;
+        return authorDao.findAll();
     }
 
     @Override
@@ -46,12 +38,22 @@ public class AuthorManageServiceImpl implements AuthorManageService {
 
     @Override
     public Author updateAuthor(String id, String surname, String firstName, String secondName) {
-        Author author = authorDao.findById(id).orElse(null);
+        Author author = authorDao.findById(id).orElseThrow(() -> new ObjectNotFound("Author", id));
         author.setSurname(surname);
         author.setFirstName(firstName);
         author.setSecondName(secondName);
 
         return authorDao.save(author);
+    }
+
+    @Override
+    public Author updateAuthor(Author author) {
+        Author orig = authorDao.findById(author.getId()).orElseThrow(() -> new ObjectNotFound("Author", author.getId()));
+        orig.setSurname(author.getSurname());
+        orig.setFirstName(author.getFirstName());
+        orig.setSecondName(author.getSecondName());
+
+        return authorDao.save(orig);
     }
 
     @Override

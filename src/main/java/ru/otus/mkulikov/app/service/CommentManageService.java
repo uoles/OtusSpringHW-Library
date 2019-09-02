@@ -22,5 +22,7 @@ public interface CommentManageService<T extends Comment> {
 
     T updateComment(String id, String userName, String text);
 
+    T updateComment(T t);
+
     int deleteComment(String id);
 }

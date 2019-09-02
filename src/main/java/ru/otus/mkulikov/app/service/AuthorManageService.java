@@ -21,5 +21,7 @@ public interface AuthorManageService<T extends Author> {
 
     T updateAuthor(String id, String surname, String firstName, String secondName);
 
+    T updateAuthor(T t);
+
     int deleteAuthor(String id);
 }

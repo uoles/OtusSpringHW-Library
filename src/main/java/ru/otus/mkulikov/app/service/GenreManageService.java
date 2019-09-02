@@ -20,5 +20,7 @@ public interface GenreManageService<T extends Genre> {
 
     T updateGenre(String id, String name);
 
+    T updateGenre(T t);
+
     int deleteGenre(String id);
 }

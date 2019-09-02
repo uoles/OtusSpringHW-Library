@@ -27,7 +27,7 @@ public class BookControllerTest {
 
     @Test
     public void getAll() throws Exception {
-        this.mockMvc.perform(get("/list/books")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/book/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Books:")));
     }
 
