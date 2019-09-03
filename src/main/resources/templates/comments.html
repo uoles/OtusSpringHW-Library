@@ -45,6 +45,7 @@
         <th>Book</th>
         <th>UserName</th>
         <th>Text</th>
+        <th>Edit</th>
     </tr>
     </thead>
     <tbody>
@@ -56,6 +57,9 @@
         </td>
         <td th:text="${comment.userName}">John Doe</td>
         <td th:text="${comment.text}">John Doe</td>
+        <td>
+            <a th:href="@{/comment(id=${comment.id})}" href="/comment">...</a>
+        </td>
     </tr>
     </tbody>
 </table>

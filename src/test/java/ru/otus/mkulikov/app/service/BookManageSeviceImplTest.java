@@ -64,7 +64,7 @@ class BookManageSeviceImplTest {
     private GenreDao genreDao;
 
     @InjectMocks
-    private BookManageSeviceImpl booksManageSevice;
+    private BookManageServiceImpl booksManageSevice;
 
     @Test
     @DisplayName("Получение книги по id")

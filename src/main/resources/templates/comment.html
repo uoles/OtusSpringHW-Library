@@ -60,5 +60,15 @@
     </tbody>
 </table>
 
+<h1>Edit</h1>
+<form action="#" th:action="@{/comment/edit}" th:object="${comment}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>UserName: <input type="text" th:field="*{userName}" /></p>
+    <p>Text: <input type="text" th:field="*{text}" /></p>
+    <p>
+        <input type="submit" value="Submit" />
+    </p>
+</form>
+
 </body>
 </html>

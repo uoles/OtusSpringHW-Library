@@ -30,5 +30,16 @@
     </tbody>
 </table>
 
+<h1>Edit</h1>
+<form action="#" th:action="@{/author/edit}" th:object="${author}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>Surname: <input type="text" th:field="*{surname}" /></p>
+    <p>FirstName: <input type="text" th:field="*{firstName}" /></p>
+    <p>SecondName: <input type="text" th:field="*{secondName}" /></p>
+    <p>
+        <input type="submit" value="Submit" />
+    </p>
+</form>
+
 </body>
 </html>

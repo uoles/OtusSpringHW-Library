@@ -5,7 +5,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.service.BookManageSevice;
+import ru.otus.mkulikov.app.service.BookManageService;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookCommands {
 
-    private final BookManageSevice bookManageSevice;
+    private final BookManageService bookManageSevice;
 
     @ShellMethod(key = {"getBookById"}, value = "Select book by id.")
     public String getBookById(@ShellOption String id) {

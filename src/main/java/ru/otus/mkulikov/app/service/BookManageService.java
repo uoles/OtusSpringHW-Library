@@ -11,7 +11,7 @@ import java.util.List;
  * Time: 13:42
  */
 
-public interface BookManageSevice<T extends Book> {
+public interface BookManageService<T extends Book> {
 
     T getBookById(String id);
 

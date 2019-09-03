@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.service.BookManageSevice;
+import ru.otus.mkulikov.app.service.BookManageService;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookManageSevice bookManageSevice;
+    private final BookManageService bookManageSevice;
 
     @GetMapping("/book/list")
     public String getAll(Model model) {
