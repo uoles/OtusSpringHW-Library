@@ -38,4 +38,10 @@ public class AuthorController {
         model.addAttribute("author", updated);
         return "author";
     }
+
+    @PostMapping(value = "/author/delete")
+    public String delete(@RequestParam("id") String id, Model model) {
+        authorManageService.deleteAuthor(id);
+        return getAll(model);
+    }
 }

@@ -42,12 +42,16 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Edit</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="genre : ${genres}">
         <td th:text="${genre.id}">1</td>
         <td th:text="${genre.name}">John Doe</td>
+        <td>
+            <a th:href="@{/genre(id=${genre.id})}" href="/genre">...</a>
+        </td>
     </tr>
     </tbody>
 </table>

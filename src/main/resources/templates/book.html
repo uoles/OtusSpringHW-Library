@@ -40,7 +40,7 @@
 
 <h1>Edit</h1>
 <form action="#" th:action="@{/book/edit}" th:object="${book}" method="post">
-    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>Id: <input type="text" th:field="*{id}" readonly/></p>
     <p>Caption: <input type="text" th:field="*{caption}" /></p>
     <p>Description: <input type="text" th:field="*{description}" /></p>
     <p>

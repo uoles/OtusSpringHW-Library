@@ -28,7 +28,7 @@
 
 <h1>Edit</h1>
 <form action="#" th:action="@{/genre/edit}" th:object="${genre}" method="post">
-    <p>Id: <input type="text" th:field="*{id}" /></p>
+    <p>Id: <input type="text" th:field="*{id}" readonly /></p>
     <p>Name: <input type="text" th:field="*{name}" /></p>
     <p>
         <input type="submit" value="Submit" />

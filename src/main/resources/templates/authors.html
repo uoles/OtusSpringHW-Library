@@ -44,6 +44,8 @@
         <th>Surname</th>
         <th>FirstName</th>
         <th>SecondName</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -52,6 +54,12 @@
         <td th:text="${author.surname}">John Doe</td>
         <td th:text="${author.firstName}">John Doe</td>
         <td th:text="${author.secondName}">John Doe</td>
+        <td>
+            <a th:href="@{/author(id=${author.id})}" href="/author">...</a>
+        </td>
+        <td>
+            <a th:href="@{/author/delete(id=${author.id})}" href="/author/delete">...</a>
+        </td>
     </tr>
     </tbody>
 </table>
