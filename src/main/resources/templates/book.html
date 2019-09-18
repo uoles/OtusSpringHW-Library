@@ -49,10 +49,18 @@
 <h1>Edit</h1>
 <form action="#" th:action="@{/book/edit}" th:object="${book}" method="post">
     <p>Id: <input type="text" th:field="*{id}" readonly/></p>
+    <select th:field="*{author}" class="form-control">
+        <option th:each="author: ${authors}"
+                th:value="${author}" th:text="${author.firstName}"></option>
+    </select>
+    <select th:field="*{genre}" class="form-control">
+        <option th:each="genre: ${genres}"
+                th:value="${genre}" th:text="${genre.name}"></option>
+    </select>
     <p>Caption: <input type="text" th:field="*{caption}" /></p>
     <p>Description: <input type="text" th:field="*{description}" /></p>
     <p>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Update" />
     </p>
 </form>
 

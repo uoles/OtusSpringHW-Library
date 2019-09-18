@@ -46,9 +46,15 @@ public class BookController {
     }
 
     @GetMapping("/book/new")
-    public String getNew() {
-        List<Author> listAuthor = authorManageService.getAuthors();
+    public String getNew(Model model) {
+        List<Author> authors = authorManageService.getAuthors();
+        List<Genre> genres = genreManageService.getGenres();
         Book book = bookManageSevice.addBook("", "", "", "");
-        return "redirect:/book?id=" + book.getId();
+
+        model.addAttribute("authors", authors);
+        model.addAttribute("genres", genres);
+        model.addAttribute("book", book);
+
+        return "book";
     }
 }
