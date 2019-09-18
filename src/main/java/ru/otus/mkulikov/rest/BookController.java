@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
+import ru.otus.mkulikov.app.model.Genre;
+import ru.otus.mkulikov.app.service.AuthorManageService;
 import ru.otus.mkulikov.app.service.BookManageService;
+import ru.otus.mkulikov.app.service.GenreManageService;
 
 import java.util.List;
 
@@ -17,6 +21,8 @@ import java.util.List;
 public class BookController {
 
     private final BookManageService bookManageSevice;
+    private final AuthorManageService authorManageService;
+    private final GenreManageService genreManageService;
 
     @GetMapping("/book/list")
     public String getAll(Model model) {
@@ -37,5 +43,12 @@ public class BookController {
         Book updated = bookManageSevice.updateBook(book);
         model.addAttribute("book", updated);
         return "book";
+    }
+
+    @GetMapping("/book/new")
+    public String getNew() {
+        List<Author> listAuthor = authorManageService.getAuthors();
+        Book book = bookManageSevice.addBook("", "", "", "");
+        return "redirect:/book?id=" + book.getId();
     }
 }

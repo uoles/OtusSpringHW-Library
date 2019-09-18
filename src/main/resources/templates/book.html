@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>List of all books</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Book detail</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
 </head>
 <body>
-<input type="button" onclick="history.back();" value="Назад"/>
+
+<form th:action="@{/book/list}" method="get">
+    <p>
+        <input type="submit" value="Books list" class="button"/>
+    </p>
+</form>
 
 <h1>Book:</h1>
 
