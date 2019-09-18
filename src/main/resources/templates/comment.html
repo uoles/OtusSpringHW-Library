@@ -71,6 +71,10 @@
 <h1>Edit</h1>
 <form action="#" th:action="@{/comment/edit}" th:object="${comment}" method="post">
     <p>Id: <input type="text" th:field="*{id}" readonly/></p>
+    <select th:field="*{book}" class="form-control">
+        <option th:each="book: ${books}"
+                th:value="${book}" th:text="${book.caption}"></option>
+    </select>
     <p>UserName: <input type="text" th:field="*{userName}" /></p>
     <p>Text: <input type="text" th:field="*{text}" /></p>
     <p>

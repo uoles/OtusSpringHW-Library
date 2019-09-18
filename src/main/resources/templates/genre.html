@@ -17,24 +17,8 @@
     </p>
 </form>
 
-<h1>Genre:</h1>
+<h1>Genre detail:</h1>
 
-<table class="genre">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${genre.id}">1</td>
-        <td th:text="${genre.name}">John Doe</td>
-    </tr>
-    </tbody>
-</table>
-
-<h1>Edit</h1>
 <form action="#" th:action="@{/genre/edit}" th:object="${genre}" method="post">
     <p>Id: <input type="text" th:field="*{id}" readonly /></p>
     <p>Name: <input type="text" th:field="*{name}" /></p>
