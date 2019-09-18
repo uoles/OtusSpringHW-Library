@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.mkulikov.app.model.Author;
+import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.service.AuthorManageService;
+import ru.otus.mkulikov.app.service.BookManageService;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorManageService authorManageService;
+    private final BookManageService bookManageService;
 
     @GetMapping("/author/list")
     public String getAll(Model model) {
@@ -32,16 +35,24 @@ public class AuthorController {
         return "author";
     }
 
+    @GetMapping("/author/new")
+    public String getNew() {
+        Author author = authorManageService.addAuthor("", "", "");
+        return "redirect:/author?id=" + author.getId();
+    }
+
     @PostMapping(value = "/author/edit")
-    public String edit(@ModelAttribute Author author, Model model) {
+    public String edit(@ModelAttribute Author author) {
         Author updated = authorManageService.updateAuthor(author);
-        model.addAttribute("author", updated);
-        return "author";
+        return "redirect:/author?id=" + updated.getId();
     }
 
     @PostMapping(value = "/author/delete")
-    public String delete(@RequestParam("id") String id, Model model) {
-        authorManageService.deleteAuthor(id);
-        return getAll(model);
+    public String delete(@RequestParam("id") String id) {
+        List<Book> books = bookManageService.getBookByAuthorId(id);
+        if (books == null || (books != null && books.isEmpty())) {
+            authorManageService.deleteAuthor(id);
+        }
+        return "redirect:/author/list";
     }
 }

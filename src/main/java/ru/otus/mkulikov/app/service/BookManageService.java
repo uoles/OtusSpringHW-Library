@@ -15,6 +15,8 @@ public interface BookManageService<T extends Book> {
 
     T getBookById(String id);
 
+    List<T> getBookByAuthorId(String id);
+
     List<T> getBooks();
 
     T addBook(String caption, String authorId, String genreId, String description);

@@ -3,6 +3,8 @@ package ru.otus.mkulikov.app.dao;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.mkulikov.app.model.Book;
 
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Developer: Maksim Kulikov
@@ -12,4 +14,5 @@ import ru.otus.mkulikov.app.model.Book;
 
 public interface BookDao extends MongoRepository<Book, String> {
 
+    List<Book> findByAuthor_Id(String id);
 }

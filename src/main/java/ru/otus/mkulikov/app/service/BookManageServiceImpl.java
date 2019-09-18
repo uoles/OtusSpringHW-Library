@@ -34,6 +34,11 @@ public class BookManageServiceImpl implements BookManageService {
     }
 
     @Override
+    public List<Book> getBookByAuthorId(String id) {
+        return bookDao.findByAuthor_Id(id);
+    }
+
+    @Override
     public List<Book> getBooks() {
         return bookDao.findAll();
     }
