@@ -59,17 +59,19 @@ public class CommentManageServiceImpl implements CommentManageService {
 
     @Override
     public Comment updateComment(Comment comment) {
-        Comment orig = commentDao.findById(comment.getId()).orElseThrow(() -> new ObjectNotFound("Comment", comment.getId()));
-        orig.setAddRecordDate(new Date());
-        orig.setUserName(comment.getUserName());
-        orig.setText(comment.getText());
-
-        return commentDao.save(orig);
+        comment.setAddRecordDate(new Date());
+        return commentDao.save(comment);
     }
 
     @Override
     public int deleteComment(String id) {
         commentDao.deleteById(id);
+        return 1;
+    }
+
+    @Override
+    public int deleteComments(List list) {
+        commentDao.deleteAll(list);
         return 1;
     }
 }

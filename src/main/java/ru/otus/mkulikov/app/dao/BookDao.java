@@ -15,4 +15,6 @@ import java.util.List;
 public interface BookDao extends MongoRepository<Book, String> {
 
     List<Book> findByAuthor_Id(String id);
+
+    List<Book> findByGenre_Id(String id);
 }

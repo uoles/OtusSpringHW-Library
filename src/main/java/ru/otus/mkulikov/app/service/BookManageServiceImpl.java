@@ -39,6 +39,11 @@ public class BookManageServiceImpl implements BookManageService {
     }
 
     @Override
+    public List<Book> getBookByGenreId(String id) {
+        return bookDao.findByGenre_Id(id);
+    }
+
+    @Override
     public List<Book> getBooks() {
         return bookDao.findAll();
     }
@@ -67,11 +72,8 @@ public class BookManageServiceImpl implements BookManageService {
 
     @Override
     public Book updateBook(Book book) {
-        Book orig = bookDao.findById(book.getId()).orElseThrow(() -> new ObjectNotFound("Book", book.getId()));
-        orig.setCaption(book.getCaption());
-        orig.setDescription(book.getDescription());
-
-        return bookDao.save(orig);
+        book.setAddRecordDate(new Date());
+        return bookDao.save(book);
     }
 
     @Override

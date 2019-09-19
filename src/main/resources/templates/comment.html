@@ -17,68 +17,22 @@
     </p>
 </form>
 
-<h1>Comment:</h1>
+<h1>Comment detail:</h1>
 
-<table class="btns">
-    <thead/>
-    <tbody>
-    <tr>
-        <td>
-            <form action="/author/list">
-                <input type="submit" value="Authors" />
-            </form>
-        </td>
-        <td>
-            <form action="/book/list">
-                <input type="submit" value="Books" />
-            </form>
-        </td>
-        <td>
-            <form action="/genre/list">
-                <input type="submit" value="Genres" />
-            </form>
-        </td>
-        <td>
-            <form action="/comment/list">
-                <input type="submit" value="Comments" />
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<table class="comment">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>AddRecordDate</th>
-        <th>Book</th>
-        <th>UserName</th>
-        <th>Text</th>
-    </tr>
-    </thead>
-    <tbody>
-        <td th:text="${comment.id}">1</td>
-        <td th:text="${comment.addRecordDate}">John Doe</td>
-        <td>
-            <a th:href="@{/book(id=${comment.book.id})}" href="/book">View</a>
-        </td>
-        <td th:text="${comment.userName}">John Doe</td>
-        <td th:text="${comment.text}">John Doe</td>
-    </tbody>
-</table>
-
-<h1>Edit</h1>
 <form action="#" th:action="@{/comment/edit}" th:object="${comment}" method="post">
     <p>Id: <input type="text" th:field="*{id}" readonly/></p>
-    <select th:field="*{book}" class="form-control">
-        <option th:each="book: ${books}"
-                th:value="${book}" th:text="${book.caption}"></option>
-    </select>
-    <p>UserName: <input type="text" th:field="*{userName}" /></p>
-    <p>Text: <input type="text" th:field="*{text}" /></p>
+
+    <p>Book: <select th:field="*{book}" >
+        <option th:each="value: ${books}"
+                th:value="${value.id}"
+                th:text="${value.caption}">
+        </option>
+    </select></p>
+
+    <p>UserName: <input type="text" th:field="*{userName}"/></p>
+    <p>Text: <input type="text" th:field="*{text}"/></p>
     <p>
-        <input type="submit" value="Update" />
+        <input type="submit" value="Update" class="button"/>
     </p>
 </form>
 

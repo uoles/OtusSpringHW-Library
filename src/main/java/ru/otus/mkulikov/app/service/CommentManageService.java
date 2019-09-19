@@ -25,4 +25,6 @@ public interface CommentManageService<T extends Comment> {
     T updateComment(T t);
 
     int deleteComment(String id);
+
+    int deleteComments(List<T> list);
 }

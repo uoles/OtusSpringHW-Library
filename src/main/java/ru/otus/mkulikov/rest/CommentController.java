@@ -32,26 +32,44 @@ public class CommentController {
 
     @GetMapping("/comment")
     public String getById(@RequestParam("id") String id, Model model) {
+        List<Book> books = bookManageSevice.getBooks();
         Comment comment = commentManageService.getCommentById(id);
+
+        model.addAttribute("books", books);
         model.addAttribute("comment", comment);
+
         return "comment";
     }
 
     @PostMapping(value = "/comment/edit")
     public String edit(@ModelAttribute Comment comment, Model model) {
+        List<Book> books = bookManageSevice.getBooks();
         Comment updated = commentManageService.updateComment(comment);
+
+        model.addAttribute("books", books);
         model.addAttribute("comment", updated);
+
         return "comment";
     }
 
     @GetMapping("/comment/new")
     public String getNew(Model model) {
         List<Book> books = bookManageSevice.getBooks();
-        Comment comment = commentManageService.addComment("", "", "");
+
+        String bookId = (books != null && !books.isEmpty())
+                ? books.get(0).getId()
+                : "";
+        Comment comment = commentManageService.addComment(bookId, "", "");
 
         model.addAttribute("books", books);
         model.addAttribute("comment", comment);
 
         return "comment";
+    }
+
+    @PostMapping(value = "/comment/delete")
+    public String delete(@RequestParam("id") String id) {
+        commentManageService.deleteComment(id);
+        return "redirect:/comment/list";
     }
 }

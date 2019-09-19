@@ -50,7 +50,8 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Edit</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -58,7 +59,19 @@
         <td th:text="${genre.id}">1</td>
         <td th:text="${genre.name}">John Doe</td>
         <td>
-            <a th:href="@{/genre(id=${genre.id})}" href="/genre">...</a>
+            <form th:action="@{/genre}" method="get">
+                <p>
+                    <input type="hidden" th:name="id" th:value="${genre.id}" />
+                    <input type="submit" value="Edit" class="button-table"/>
+                </p>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/genre/delete(id=${genre.id})}" method="post">
+                <p>
+                    <input type="submit" value="Delete" class="button-table"/>
+                </p>
+            </form>
         </td>
     </tr>
     </tbody>

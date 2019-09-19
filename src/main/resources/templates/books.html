@@ -54,7 +54,8 @@
         <th>Description</th>
         <th>Author</th>
         <th>Genre</th>
-        <th>Edit</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -64,13 +65,25 @@
         <td th:text="${book.caption}">John Doe</td>
         <td th:text="${book.description}">John Doe</td>
         <td>
-            <a th:href="@{/author(id=${book.author.id})}" href="/author">View</a>
+            <a th:href="@{/author(id=${book.author.id})}" th:text="${book.author.surname}" href="/author"></a>
         </td>
         <td>
-            <a th:href="@{/genre(id=${book.genre.id})}" href="/genre">View</a>
+            <a th:href="@{/genre(id=${book.genre.id})}" th:text="${book.genre.name}" href="/genre"></a>
         </td>
         <td>
-            <a th:href="@{/book(id=${book.id})}" href="/book">...</a>
+            <form th:action="@{/book}" method="get">
+                <p>
+                    <input type="hidden" th:name="id" th:value="${book.id}" />
+                    <input type="submit" value="Edit" class="button-table"/>
+                </p>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/book/delete(id=${book.id})}" method="post">
+                <p>
+                    <input type="submit" value="Delete" class="button-table"/>
+                </p>
+            </form>
         </td>
     </tr>
     </tbody>

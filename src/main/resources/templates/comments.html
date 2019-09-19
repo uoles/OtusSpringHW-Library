@@ -53,7 +53,8 @@
         <th>Book</th>
         <th>UserName</th>
         <th>Text</th>
-        <th>Edit</th>
+        <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -61,12 +62,24 @@
         <td th:text="${comment.id}">1</td>
         <td th:text="${comment.addRecordDate}">John Doe</td>
         <td>
-            <a th:href="@{/book(id=${comment.book.id})}" href="/book">View</a>
+            <a th:href="@{/book(id=${comment.book.id})}" th:text="${comment.book.caption}" href="/book"></a>
         </td>
         <td th:text="${comment.userName}">John Doe</td>
         <td th:text="${comment.text}">John Doe</td>
         <td>
-            <a th:href="@{/comment(id=${comment.id})}" href="/comment">...</a>
+            <form th:action="@{/comment}" method="get">
+                <p>
+                    <input type="hidden" th:name="id" th:value="${comment.id}" />
+                    <input type="submit" value="Edit" class="button-table"/>
+                </p>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/comment/delete(id=${comment.id})}" method="post">
+                <p>
+                    <input type="submit" value="Delete" class="button-table"/>
+                </p>
+            </form>
         </td>
     </tr>
     </tbody>
