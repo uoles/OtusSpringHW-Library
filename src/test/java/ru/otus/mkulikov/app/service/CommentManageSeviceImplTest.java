@@ -11,14 +11,9 @@ import org.mockito.stubbing.Answer;
 import org.springframework.dao.DataIntegrityViolationException;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.CommentDao;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
-import ru.otus.mkulikov.app.model.Genre;
-import ru.otus.mkulikov.app.utils.DateUtil;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +23,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static ru.otus.mkulikov.generators.GenerateBook.getBook;
+import static ru.otus.mkulikov.generators.GenerateComment.getComment;
+import static ru.otus.mkulikov.generators.GenerateComment.getCommentList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,25 +40,13 @@ class CommentManageSeviceImplTest {
 
     private final String ID_1 = "1";
     private final String ID_2 = "2";
-    private final String ID_3 = "3";
-    private final String ID_4 = "4";
 
     private final int OBJECT_COUNT_4 = 4;
-
-    private final String DATE_TIME = "2019-01-01 10:01:01";
-    private final String GENRE_NAME = "GenreName";
 
     private final String COMMENT_USER_NAME = "user";
     private final String COMMENT_UPDATED_USER_NAME = "TestUser";
     private final String COMMENT_TEXT = "text";
     private final String COMMENT_UPDATED_TEXT = "TestText";
-
-    private final String AUTHOR_SURNAME = "Surname";
-    private final String AUTHOR_FIRST_NAME = "FirstName";
-    private final String AUTHOR_SECOND_NAME = "SecondName";
-
-    private final String BOOK_NAME = "BookName";
-    private final String BOOK_DESCRIPTION = "Description";
 
     @Mock
     private CommentDao commentDao;
@@ -74,7 +60,7 @@ class CommentManageSeviceImplTest {
     @Test
     @DisplayName("Получение комментария по id")
     void getCommentById() {
-        Comment comment = getComment(ID_1);
+        Comment comment = getComment(ID_1, ID_1);
         when(commentDao.findById(anyString())).thenReturn(Optional.of(comment));
         Comment commentById = commentManageService.getCommentById(ID_1);
 
@@ -142,7 +128,7 @@ class CommentManageSeviceImplTest {
                 return comment;
             }
         });
-        when(commentDao.findById(anyString())).thenReturn(Optional.of(getComment(ID_1)));
+        when(commentDao.findById(anyString())).thenReturn(Optional.of(getComment(ID_1, ID_1)));
 
         Comment comment = commentManageService.updateComment(ID_1, COMMENT_UPDATED_USER_NAME, COMMENT_UPDATED_TEXT);
 
@@ -162,7 +148,7 @@ class CommentManageSeviceImplTest {
                 return comment;
             }
         });
-        Comment comment = commentManageService.updateComment(getComment(ID_1));
+        Comment comment = commentManageService.updateComment(getComment(ID_1, ID_1));
 
         assertThat(comment).isNotNull();
         assertThat(comment.getId()).isEqualTo(ID_1);
@@ -175,26 +161,5 @@ class CommentManageSeviceImplTest {
         assertThrows(DataIntegrityViolationException.class, () -> {
             commentManageService.deleteComment(ID_1);
         });
-    }
-
-    private Comment getComment(String id) {
-        Date date = DateUtil.stringToDateTime(DATE_TIME);
-        Book book = getBook(id);
-        return new Comment(id, book, date, COMMENT_USER_NAME + id, COMMENT_TEXT + id);
-    }
-
-    private Book getBook(String id) {
-        Author author = new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
-        Genre genre = new Genre(id, GENRE_NAME + id);
-        return new Book(id, new Date(), BOOK_NAME, author, genre, BOOK_DESCRIPTION);
-    }
-
-    private List<Comment> getCommentList() {
-        List<Comment> comments = new ArrayList<Comment>();
-        comments.add(getComment(ID_1));
-        comments.add(getComment(ID_2));
-        comments.add(getComment(ID_3));
-        comments.add(getComment(ID_4));
-        return comments;
     }
 }

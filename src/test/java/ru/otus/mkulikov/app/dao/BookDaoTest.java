@@ -10,12 +10,15 @@ import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
+import static ru.otus.mkulikov.generators.GenerateBook.getBook;
+import static ru.otus.mkulikov.generators.GenerateBook.getBooksList;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenre;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,17 +38,11 @@ class BookDaoTest {
 
     private final int OBJECT_COUNT_1 = 1;
     private final int OBJECT_COUNT_2 = 2;
+    private final int OBJECT_COUNT_3 = 3;
 
-    private final String SURNAME = "Surname";
-    private final String FIRST_NAME = "FirstName";
-    private final String SECOND_NAME = "SecondName";
-
-    private final String GENRE_NAME = "GenreName";
     private final String DATE_TIME = "2019-01-01 10:01:01";
 
-    private final String BOOK_NAME = "BookName";
     private final String UPDATED_BOOK_NAME = "UpdatedBookName";
-    private final String DESCRIPTION = "Description";
     private final String UPDATED_DESCRIPTION = "UpdatedDescription";
 
     @Autowired
@@ -69,6 +66,7 @@ class BookDaoTest {
 
         bookDaoJpa.save(getBook(ID_1));
         bookDaoJpa.save(getBook(ID_2));
+        bookDaoJpa.save(getBook(ID_3));
     }
 
     @Test
@@ -103,8 +101,8 @@ class BookDaoTest {
     void getAllObjects() {
         List<Book> books = bookDaoJpa.findAll();
 
-        assertThat(books).size().isEqualTo(OBJECT_COUNT_2);
-        assertThat(books).containsAll(getBooks());
+        assertThat(books).size().isEqualTo(OBJECT_COUNT_3);
+        assertThat(books).containsAll(getBooksList());
     }
 
     @Test
@@ -137,28 +135,6 @@ class BookDaoTest {
 
         assertThat(book_selected).isNotEmpty();
         assertThat(book_selected).contains(book);
-    }
-
-    private Book getBook(String id) {
-        Author author = getAuthor(id);
-        Genre genre = getGenre(id);
-        Date date = DateUtil.stringToDateTime(DATE_TIME);
-        return new Book(id, date, BOOK_NAME, author, genre, DESCRIPTION);
-    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
-    }
-
-    private Genre getGenre(String id) {
-        return new Genre(id, GENRE_NAME + id);
-    }
-
-    private List<Book> getBooks() {
-        List<Book> books = new ArrayList<Book>();
-        books.add(getBook(ID_1));
-        books.add(getBook(ID_2));
-        return books;
     }
 
     private Book getUpdatedBook() {

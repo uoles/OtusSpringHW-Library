@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenre;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenreList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -35,7 +36,6 @@ class GenreDaoTest {
     private final int OBJECT_COUNT_2 = 2;
 
     private final String UPDATED_NAME = "UpdatedName";
-    private final String GENRE_NAME = "GenreName";
 
     @Autowired
     private GenreDao genreDao;
@@ -63,7 +63,7 @@ class GenreDaoTest {
 
         assertThat(genres).isNotEmpty();
         assertThat(genres).size().isEqualTo(OBJECT_COUNT_3);
-        assertThat(genres).containsAll(getGenres());
+        assertThat(genres).containsAll(getGenreList());
     }
 
     @Test
@@ -95,17 +95,5 @@ class GenreDaoTest {
 
         assertThat(genre_updated).isNotEmpty();
         assertThat(genre_updated).contains(genre);
-    }
-
-    private List<Genre> getGenres() {
-        List<Genre> genres = new ArrayList<Genre>();
-        genres.add(getGenre(ID_1));
-        genres.add(getGenre(ID_2));
-        genres.add(getGenre(ID_3));
-        return genres;
-    }
-
-    private Genre getGenre(String id) {
-        return new Genre(id, GENRE_NAME + id);
     }
 }

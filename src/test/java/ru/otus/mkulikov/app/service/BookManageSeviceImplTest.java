@@ -12,12 +12,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.dao.BookDao;
 import ru.otus.mkulikov.app.dao.GenreDao;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
-import ru.otus.mkulikov.app.model.Genre;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +24,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
+import static ru.otus.mkulikov.generators.GenerateBook.getBook;
+import static ru.otus.mkulikov.generators.GenerateBook.getBooksList;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenre;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,16 +42,9 @@ class BookManageSeviceImplTest {
 
     private final String ID_1 = "1";
     private final String ID_2 = "2";
-    private final String ID_3 = "3";
 
     private final int OBJECT_COUNT_1 = 1;
     private final int OBJECT_COUNT_3 = 3;
-
-    private final String GENRE_NAME = "Genre";
-
-    private final String AUTHOR_SURNAME = "Surname";
-    private final String AUTHOR_FIRST_NAME = "FirstName";
-    private final String AUTHOR_SECOND_NAME = "SecondName";
 
     private final String BOOK_NAME = "BookName";
     private final String BOOK_DESCRIPTION = "Description";
@@ -189,27 +183,5 @@ class BookManageSeviceImplTest {
         assertThrows(DataIntegrityViolationException.class, () -> {
             booksManageSevice.deleteBook(ID_1);
         });
-    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
-    }
-
-    private Genre getGenre(String id) {
-        return new Genre(id, GENRE_NAME + id);
-    }
-
-    private Book getBook(String id) {
-        Author author = getAuthor(id);
-        Genre genre = getGenre(id);
-        return new Book(id, new Date(), BOOK_NAME, author, genre, BOOK_DESCRIPTION);
-    }
-
-    private List<Book> getBooksList() {
-        List<Book> list = new ArrayList<>();
-        list.add(getBook(ID_1));
-        list.add(getBook(ID_2));
-        list.add(getBook(ID_3));
-        return list;
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import ru.otus.mkulikov.app.dao.GenreDao;
 import ru.otus.mkulikov.app.model.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +21,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenre;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenreList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,7 +37,6 @@ class GenreManageSeviceImplTest {
 
     private final String ID_1 = "1";
     private final String ID_2 = "2";
-    private final String ID_3 = "3";
 
     private final int OBJECT_COUNT_3 = 3;
 
@@ -135,15 +135,4 @@ class GenreManageSeviceImplTest {
         });
     }
 
-    private List<Genre> getGenreList() {
-        List<Genre> genres = new ArrayList<Genre>();
-        genres.add(getGenre(ID_1));
-        genres.add(getGenre(ID_2));
-        genres.add(getGenre(ID_3));
-        return genres;
-    }
-
-    private Genre getGenre(String id) {
-        return new Genre(id, GENRE_NAME + id);
-    }
 }

@@ -12,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import ru.otus.mkulikov.app.dao.AuthorDao;
 import ru.otus.mkulikov.app.model.Author;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +21,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthorList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,13 +37,12 @@ class AuthorManageSeviceImplTest {
 
     private final String ID_1 = "1";
     private final String ID_2 = "2";
-    private final String ID_3 = "3";
 
     private final int OBJECT_COUNT_3 = 3;
 
-    private final String SURNAME = "Surname";
-    private final String FIRST_NAME = "FirstName";
-    private final String SECOND_NAME = "SecondName";
+    private final String SURNAME = "Surname1";
+    private final String FIRST_NAME = "FirstName1";
+    private final String SECOND_NAME = "SecondName1";
 
     @Mock
     private AuthorDao authorDao;
@@ -84,7 +84,7 @@ class AuthorManageSeviceImplTest {
         });
         when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_2)));
 
-        Author author1 = authorManageService.addAuthor("Surname1", "FirstName1", "SecondName1");
+        Author author1 = authorManageService.addAuthor(SURNAME, FIRST_NAME, SECOND_NAME);
         Author author2 = authorManageService.getAuthorById(author1.getId());
 
         assertThat(author1.getId()).isEqualTo(ID_2);
@@ -106,7 +106,7 @@ class AuthorManageSeviceImplTest {
         });
         when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_1)));
 
-        Author author1 = authorManageService.updateAuthor(ID_1, "Surname1", "FirstName1", "SecondName1");
+        Author author1 = authorManageService.updateAuthor(ID_1, SURNAME, FIRST_NAME, SECOND_NAME);
         Author author2 = authorManageService.getAuthorById(ID_1);
 
         assertThat(author1).isNotNull();
@@ -141,17 +141,5 @@ class AuthorManageSeviceImplTest {
         assertThrows(DataIntegrityViolationException.class, () -> {
             authorManageService.deleteAuthor(ID_1);
         });
-    }
-
-    private List<Author> getAuthorList() {
-        List<Author> authors = new ArrayList<Author>();
-        authors.add(getAuthor(ID_1));
-        authors.add(getAuthor(ID_2));
-        authors.add(getAuthor(ID_3));
-        return authors;
-    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
     }
 }

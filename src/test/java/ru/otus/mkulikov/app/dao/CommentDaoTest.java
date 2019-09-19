@@ -5,18 +5,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
-import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.utils.DateUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
+import static ru.otus.mkulikov.generators.GenerateBook.getBook;
+import static ru.otus.mkulikov.generators.GenerateComment.getComment;
+import static ru.otus.mkulikov.generators.GenerateComment.getCommentList;
+import static ru.otus.mkulikov.generators.GenerateGenre.getGenre;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,19 +41,11 @@ class CommentDaoTest {
     private final int OBJECT_COUNT_2 = 2;
 
     private final String DATE_TIME = "2019-01-01 10:01:01";
-    private final String GENRE_NAME = "GenreName";
 
     private final String COMMENT_USER_NAME = "user";
     private final String COMMENT_UPDATED_USER_NAME = "TestUser";
     private final String COMMENT_TEXT = "text";
     private final String COMMENT_UPDATED_TEXT = "TestText";
-
-    private final String AUTHOR_SURNAME = "Surname";
-    private final String AUTHOR_FIRST_NAME = "FirstName";
-    private final String AUTHOR_SECOND_NAME = "SecondName";
-
-    private final String BOOK_NAME = "BookName";
-    private final String BOOK_DESCRIPTION = "Description";
 
     @Autowired
     private AuthorDao authorDao;
@@ -100,7 +94,7 @@ class CommentDaoTest {
 
         assertThat(comments).isNotEmpty();
         assertThat(comments).size().isEqualTo(OBJECT_COUNT_4);
-        assertThat(comments).containsAll(getComments());
+        assertThat(comments).containsAll(getCommentList());
     }
 
     @Test
@@ -145,36 +139,6 @@ class CommentDaoTest {
 
         assertThat(comment_selected).isNotEmpty();
         assertThat(comment_selected).contains(comment);
-    }
-
-    private Comment getComment(String id, String bookId) {
-        Date date = DateUtil.stringToDateTime(DATE_TIME);
-        Book book = getBook(bookId);
-        return new Comment(id, book, date, COMMENT_USER_NAME + id, COMMENT_TEXT + id);
-    }
-
-    private Book getBook(String id) {
-        Author author = getAuthor(id);
-        Genre genre = getGenre(id);
-        Date date = DateUtil.stringToDateTime(DATE_TIME);
-        return new Book(id, date, BOOK_NAME, author, genre, BOOK_DESCRIPTION);
-    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, AUTHOR_SURNAME + id, AUTHOR_FIRST_NAME + id, AUTHOR_SECOND_NAME + id);
-    }
-
-    private Genre getGenre(String id) {
-        return new Genre(id, GENRE_NAME + id);
-    }
-
-    private List<Comment> getComments() {
-        List<Comment> comments = new ArrayList<Comment>();
-        comments.add(getComment(ID_1, ID_1));
-        comments.add(getComment(ID_2, ID_1));
-        comments.add(getComment(ID_3, ID_2));
-        comments.add(getComment(ID_4, ID_2));
-        return comments;
     }
 
     private Comment getUpdatedComment() {

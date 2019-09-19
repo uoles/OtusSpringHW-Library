@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthorList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,10 +34,6 @@ class AuthorDaoTest {
 
     private final int OBJECT_COUNT_3 = 3;
     private final int OBJECT_COUNT_2 = 2;
-
-    private final String SURNAME = "Surname";
-    private final String FIRST_NAME = "FirstName";
-    private final String SECOND_NAME = "SecondName";
 
     private final String TEST_SURNAME = "TestSurname";
     private final String TEST_FIRST_NAME = "TestFirstName";
@@ -67,7 +64,7 @@ class AuthorDaoTest {
         List<Author> authors = authorDao.findAll();
 
         assertThat(authors).size().isEqualTo(OBJECT_COUNT_3);
-        assertThat(authors).containsAll(getAuthors());
+        assertThat(authors).containsAll(getAuthorList());
     }
 
     @Test
@@ -98,17 +95,5 @@ class AuthorDaoTest {
 
         assertThat(author_selected).isNotEmpty();
         assertThat(author_selected).contains(author);
-    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
-    }
-
-    private List<Author> getAuthors() {
-        List<Author> authors = new ArrayList<>();
-        authors.add(getAuthor(ID_1));
-        authors.add(getAuthor(ID_2));
-        authors.add(getAuthor(ID_3));
-        return authors;
     }
 }

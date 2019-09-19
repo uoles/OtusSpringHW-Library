@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.otus.mkulikov.generators.GenerateAuthor.getAuthor;
 
 @RunWith(SpringRunner.class)
 @DisplayName("Класс rest-контроллеров для автора")
@@ -65,8 +66,4 @@ public class AuthorControllerTest {
 //                .andExpect(status().isOk())
 //                .andExpect(content().string(containsString("Authors:")));
 //    }
-
-    private Author getAuthor(String id) {
-        return new Author(id, SURNAME + id, FIRST_NAME + id, SECOND_NAME + id);
-    }
 }
