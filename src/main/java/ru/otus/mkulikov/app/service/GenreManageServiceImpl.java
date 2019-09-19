@@ -46,10 +46,7 @@ public class GenreManageServiceImpl implements GenreManageService {
 
     @Override
     public Genre updateGenre(Genre genre) {
-        Genre orig = genreDao.findById(genre.getId()).orElseThrow(() -> new ObjectNotFound("Genre", genre.getId()));
-        orig.setName(genre.getName());
-
-        return genreDao.save(orig);
+        return genreDao.save(genre);
     }
 
     @Override

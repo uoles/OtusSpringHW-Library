@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
-import ru.otus.mkulikov.app.model.Genre;
 import ru.otus.mkulikov.app.service.BookManageService;
 import ru.otus.mkulikov.app.service.CommentManageService;
 
@@ -49,7 +47,7 @@ public class CommentController {
         model.addAttribute("books", books);
         model.addAttribute("comment", updated);
 
-        return "comment";
+        return "redirect:/comment/list";
     }
 
     @GetMapping("/comment/new")

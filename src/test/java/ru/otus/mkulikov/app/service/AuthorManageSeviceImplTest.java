@@ -114,6 +114,27 @@ class AuthorManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Обновление автора объектом")
+    void updateAuthorByObject() {
+        when(authorDao.save(any(Author.class))).then(new Answer<Author>() {
+
+            @Override
+            public Author answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Author author = (Author) invocationOnMock.getArgument(0);
+                author.setId(ID_1);
+                return author;
+            }
+        });
+        when(authorDao.findById(anyString())).thenReturn(Optional.of(getAuthor(ID_1)));
+
+        Author author1 = authorManageService.updateAuthor(getAuthor(ID_1));
+        Author author2 = authorManageService.getAuthorById(ID_1);
+
+        assertThat(author1).isNotNull();
+        assertThat(author2).isEqualTo(getAuthor(ID_1));
+    }
+
+    @Test
     @DisplayName("Удаление автора, который используется в таблице книг")
     void deleteAuthor() {
         doThrow(DataIntegrityViolationException.class).when(authorDao).deleteById(ID_1);

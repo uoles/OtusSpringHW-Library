@@ -57,7 +57,7 @@ public class BookController {
         model.addAttribute("authors", authors);
         model.addAttribute("genres", genres);
 
-        return "book";
+        return "redirect:/book/list";
     }
 
     @GetMapping("/book/new")

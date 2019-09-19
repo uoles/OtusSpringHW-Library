@@ -109,6 +109,24 @@ class GenreManageSeviceImplTest {
     }
 
     @Test
+    @DisplayName("Обновление жанра объектом")
+    void updateGenreByObject() {
+        when(genreDao.save(any(Genre.class))).then(new Answer<Genre>() {
+
+            @Override
+            public Genre answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Genre genre = (Genre) invocationOnMock.getArgument(0);
+                genre.setId(ID_1);
+                return genre;
+            }
+        });
+        Genre genre = genreManageService.updateGenre(getGenre(ID_1));
+
+        assertThat(genre).isNotNull();
+        assertThat(genre.getId()).isEqualTo(ID_1);
+    }
+
+    @Test
     @DisplayName("Удаление жанра, который используется в таблице книг")
     void deleteGenre() {
         doThrow(DataIntegrityViolationException.class).when(genreDao).deleteById(ID_1);

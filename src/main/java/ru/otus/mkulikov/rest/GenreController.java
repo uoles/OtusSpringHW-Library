@@ -45,7 +45,7 @@ public class GenreController {
     public String edit(@ModelAttribute Genre genre, Model model) {
         Genre updated = genreManageService.updateGenre(genre);
         model.addAttribute("genre", updated);
-        return "genre";
+        return "redirect:/genre/list";
     }
 
     @PostMapping(value = "/genre/delete")

@@ -43,6 +43,7 @@ class BookManageSeviceImplTest {
     private final String ID_2 = "2";
     private final String ID_3 = "3";
 
+    private final int OBJECT_COUNT_1 = 1;
     private final int OBJECT_COUNT_3 = 3;
 
     private final String GENRE_NAME = "Genre";
@@ -82,11 +83,43 @@ class BookManageSeviceImplTest {
     void getBooks() {
         List<Book> list = getBooksList();
         when(bookDao.findAll()).thenReturn(list);
-        List<Book> comments = booksManageSevice.getBooks();
+        List<Book> books = booksManageSevice.getBooks();
 
-        assertThat(comments).isNotNull();
-        assertThat(comments).hasSize(OBJECT_COUNT_3);
-        assertThat(comments).containsAll(list);
+        assertThat(books).isNotNull();
+        assertThat(books).hasSize(OBJECT_COUNT_3);
+        assertThat(books).containsAll(list);
+    }
+
+    @Test
+    @DisplayName("Получение книг по id автора")
+    void getBooksByAuthorId() {
+        Book book = getBook(ID_1);
+
+        List<Book> list = new ArrayList<>();
+        list.add(book);
+
+        when(bookDao.findByAuthor_Id(anyString())).thenReturn(list);
+        List<Book> books = booksManageSevice.getBookByAuthorId(ID_1);
+
+        assertThat(books).isNotNull();
+        assertThat(books).hasSize(OBJECT_COUNT_1);
+        assertThat(books).contains(book);
+    }
+
+    @Test
+    @DisplayName("Получение книг по id жанра")
+    void getBooksByGenreId() {
+        Book book = getBook(ID_1);
+
+        List<Book> list = new ArrayList<>();
+        list.add(book);
+
+        when(bookDao.findByGenre_Id(anyString())).thenReturn(list);
+        List<Book> books = booksManageSevice.getBookByGenreId(ID_1);
+
+        assertThat(books).isNotNull();
+        assertThat(books).hasSize(OBJECT_COUNT_1);
+        assertThat(books).contains(book);
     }
 
     @Test
@@ -126,6 +159,24 @@ class BookManageSeviceImplTest {
         when(bookDao.findById(anyString())).thenReturn(Optional.of(getBook(ID_1)));
 
         Book book = booksManageSevice.updateBook(ID_1, BOOK_NAME, ID_1, ID_1, BOOK_DESCRIPTION);
+
+        assertThat(book).isNotNull();
+        assertThat(book.getId()).isEqualTo(ID_1);
+    }
+
+    @Test
+    @DisplayName("Обновление книги объектом")
+    void updateBookByObject() {
+        when(bookDao.save(any(Book.class))).then(new Answer<Book>() {
+
+            @Override
+            public Book answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Book book = (Book) invocationOnMock.getArgument(0);
+                book.setId(ID_1);
+                return book;
+            }
+        });
+        Book book = booksManageSevice.updateBook(getBook(ID_1));
 
         assertThat(book).isNotNull();
         assertThat(book.getId()).isEqualTo(ID_1);

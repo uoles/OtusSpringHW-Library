@@ -33,6 +33,7 @@ class BookDaoTest {
     private final String ID_3 = "3";
     private final String ID_4 = "4";
 
+    private final int OBJECT_COUNT_1 = 1;
     private final int OBJECT_COUNT_2 = 2;
 
     private final String SURNAME = "Surname";
@@ -80,6 +81,24 @@ class BookDaoTest {
     }
 
     @Test
+    @DisplayName("Получение книг по id автора")
+    void getByAuthorId() {
+        List<Book> books = bookDaoJpa.findByAuthor_Id(ID_1);
+
+        assertThat(books).isNotEmpty();
+        assertThat(books).size().isEqualTo(OBJECT_COUNT_1);
+    }
+
+    @Test
+    @DisplayName("Получение книг по id жанра")
+    void getByGenreId() {
+        List<Book> books = bookDaoJpa.findByGenre_Id(ID_1);
+
+        assertThat(books).isNotEmpty();
+        assertThat(books).size().isEqualTo(OBJECT_COUNT_2);
+    }
+
+    @Test
     @DisplayName("Получение всех книг")
     void getAllObjects() {
         List<Book> books = bookDaoJpa.findAll();
@@ -105,7 +124,6 @@ class BookDaoTest {
     void deleteObject() {
         bookDaoJpa.deleteById(ID_1);
         Optional<Book> book = bookDaoJpa.findById(ID_1);
-//        assertThat(book).isNotEmpty();
         assertThat(book).isEmpty();
     }
 

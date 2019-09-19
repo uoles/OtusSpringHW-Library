@@ -1,6 +1,5 @@
 package ru.otus.mkulikov.app.service;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -146,6 +145,24 @@ class CommentManageSeviceImplTest {
         when(commentDao.findById(anyString())).thenReturn(Optional.of(getComment(ID_1)));
 
         Comment comment = commentManageService.updateComment(ID_1, COMMENT_UPDATED_USER_NAME, COMMENT_UPDATED_TEXT);
+
+        assertThat(comment).isNotNull();
+        assertThat(comment.getId()).isEqualTo(ID_1);
+    }
+
+    @Test
+    @DisplayName("Обновление комментария объектом")
+    void updateCommentByObject() {
+        when(commentDao.save(any(Comment.class))).then(new Answer<Comment>() {
+
+            @Override
+            public Comment answer(InvocationOnMock invocationOnMock) throws Throwable {
+                Comment comment = (Comment) invocationOnMock.getArgument(0);
+                comment.setId(ID_1);
+                return comment;
+            }
+        });
+        Comment comment = commentManageService.updateComment(getComment(ID_1));
 
         assertThat(comment).isNotNull();
         assertThat(comment.getId()).isEqualTo(ID_1);

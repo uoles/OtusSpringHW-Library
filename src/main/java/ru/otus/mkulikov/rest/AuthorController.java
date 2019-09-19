@@ -43,8 +43,8 @@ public class AuthorController {
 
     @PostMapping(value = "/author/edit")
     public String edit(@ModelAttribute Author author) {
-        Author updated = authorManageService.updateAuthor(author);
-        return "redirect:/author?id=" + updated.getId();
+        authorManageService.updateAuthor(author);
+        return "redirect:/author/list";
     }
 
     @PostMapping(value = "/author/delete")
