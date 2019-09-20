@@ -1,0 +1,11 @@
+spring:
+  banner:
+    location: "classpath:banner.txt"
+
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: library
+      pack: "ru.otus.mkulikov.changelog"
+

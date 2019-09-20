@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Genre detail</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+</head>
+<body>
+
+<form th:action="@{/genre/list}" method="get">
+    <p>
+        <input type="submit" value="Genres list" class="button"/>
+    </p>
+</form>
+
+<h1>Genre detail:</h1>
+
+<form action="#" th:action="@{/genre/edit}" th:object="${genre}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" readonly /></p>
+    <p>Name: <input type="text" th:field="*{name}" /></p>
+    <p>
+        <input type="submit" value="Update" class="button"/>
+    </p>
+</form>
+
+</body>
+</html>

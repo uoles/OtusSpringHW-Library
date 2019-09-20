@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Author detail</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+</head>
+<body>
+
+<form th:action="@{/author/list}" method="get">
+    <p>
+        <input type="submit" value="Authors list" class="button"/>
+    </p>
+</form>
+
+<h1>Author detail:</h1>
+
+<form action="#" th:action="@{/author/edit}" th:object="${author}" method="post">
+    <p>Id: <input type="text" th:field="*{id}" readonly /></p>
+    <p>Surname: <input type="text" th:field="*{surname}" /></p>
+    <p>FirstName: <input type="text" th:field="*{firstName}" /></p>
+    <p>SecondName: <input type="text" th:field="*{secondName}" /></p>
+    <p>
+        <input type="submit" value="Update" class="button"/>
+    </p>
+</form>
+
+</body>
+</html>

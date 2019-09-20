@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>List of all authors</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+</head>
+<body>
+<h1>Authors:</h1>
+
+<table class="btns">
+    <thead/>
+    <tbody>
+    <tr>
+        <td>
+            <form action="/author/list">
+                <input type="submit" value="Authors" class="button"/>
+            </form>
+        </td>
+        <td>
+            <form action="/book/list">
+                <input type="submit" value="Books" class="button"/>
+            </form>
+        </td>
+        <td>
+            <form action="/genre/list">
+                <input type="submit" value="Genres" class="button"/>
+            </form>
+        </td>
+        <td>
+            <form action="/comment/list">
+                <input type="submit" value="Comments" class="button"/>
+            </form>
+        </td>
+        <td>
+            <form action="/author/new" method="get">
+                <input type="submit" value="New author" class="button-new"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="objects">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Surname</th>
+        <th>FirstName</th>
+        <th>SecondName</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${authors}">
+        <td th:text="${author.id}">1</td>
+        <td th:text="${author.surname}">John Doe</td>
+        <td th:text="${author.firstName}">John Doe</td>
+        <td th:text="${author.secondName}">John Doe</td>
+        <td>
+            <form th:action="@{/author}" method="get">
+                <p>
+                    <input type="hidden" th:name="id" th:value="${author.id}" />
+                    <input type="submit" value="Edit" class="button-table"/>
+                </p>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/author/delete(id=${author.id})}" method="post">
+                <p>
+                    <input type="submit" value="Delete" class="button-table"/>
+                </p>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+Сущности, у которых есть связи с другими объектами, удаляться не будут
+<br>
+
+</body>
+</html>
