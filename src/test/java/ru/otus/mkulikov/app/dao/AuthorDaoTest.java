@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Author;
@@ -40,13 +41,16 @@ class AuthorDaoTest {
     private final String TEST_SECOND_NAME = "TestSecondName";
 
     @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
     private AuthorDao authorDao;
 
     @BeforeEach
     void init() {
-        authorDao.save(getAuthor(ID_1));
-        authorDao.save(getAuthor(ID_2));
-        authorDao.save(getAuthor(ID_3));
+        mongoTemplate.save(getAuthor(ID_1));
+        mongoTemplate.save(getAuthor(ID_2));
+        mongoTemplate.save(getAuthor(ID_3));
     }
 
     @Test

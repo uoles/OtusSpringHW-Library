@@ -3,6 +3,7 @@ package ru.otus.mkulikov.app.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +18,7 @@ public class Genre {
 
     @Id
     private String id;
+    @Field(value = "name")
     private String name;
 
     public Genre() {

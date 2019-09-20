@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.mkulikov.app.model.Author;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Genre;
@@ -46,6 +47,9 @@ class BookDaoTest {
     private final String UPDATED_DESCRIPTION = "UpdatedDescription";
 
     @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
     private BookDao bookDaoJpa;
 
     @Autowired
@@ -56,17 +60,17 @@ class BookDaoTest {
 
     @BeforeEach
     void init() {
-        authorDao.save(getAuthor(ID_1));
-        authorDao.save(getAuthor(ID_2));
-        authorDao.save(getAuthor(ID_3));
+        mongoTemplate.save(getAuthor(ID_1));
+        mongoTemplate.save(getAuthor(ID_2));
+        mongoTemplate.save(getAuthor(ID_3));
 
-        genreDao.save(getGenre(ID_1));
-        genreDao.save(getGenre(ID_2));
-        genreDao.save(getGenre(ID_3));
+        mongoTemplate.save(getGenre(ID_1));
+        mongoTemplate.save(getGenre(ID_2));
+        mongoTemplate.save(getGenre(ID_3));
 
-        bookDaoJpa.save(getBook(ID_1));
-        bookDaoJpa.save(getBook(ID_2));
-        bookDaoJpa.save(getBook(ID_3));
+        mongoTemplate.save(getBook(ID_1));
+        mongoTemplate.save(getBook(ID_2));
+        mongoTemplate.save(getBook(ID_3));
     }
 
     @Test

@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
@@ -20,8 +21,11 @@ public class Book {
 
     @Id
     private String id;
+    @Field(value = "addRecordDate")
     private Date addRecordDate;
+    @Field(value = "caption")
     private String caption;
+    @Field(value = "description")
     private String description;
 
     @DBRef

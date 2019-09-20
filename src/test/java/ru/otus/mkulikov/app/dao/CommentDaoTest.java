@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.mkulikov.app.model.Book;
 import ru.otus.mkulikov.app.model.Comment;
 import ru.otus.mkulikov.app.utils.DateUtil;
@@ -48,10 +49,7 @@ class CommentDaoTest {
     private final String COMMENT_UPDATED_TEXT = "TestText";
 
     @Autowired
-    private AuthorDao authorDao;
-
-    @Autowired
-    private GenreDao genreDao;
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private BookDao bookDao;
@@ -61,21 +59,21 @@ class CommentDaoTest {
 
     @BeforeEach
     void init() {
-        authorDao.save(getAuthor(ID_1));
-        authorDao.save(getAuthor(ID_2));
-        authorDao.save(getAuthor(ID_3));
+        mongoTemplate.save(getAuthor(ID_1));
+        mongoTemplate.save(getAuthor(ID_2));
+        mongoTemplate.save(getAuthor(ID_3));
 
-        genreDao.save(getGenre(ID_1));
-        genreDao.save(getGenre(ID_2));
-        genreDao.save(getGenre(ID_3));
+        mongoTemplate.save(getGenre(ID_1));
+        mongoTemplate.save(getGenre(ID_2));
+        mongoTemplate.save(getGenre(ID_3));
 
-        bookDao.save(getBook(ID_1));
-        bookDao.save(getBook(ID_2));
+        mongoTemplate.save(getBook(ID_1));
+        mongoTemplate.save(getBook(ID_2));
 
-        commentDao.save(getComment(ID_1, ID_1));
-        commentDao.save(getComment(ID_2, ID_1));
-        commentDao.save(getComment(ID_3, ID_2));
-        commentDao.save(getComment(ID_4, ID_2));
+        mongoTemplate.save(getComment(ID_1, ID_1));
+        mongoTemplate.save(getComment(ID_2, ID_1));
+        mongoTemplate.save(getComment(ID_3, ID_2));
+        mongoTemplate.save(getComment(ID_4, ID_2));
     }
 
     @Test

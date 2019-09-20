@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
@@ -20,8 +21,11 @@ public class Comment {
 
     @Id
     private String id;
+    @Field(value = "addRecordDate")
     private Date addRecordDate;
+    @Field(value = "userName")
     private String userName;
+    @Field(value = "text")
     private String text;
 
     @DBRef

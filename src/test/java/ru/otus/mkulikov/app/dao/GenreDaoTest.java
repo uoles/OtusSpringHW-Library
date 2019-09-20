@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.mkulikov.app.model.Genre;
@@ -38,13 +39,16 @@ class GenreDaoTest {
     private final String UPDATED_NAME = "UpdatedName";
 
     @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
     private GenreDao genreDao;
 
     @BeforeEach
     void init() {
-        genreDao.save(getGenre(ID_1));
-        genreDao.save(getGenre(ID_2));
-        genreDao.save(getGenre(ID_3));
+        mongoTemplate.save(getGenre(ID_1));
+        mongoTemplate.save(getGenre(ID_2));
+        mongoTemplate.save(getGenre(ID_3));
     }
 
     @Test
