@@ -1,0 +1,11 @@
+spring:
+  banner:
+    location: "classpath:banner-test.txt"
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  data:
+    mongodb:
+      database: library_test

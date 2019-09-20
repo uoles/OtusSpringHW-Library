@@ -1,0 +1,14 @@
+spring:
+  banner:
+    location: "classpath:banner.txt"
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: library
+      pack: "ru.otus.mkulikov.changelog"
