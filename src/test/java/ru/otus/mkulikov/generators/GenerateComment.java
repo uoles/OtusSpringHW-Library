@@ -36,4 +36,11 @@ public class GenerateComment {
         comments.add(getComment(ID_4, ID_2));
         return comments;
     }
+
+    public static List<Comment> getCommentList(String bookId) {
+        List<Comment> comments = new ArrayList<Comment>();
+        comments.add(getComment(ID_1, bookId));
+        comments.add(getComment(ID_2, bookId));
+        return comments;
+    }
 }
